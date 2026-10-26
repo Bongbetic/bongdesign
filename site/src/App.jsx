@@ -100,6 +100,38 @@ export default function App() {
         Source: your own repo, no IBM account needed.
       </p>
 
+      <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+        <nav style={{ flex: '0 0 12rem', position: 'sticky', top: '4rem' }}>
+          <strong>Building blocks</strong>
+          <div style={{ marginTop: '0.5rem' }}>
+            <div>Foundations</div>
+            <div style={{ paddingLeft: '1rem' }}>
+              <div><Link href="#foundations-2x-grid">2x Grid</Link></div>
+              <div><Link href="#foundations-accessibility">Accessibility</Link></div>
+              <div><Link href="#foundations-carbon-for-ai">Carbon for AI</Link></div>
+              <div><Link href="#foundations-color">Color</Link></div>
+              <div><Link href="#foundations-content">Content</Link></div>
+              <div><Link href="#foundations-icons">Icons</Link></div>
+              <div><Link href="#foundations-pictograms">Pictograms</Link></div>
+              <div><Link href="#foundations-motion">Motion</Link></div>
+              <div><Link href="#foundations-spacing">Spacing</Link></div>
+              <div><Link href="#foundations-themes">Themes</Link></div>
+              <div><Link href="#foundations-typography">Typography</Link></div>
+            </div>
+            <div style={{ marginTop: '0.5rem' }}><Link href="#index">Components</Link></div>
+            <div><Link href="#patterns">Patterns</Link></div>
+            <div><Link href="#data-viz">Data visualization</Link></div>
+          </div>
+          <div style={{ marginTop: '1rem' }}>
+            <strong>Building experiences</strong>
+            <div><Link href="#building-experiences">Overview</Link></div>
+          </div>
+          <div style={{ marginTop: '1rem' }}>
+            <strong>Support</strong>
+            <div><Link href="#support">Get help</Link></div>
+          </div>
+        </nav>
+        <div style={{ flex: '1', minWidth: 0 }}>
       <div className="bong-section" id="demos">
         <h2>Live demos</h2>
         <div className="bong-demo-row">
@@ -301,6 +333,48 @@ export default function App() {
         <Explorer />
       </div>
 
+      <div className="bong-section" id="patterns">
+        <h2>Patterns</h2>
+        <p>Reusable solutions for common jobs, in your own words:</p>
+        <ul>
+          <li>Empty states: say what is missing and give one clear way forward.</li>
+          <li>Forms: one question per row, errors where the work is.</li>
+          <li>Loading: show progress, never block the whole screen.</li>
+          <li>Notifications: brief, specific, and gone when read.</li>
+          <li>Search: fast feedback while typing, honest empty results.</li>
+        </ul>
+        <p>
+          <Link href="https://www.carbondesignsystem.com/patterns/overview">Upstream patterns</Link>
+        </p>
+      </div>
+
+      <div className="bong-section" id="data-viz">
+        <h2>Data visualization</h2>
+        <p>
+          Charts live in a separate upstream package and are not vendored here.
+          When a chart is needed, pin it the same way as the rest.{' '}
+          <Link href="https://www.carbondesignsystem.com/data-visualization/overview">Upstream guidance</Link>
+        </p>
+      </div>
+
+      <div className="bong-section" id="building-experiences">
+        <h2>Building experiences</h2>
+        <p>
+          Start from a working vertical slice, then grow. Keep the design system
+          the source of interface truth so pages stay consistent as they scale.
+        </p>
+      </div>
+
+      <div className="bong-section" id="support">
+        <h2>Support</h2>
+        <p>
+          Repo:{' '}
+          <Link href="https://github.com/Bongbetic/bongdesign">Bongbetic/bongdesign</Link>.
+          Upstream: <Link href="https://www.carbondesignsystem.com">carbondesignsystem.com</Link>.
+          MCP: <code>/mcp</code> on this host, token required.
+        </p>
+      </div>
+
       <div className="bong-footer">
         <p>
           BongDesign {index.meta.carbonTag} · upstream Carbon snapshot, own repo ·
@@ -310,6 +384,8 @@ export default function App() {
           Built by <Link href="https://bongbetic.com">Bongbetic</Link>. Free software,
           loud opinions, no warranty (see your licence).
         </p>
+      </div>
+        </div>
       </div>
     </div>
   );
