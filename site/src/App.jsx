@@ -22,8 +22,15 @@ import {
   Slider,
   Tab,
   TabList,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   TabPanel,
   TabPanels,
+  TabRow,
   Tabs,
   Tag,
   TextArea,
@@ -141,26 +148,26 @@ export default function App() {
                 <TabPanel>
                   <DataTable rows={rows} headers={headers}>
                     {({ rows: r, headers: h, getTableProps, getHeaderProps, getRowProps }) => (
-                      <table {...getTableProps()}>
-                        <thead>
-                          <tr>
+                      <Table {...getTableProps()}>
+                        <TableHead>
+                          <TableRow>
                             {h.map((header) => (
-                              <th key={header.key} {...getHeaderProps({ header })}>
+                              <TableHeader key={header.key} {...getHeaderProps({ header })}>
                                 {header.header}
-                              </th>
+                              </TableHeader>
                             ))}
-                          </tr>
-                        </thead>
-                        <tbody>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
                           {r.map((row) => (
-                            <tr key={row.id} {...getRowProps({ row })}>
+                            <TableRow key={row.id} {...getRowProps({ row })}>
                               {row.cells.map((cell) => (
-                                <td key={cell.id}>{cell.value}</td>
+                                <TableCell key={cell.id}>{cell.value}</TableCell>
                               ))}
-                            </tr>
+                            </TableRow>
                           ))}
-                        </tbody>
-                      </table>
+                        </TableBody>
+                      </Table>
                     )}
                   </DataTable>
                 </TabPanel>

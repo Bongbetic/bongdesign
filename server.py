@@ -167,6 +167,13 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, *args):
         pass
 
+    def end_headers(self):
+        if self.path == '/index.html':
+            self.send_header('Cache-Control', 'no-cache')
+        elif self.path.startswith('/assets/'):
+            self.send_header('Cache-Control', 'public, max-age=31536000, immutable')
+        super().end_headers()
+
     def _json(self, code, obj, extra=None):
         body = json.dumps(obj).encode()
         self.send_response(code)
