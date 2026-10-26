@@ -24,5 +24,12 @@ class HealthTest(ServerTestCase):
         self.assertEqual(json.loads(body)['status'], 'ok')
 
 
+class AuthWallTest(ServerTestCase):
+    def test_root_without_session_redirects_to_login(self):
+        status, resp, _ = self.server.request('GET', '/')
+        self.assertEqual(status, 302)
+        self.assertEqual(resp.getheader('Location'), '/login')
+
+
 if __name__ == '__main__':
     unittest.main()
