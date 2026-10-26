@@ -1,0 +1,31 @@
+@use '@carbon/styles';
+@use '@carbon/styles/scss/theme' as *;
+
+.bong-page {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.bong-section {
+  margin-top: 2.5rem;
+}
+
+.bong-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.bong-index {
+  column-width: 14rem;
+  margin-top: 1rem;
+}
+
+.bong-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #393939;
+}

@@ -1,0 +1,14 @@
+CARBON_UPSTREAM=https://github.com/carbon-design-system/carbon
+CARBON_TAG=v1.119.0
+PINNED_AT=2026-10-26
+@carbon/react=1.119.0
+@carbon/styles=1.118.0
+@carbon/icons-react=11.91.0
+@carbon/web-components=2.66.0
+@carbon/themes=11.84.0
+@carbon/type=11.70.0
+@carbon/grid=11.65.0
+@carbon/layout=11.62.0
+@carbon/motion=11.55.0
+@carbon/colors=11.61.0
+@carbon/utilities=0.28.0

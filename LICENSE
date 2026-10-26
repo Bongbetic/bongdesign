@@ -1,0 +1,4 @@
+Apache License 2.0 — Carbon components © IBM Corporation.
+Upstream: https://github.com/carbon-design-system/carbon (Apache-2.0).
+This repo is a clean snapshot, not a fork. Keep this notice on redistribution.
+BongDesign glue files (server.py, site/src, Containerfile): Apache-2.0.
