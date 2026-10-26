@@ -20,16 +20,24 @@ No fork metadata. Manual updates on each new release.
 ## Coolify deploy
 
 1. New service from this repo, build pack `Containerfile`.
-2. Port `8000`, healthcheck path `/health`.
-3. Domain `design.bongbetic.com` with HTTPS.
-4. Redeploy to update.
+2. Port `8000`, healthcheck path `/health` (open, no auth).
+3. Environment: `BONGDESIGN_USER`, `BONGDESIGN_PASS`, `BONGDESIGN_TOKEN`.
+   Pick strong values. Everything except `/health` and `/login` is locked.
+4. Domain `design.bongbetic.com` with HTTPS.
+5. Redeploy to update.
+
+Browsers sign in at `/login`. MCP clients send
+`Authorization: Bearer <BONGDESIGN_TOKEN>` (see [mcp.json](mcp.json)).
 
 ## Local run
 
 ```bash
 cd site && npm ci && npm run build && cd ..
+BONGDESIGN_USER=dev BONGDESIGN_PASS=dev-secret BONGDESIGN_TOKEN=dev-token \
 PORT=8000 python3 server.py
 ```
+
+Dev without auth: `BONGDESIGN_OPEN=1 PORT=8000 python3 server.py`.
 
 ## Update to a new Carbon release
 

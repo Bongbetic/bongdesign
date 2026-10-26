@@ -56,13 +56,20 @@ export default function App() {
         <span className="bong-header-sub">BongDesign — self-hosted Carbon component library</span>
       </header>
       <div className="bong-red-rule" aria-hidden="true" />
+      <nav className="bong-nav">
+        <Link href="#demos">Gallery</Link>
+        {' · '}
+        <Link href="#branding">Branding</Link>
+        {' · '}
+        <Link href="#index">Components</Link>
+      </nav>
       <p>
         Self-hosted Carbon component library, pinned to upstream Carbon{' '}
         {index.meta.carbonTag}. {index.components.length} components indexed.
         Source: your own repo, no IBM account needed.
       </p>
 
-      <div className="bong-section">
+      <div className="bong-section" id="demos">
         <h2>Live demos</h2>
         <div className="bong-demo-row">
           <Button kind="primary">Primary</Button>
@@ -171,6 +178,83 @@ export default function App() {
         >
           <p>Modals work from the self-hosted bundle.</p>
         </Modal>
+      </div>
+
+      <div className="bong-section" id="branding">
+        <h2>Branding</h2>
+        <p>
+          The wordmark, the glyph, the icons and the one red. Black, white, and
+          red: it is not a large palette. Full rules on the{' '}
+          <Link href="https://bongbetic.com/branding">main branding page</Link>.
+        </p>
+        <h3>Wordmark</h3>
+        <p>Dark text, red o and e. For white and pale backgrounds.</p>
+        <img
+          src="https://bongbetic.com/branding/bongbetic-wordmark@2x.png"
+          alt="Bongbetic wordmark for light backgrounds"
+          width="314"
+          height="70"
+        />
+        <p>White text, red o and e. For black and dark backgrounds.</p>
+        <div style={{ background: '#000', padding: '1rem', display: 'inline-block' }}>
+          <img
+            src="https://bongbetic.com/branding/bongbetic-wordmark-dark@2x.png"
+            alt="Bongbetic wordmark for dark backgrounds"
+            width="314"
+            height="70"
+          />
+        </div>
+        <h3>Glyph</h3>
+        <p>The B on its own, for places too small to spell the whole name.</p>
+        <img
+          src="https://bongbetic.com/branding/bongbetic-glyph.svg"
+          alt="Bongbetic glyph"
+          width="96"
+          height="96"
+        />
+        <h3>App icons</h3>
+        <div className="bong-demo-row">
+          <figure style={{ margin: 0 }}>
+            <img
+              src="https://bongbetic.com/branding/bongbetic-icon-light-192.png"
+              alt="Bongbetic icon for light backgrounds"
+              width="96"
+              height="96"
+            />
+            <figcaption>For light backgrounds</figcaption>
+          </figure>
+          <figure style={{ margin: 0 }}>
+            <span style={{ background: '#000', padding: '0.5rem', display: 'inline-block' }}>
+              <img
+                src="https://bongbetic.com/branding/bongbetic-icon-dark-192.png"
+                alt="Bongbetic icon for dark backgrounds"
+                width="96"
+                height="96"
+              />
+            </span>
+            <figcaption>For dark backgrounds</figcaption>
+          </figure>
+        </div>
+        <h3>Colour</h3>
+        <div className="bong-demo-row">
+          <span style={{ background: '#e11d2a', color: '#fff', padding: '1rem' }}>Red #e11d2a — accent only</span>
+          <span style={{ background: '#000', color: '#fff', padding: '1rem' }}>Black #000000</span>
+          <span style={{ border: '1px solid #000', padding: '1rem' }}>White #ffffff</span>
+        </div>
+        <h3>Rules</h3>
+        <p>
+          Clear space: the height of the letter b on every side, never below 96
+          pixels wide. No new colours, gradients, outlines, shadows or glows.
+          Do not recolour the o and e, stretch, rotate, crop or redraw.
+        </p>
+        <h3>Downloads</h3>
+        <ul>
+          <li><Link href="https://bongbetic.com/branding/bongbetic-wordmark@2x.png">Wordmark, light backgrounds (PNG)</Link></li>
+          <li><Link href="https://bongbetic.com/branding/bongbetic-wordmark-dark@2x.png">Wordmark, dark backgrounds (PNG)</Link></li>
+          <li><Link href="https://bongbetic.com/branding/bongbetic-glyph.svg">Glyph (SVG)</Link></li>
+          <li><Link href="https://bongbetic.com/branding/bongbetic-icon-light-512.png">Icon, light (512 PNG)</Link></li>
+          <li><Link href="https://bongbetic.com/branding/bongbetic-icon-dark-512.png">Icon, dark (512 PNG)</Link></li>
+        </ul>
       </div>
 
       <div className="bong-section" id="index">

@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BONGDESIGN_USER: citest
+      BONGDESIGN_PASS: citest-secret
+      BONGDESIGN_TOKEN: citest-token
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,5 +28,9 @@ jobs:
           python3 server.py & SRV=$!
           sleep 1
           curl -fsS localhost:8000/health
-          curl -fsS -X POST localhost:8000/mcp -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+          curl -fsS -o /dev/null -w "%{http_code}\n" localhost:8000/ | grep -q 302
+          curl -fsS -c jar -o /dev/null -w "%{http_code}\n" -X POST localhost:8000/login --data-urlencode "username=citest" --data-urlencode "password=citest-secret" | grep -q 302
+          curl -fsS -b jar localhost:8000/api/components | python3 -c "import json,sys; assert len(json.load(sys.stdin)['components'])==147"
+          curl -fsS -X POST localhost:8000/mcp -H 'Content-Type: application/json' -H "Authorization: Bearer citest-token" -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | grep -q server_info
+          curl -fsS -o /dev/null -w "%{http_code}\n" -X POST localhost:8000/mcp -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"ping","params":{}}' | grep -q 401
           kill $SRV

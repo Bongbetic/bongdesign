@@ -2,7 +2,10 @@
   "mcpServers": {
     "bongdesign": {
       "type": "streamable-http",
-      "url": "https://design.bongbetic.com/mcp"
+      "url": "https://design.bongbetic.com/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_BONGDESIGN_TOKEN"
+      }
     }
   }
 }
