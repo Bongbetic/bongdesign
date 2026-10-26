@@ -8,6 +8,10 @@ import {
   Checkbox,
   DataTable,
   Dropdown,
+  Header,
+  HeaderMenuItem,
+  HeaderName,
+  HeaderNavigation,
   InlineNotification,
   Link,
   Modal,
@@ -40,6 +44,7 @@ import {
 } from '@carbon/react';
 import index from '../../data/components.json';
 import Explorer from './explorer.jsx';
+import Foundations from './foundations.jsx';
 
 const headers = [{ key: 'name', header: 'Component' }];
 const rows = [
@@ -51,7 +56,25 @@ const rows = [
 export default function App() {
   const [modalOpen, setModalOpen] = useState(false);
   return (
-    <div className="bong-page">
+    <div className="bong-page" style={{ paddingTop: '5rem' }}>
+      <Header aria-label="BongDesign">
+        <HeaderName href="#branding" prefix="">
+          <img
+            src="https://bongbetic.com/branding/bongbetic-wordmark@2x.png"
+            alt="Bongbetic"
+            width="125"
+            height="28"
+            style={{ marginRight: '0.75rem' }}
+          />
+          BongDesign
+        </HeaderName>
+        <HeaderNavigation aria-label="Site">
+          <HeaderMenuItem href="#branding">Branding</HeaderMenuItem>
+          <HeaderMenuItem href="#foundations">Foundations</HeaderMenuItem>
+          <HeaderMenuItem href="#index">Components</HeaderMenuItem>
+          <HeaderMenuItem href="https://www.carbondesignsystem.com">Upstream docs</HeaderMenuItem>
+        </HeaderNavigation>
+      </Header>
       <header className="bong-header">
         <a href="https://bongbetic.com">
           <img
@@ -263,6 +286,10 @@ export default function App() {
           <li><Link href="https://bongbetic.com/branding/bongbetic-icon-light-512.png">Icon, light (512 PNG)</Link></li>
           <li><Link href="https://bongbetic.com/branding/bongbetic-icon-dark-512.png">Icon, dark (512 PNG)</Link></li>
         </ul>
+      </div>
+
+      <div className="bong-section" id="foundations">
+        <Foundations />
       </div>
 
       <div className="bong-section" id="index">
