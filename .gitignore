@@ -3,7 +3,6 @@ site/dist/
 site/.vite/
 __pycache__/
 *.pyc
-upstream-carbon/
 jar*
 live*.js
 live*.html
