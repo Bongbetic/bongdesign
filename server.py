@@ -222,12 +222,13 @@ class Handler(SimpleHTTPRequestHandler):
         if path == '/mcp':
             return self._json(405, {'error': 'Use POST with JSON-RPC for MCP.'})
         if path == '/' or not path.startswith(('/mcp', '/health', '/api/', '/login', '/logout')):
-            if path == '/':
-                self.path = '/index.html'
+            rel = posixpath.normpath(urllib.parse.unquote(path).lstrip('/'))
+            full = os.path.realpath(os.path.join(DIST, rel))
+            if path != '/' and rel and full.startswith(os.path.realpath(DIST) + os.sep) \
+                    and os.path.isfile(full):
+                self.path = '/' + rel
             else:
-                cand = os.path.join(DIST, posixpath.basename(path))
-                if not os.path.isfile(cand):
-                    self.path = '/index.html'
+                self.path = '/index.html'
             return super().do_GET()
         return self._json(404, {'error': 'not found'})
 
