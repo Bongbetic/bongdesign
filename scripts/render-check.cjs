@@ -23,6 +23,14 @@ const { renderToString } = require(path.join(
 ));
 const { componentCards } = require('/tmp/bongdesign-explorer.ssr.cjs');
 const index = require(path.join(ROOT, 'data', 'components.json')).components;
+const guidelines = require(path.join(ROOT, 'data', 'guidelines.json'));
+
+const slugs = [...new Set(index.map((c) => c.doc).filter(Boolean))];
+const noEntry = slugs.filter((s) => !guidelines[s]);
+if (noEntry.length > 0) {
+  console.error('Missing guidelines entries for: ' + JSON.stringify(noEntry));
+  process.exit(1);
+}
 
 const { cards } = componentCards();
 const missing = index.map((c) => c.name).filter((n) => !cards.some((c) => c.name === n));

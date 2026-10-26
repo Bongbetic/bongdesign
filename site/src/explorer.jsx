@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import * as Carbon from '@carbon/react';
 import { Link } from '@carbon/react';
 import index from '../../data/components.json';
+import guidelines from '../../data/guidelines.json';
 
 export class DemoBoundary extends React.Component {
   constructor(props) {
@@ -461,9 +462,65 @@ export default function Explorer() {
         ) : (
           <p>{current.note}</p>
         )}
-        <pre style={{ overflowX: 'auto', background: '#f4f4f4', padding: '1rem', marginTop: '2rem' }}>
-          <code>{current.code}</code>
-        </pre>
+        {(() => {
+          const g = guidelines[byName[current.name] && byName[current.name].doc];
+          return (
+            <Carbon.Tabs>
+              <Carbon.TabList>
+                <Carbon.Tab>Guidelines</Carbon.Tab>
+                <Carbon.Tab>Specifications</Carbon.Tab>
+                <Carbon.Tab>Code</Carbon.Tab>
+                <Carbon.Tab>Accessibility</Carbon.Tab>
+              </Carbon.TabList>
+              <Carbon.TabPanels>
+                <Carbon.TabPanel>
+                  {g ? (
+                    <ul>
+                      {g.guidelines.map((line, i) => (
+                        <li key={i}>{line}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>Usage follows the live demo and code below. See upstream docs.</p>
+                  )}
+                </Carbon.TabPanel>
+                <Carbon.TabPanel>
+                  {g ? (
+                    <div>
+                      <p>
+                        <strong>Variants:</strong> {g.specs.variants}
+                      </p>
+                      <p>
+                        <strong>Sizes:</strong> {g.specs.sizes}
+                      </p>
+                      <p>
+                        <strong>Notes:</strong> {g.specs.notes}
+                      </p>
+                    </div>
+                  ) : (
+                    <p>Specifications follow the pinned package props. See code.</p>
+                  )}
+                </Carbon.TabPanel>
+                <Carbon.TabPanel>
+                  <pre style={{ overflowX: 'auto', background: '#f4f4f4', padding: '1rem' }}>
+                    <code>{current.code}</code>
+                  </pre>
+                </Carbon.TabPanel>
+                <Carbon.TabPanel>
+                  {g ? (
+                    <ul>
+                      {g.a11y.map((line, i) => (
+                        <li key={i}>{line}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>Follows upstream keyboard and ARIA behavior. See upstream docs.</p>
+                  )}
+                </Carbon.TabPanel>
+              </Carbon.TabPanels>
+            </Carbon.Tabs>
+          );
+        })()}
         {byName[current.name] && byName[current.name].doc ? (
           <p>
             <Link href={docSlug(byName[current.name])}>Upstream docs</Link>

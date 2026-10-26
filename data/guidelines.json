@@ -1,0 +1,674 @@
+{
+  "accordion": {
+    "guidelines": [
+      "Use when content groups naturally into collapsible sections and hiding some of it is fine.",
+      "Keep headers short: enough to decide whether to expand.",
+      "Do not hide content people must compare side by side."
+    ],
+    "specs": {
+      "variants": "Standard, displaced, ghost, gradient, AI; single vs multiple expand",
+      "sizes": "sm, md (default), lg; full width by default",
+      "notes": "Renders as button headers with chevron; expands with productive motion."
+    },
+    "a11y": [
+      "Keyboard: Tab to header, Enter or Space toggles.",
+      "Keep aria-expanded in sync; focus must stay on the header."
+    ]
+  },
+  "ai-label": {
+    "guidelines": [
+      "Use on content generated or assisted by AI so provenance is never hidden.",
+      "Keep AI framing obvious but quiet; it explains, it does not market.",
+      "Give people an undo or edit path next to generated content."
+    ],
+    "specs": {
+      "variants": "Inline, standalone, card; sizes mini, md",
+      "sizes": "ai sizes follow host control",
+      "notes": "Uses the blue AI gradient tokens; renders the AI label mark."
+    },
+    "a11y": [
+      "Always include a text equivalent for the AI mark.",
+      "Explainability content must be reachable by keyboard."
+    ]
+  },
+  "breadcrumb": {
+    "guidelines": [
+      "Use for hierarchical location three or more levels deep.",
+      "Truncate middle crumbs on narrow views, never the current page.",
+      "Do not use as primary navigation."
+    ],
+    "specs": {
+      "variants": "Default, no trailing slash; AI variant",
+      "sizes": "Micro typography; separator is a chevron",
+      "notes": "Current page is plain text, not a link."
+    },
+    "a11y": [
+      "Wrap in nav with aria-label breadcrumb.",
+      "Mark the current page with aria-current=page."
+    ]
+  },
+  "button": {
+    "guidelines": [
+      "One primary action per view. Secondary actions stay secondary.",
+      "Labels are verbs that say what happens: Save, Delete, Create.",
+      "Icon-only buttons only for familiar actions."
+    ],
+    "specs": {
+      "variants": "Primary, secondary, tertiary, ghost, danger (primary, ghost, tertiary)",
+      "sizes": "2xl, xl, lg, md, sm, xs; fluid variant spans container",
+      "notes": "Default size lg (48px). Corner radius 0 by default."
+    },
+    "a11y": [
+      "Real button elements, focus ring visible at all sizes.",
+      "Icon-only requires accessible label (aria-label or tooltip)."
+    ]
+  },
+  "checkbox": {
+    "guidelines": [
+      "Independent choices: any number can be checked.",
+      "Write labels positively (Receive updates), avoid double negatives.",
+      "Group related checkboxes under a clear group label."
+    ],
+    "specs": {
+      "variants": "Default, indented, disabled, read-only; mixed (indeterminate) state",
+      "sizes": "24px box; label also clickable",
+      "notes": "Group label uses FormGroup legend text."
+    },
+    "a11y": [
+      "Native input semantics; Space toggles.",
+      "Mixed state exposes as indeterminate, not checked."
+    ]
+  },
+  "code-snippet": {
+    "guidelines": [
+      "Use for short code people copy, not long reading.",
+      "Single line for commands, multi-line for blocks.",
+      "Truncate long output with show more, never silently."
+    ],
+    "specs": {
+      "variants": "Single, multi, inline; light background option",
+      "sizes": "Width follows container; copy button top right",
+      "notes": "Mono font; up to expand/collapse at 15 lines by default."
+    },
+    "a11y": [
+      "Copy feedback announced (Copied to clipboard).",
+      "Keyboard access to expand and copy."
+    ]
+  },
+  "contained-list": {
+    "guidelines": [
+      "Use for read-only collections inside cards or panels.",
+      "Keep items scannable: primary text plus optional meta.",
+      "Do not use for full datasets; that is DataTable."
+    ],
+    "specs": {
+      "variants": "Default, with dividers, iconable items, searchable",
+      "sizes": "Full container width; row height follows content",
+      "notes": "Header can carry label, description, and search."
+    },
+    "a11y": [
+      "List semantics preserved; interactive rows are real buttons or links.",
+      "Search field labelled, results count announced."
+    ]
+  },
+  "content-switcher": {
+    "guidelines": [
+      "Use for two or three mutually exclusive views of the same content.",
+      "Labels must be one or two words and parallel.",
+      "Never for navigation between pages."
+    ],
+    "specs": {
+      "variants": "Default, low contrast; selected state filled",
+      "sizes": "sm, md (default), lg, xl",
+      "notes": "Switches content in place without page load."
+    },
+    "a11y": [
+      "Arrow keys move selection between switches.",
+      "Selected switch exposed as pressed or selected state."
+    ]
+  },
+  "data-table": {
+    "guidelines": [
+      "Use for structured data people scan, sort, or act on.",
+      "Keep columns purposeful; every column earns its width.",
+      "Provide pagination or virtual scroll for long datasets."
+    ],
+    "specs": {
+      "variants": "Basic, sortable, expandable, selectable, toolbar, batch actions, AI variants",
+      "sizes": "xs, sm, md, lg (default), xl row heights",
+      "notes": "Sticky header, zebra rows, and density are options."
+    },
+    "a11y": [
+      "Native table semantics; sort state exposed on headers.",
+      "Row selection announced; batch actions keep focus managed."
+    ]
+  },
+  "date-picker": {
+    "guidelines": [
+      "Use when a real calendar helps; typing should always work too.",
+      "Label the format; never make people guess dd or mm first.",
+      "For ranges, keep start and end visibly paired."
+    ],
+    "specs": {
+      "variants": "Single, range, simple; fluid variants",
+      "sizes": "sm, md (default), lg input heights",
+      "notes": "Calendar popover follows Carbon date tokens; locale aware."
+    },
+    "a11y": [
+      "Calendar grid navigable by keyboard with arrow keys.",
+      "Invalid dates flagged in text, not color alone."
+    ]
+  },
+  "dropdown": {
+    "guidelines": [
+      "Use when there are more than five options or space is tight.",
+      "Keep the list ordered predictably: alphabetical by default.",
+      "The label shows the current value; the title says what it is."
+    ],
+    "specs": {
+      "variants": "Default, multi-select, inline menu; fluid variants",
+      "sizes": "sm, md (default), lg heights; menu max height scrolls",
+      "notes": "Selected item shows checkmark in menu."
+    },
+    "a11y": [
+      "Arrow keys navigate; Escape closes and returns focus.",
+      "Listbox semantics with aria-activedescendant."
+    ]
+  },
+  "file-uploader": {
+    "guidelines": [
+      "Say what types and sizes are accepted before upload starts.",
+      "Show per-file progress and errors; never fail silently.",
+      "Allow removing a file before submit."
+    ],
+    "specs": {
+      "variants": "Button, drop container, drop zone; with filenames list",
+      "sizes": "sm, md (default), lg button sizes",
+      "notes": "States: uploading, complete, edit, error."
+    },
+    "a11y": [
+      "Errors described in text per file, linked to the file name.",
+      "Keyboard equivalent for drag and drop."
+    ]
+  },
+  "form": {
+    "guidelines": [
+      "One column, one question per row. Labels above fields.",
+      "Validate on blur and submit; errors list the fix.",
+      "Do not disable submit to hide validation."
+    ],
+    "specs": {
+      "variants": "Default, two-column at lg, fluid forms fill container",
+      "sizes": "Field spacing follows spacing-05 stack",
+      "notes": "FormGroup adds legend and description to field groups."
+    },
+    "a11y": [
+      "Every field labelled programmatically, errors aria-describedby.",
+      "Error summary links move focus to each field."
+    ]
+  },
+  "inline-loading": {
+    "guidelines": [
+      "Use for small inline status next to the action that caused it.",
+      "Pair with text: people should know what is happening.",
+      "Reserve full-page loads for full-page waits."
+    ],
+    "specs": {
+      "variants": "Active, inactive, finished, error states",
+      "sizes": "Small spinner 16px; text follows body copy",
+      "notes": "Success and error are icons with optional description."
+    },
+    "a11y": [
+      "Status announced with aria-live where timing allows.",
+      "Never rely on spinner motion alone as the signal."
+    ]
+  },
+  "link": {
+    "guidelines": [
+      "Link text says where it goes; avoid Click here.",
+      "Use links to navigate, buttons to act.",
+      "External links should be predictable, never a surprise download."
+    ],
+    "specs": {
+      "variants": "Default, standalone, express; visited state optional",
+      "sizes": "Inherits body size; standalone adds hover underline",
+      "notes": "Interactive color; visited purple is off by default in products."
+    },
+    "a11y": [
+      "Focus ring visible; target size meets minimum.",
+      "Underline on hover states must not be color-only."
+    ]
+  },
+  "list": {
+    "guidelines": [
+      "Use ordered lists for sequence, unordered for grouping.",
+      "Keep items parallel in grammar and similar in length.",
+      "Avoid nesting deeper than two levels."
+    ],
+    "specs": {
+      "variants": "Ordered, unordered, nested, expressive",
+      "sizes": "Body typography; indent follows spacing tokens",
+      "notes": "Native ul/ol markup preserved."
+    },
+    "a11y": [
+      "Real list elements so count and position are announced.",
+      "Do not fake lists with line breaks."
+    ]
+  },
+  "loading": {
+    "guidelines": [
+      "Use when a block of content, not the whole page, is loading.",
+      "Keep waits honest: no fake progress claims.",
+      "Pair with text for waits longer than a second."
+    ],
+    "specs": {
+      "variants": "Small inline, page overlay, with description",
+      "sizes": "Small (32px) and default spinners; overlay darkens backdrop",
+      "notes": "Productive dash animation; respects reduced motion."
+    },
+    "a11y": [
+      "Container sets aria-busy while loading.",
+      "Reduced-motion users get a static indicator."
+    ]
+  },
+  "menu": {
+    "guidelines": [
+      "Use for action lists triggered by a button, icon, or right-click.",
+      "Group related actions; dividers carry meaning.",
+      "Destructive actions go last and look dangerous."
+    ],
+    "specs": {
+      "variants": "Default, context menu, overflow menu; sizes sm, md, lg, xl",
+      "sizes": "Item height follows size; flip fits viewport",
+      "notes": "MenuButton composes button plus menu."
+    },
+    "a11y": [
+      "Menu and menuitem roles; arrows navigate, Escape closes.",
+      "Focus returns to the trigger on close."
+    ]
+  },
+  "menu-buttons": {
+    "guidelines": [
+      "Use when a primary action has siblings, like Save and Save as.",
+      "Keep the primary action obvious; the menu is secondary.",
+      "Overflow menus are for excess actions on a row, not primary flows."
+    ],
+    "specs": {
+      "variants": "MenuButton, ComboButton, OverflowMenu",
+      "sizes": "Matches Button sizes where applicable",
+      "notes": "ComboButton splits primary click from menu trigger."
+    },
+    "a11y": [
+      "Trigger exposes aria-haspopup and expanded state.",
+      "Menu items reachable by keyboard in visual order."
+    ]
+  },
+  "modal": {
+    "guidelines": [
+      "Use sparingly: one focused decision or interruption.",
+      "Passive for information, transactional for a task that ends with buttons.",
+      "Never stack modals. Never hide the only way out."
+    ],
+    "specs": {
+      "variants": "Passive, transactional, danger, AI; full-width, container bottom",
+      "sizes": "xs, sm, md, lg widths; content scrolls inside",
+      "notes": "Overlay dims backdrop; focus trapped while open."
+    },
+    "a11y": [
+      "Focus moves in on open and returns on close.",
+      "Escape closes; heading announced via aria-labelledby."
+    ]
+  },
+  "notification": {
+    "guidelines": [
+      "Toast for transient info. Inline for status in place. Callout in forms.",
+      "One clear message. Action optional and honest.",
+      "Never the only record of something important."
+    ],
+    "specs": {
+      "variants": "Inline, toast, callout, actionable; success, info, warning, error",
+      "sizes": "Inline follows container; toast max width with timer option",
+      "notes": "Toast auto-dismiss defaults to no timer for critical messages."
+    },
+    "a11y": [
+      "Role status or alert by severity; errors use alert.",
+      "Close button labelled; timer pauses on hover or focus."
+    ]
+  },
+  "number-input": {
+    "guidelines": [
+      "Use for numbers people know exactly, like quantity 3.",
+      "Scrubbers for small adjustments; typing always allowed.",
+      "Say the unit and range next to the field."
+    ],
+    "specs": {
+      "variants": "Default, with steppers, no steppers, fluid",
+      "sizes": "sm, md (default), lg heights",
+      "notes": "Min, max, step configurable; invalid state in red text."
+    },
+    "a11y": [
+      "Up and down arrows step when focused on the buttons or input.",
+      "Out-of-range errors in text, not color alone."
+    ]
+  },
+  "pagination": {
+    "guidelines": [
+      "Use for long result sets; prefer load more for feeds.",
+      "Show total when known; page size choices stay few.",
+      "Keep the current page obvious and selectable."
+    ],
+    "specs": {
+      "variants": "Pagination with page sizes; PaginationNav without",
+      "sizes": "sm (table), md, lg heights",
+      "notes": "Prev/next plus numeric pages; ellipsis for gaps."
+    },
+    "a11y": [
+      "Nav landmark labelled; current page aria-current.",
+      "Changing page moves focus to results heading."
+    ]
+  },
+  "popover": {
+    "guidelines": [
+      "Use for small contextual content tied to a trigger.",
+      "Dismiss on outside click; never trap people inside.",
+      "Keep content short; it is a peek, not a page."
+    ],
+    "specs": {
+      "variants": "Default, high contrast, caret; placements all sides",
+      "sizes": "Width fits content up to max; offset from trigger",
+      "notes": "Open state controlled or uncontrolled."
+    },
+    "a11y": [
+      "Trigger toggles with aria-expanded; Escape closes.",
+      "Focusable content reachable in DOM order."
+    ]
+  },
+  "progress-bar": {
+    "guidelines": [
+      "Use for determinate progress with a known total.",
+      "Label what is progressing; percent optional but honest.",
+      "Indeterminate only for truly unknown durations."
+    ],
+    "specs": {
+      "variants": "Determinate, indeterminate; success and error states",
+      "sizes": "Bar height 6px; full container width",
+      "notes": "Value 0 to max; helper text below."
+    },
+    "a11y": [
+      "Progressbar role with value, min, max.",
+      "State changes announced for long-running tasks."
+    ]
+  },
+  "progress-indicator": {
+    "guidelines": [
+      "Use for multi-step tasks with a known order.",
+      "Current step unmistakable; completed steps revisitable.",
+      "Do not promise steps the flow cannot keep."
+    ],
+    "specs": {
+      "variants": "Horizontal (default), vertical; interactive steps optional",
+      "sizes": "Step circles with labels; spacing follows tokens",
+      "notes": "States: complete, current, incomplete, invalid."
+    },
+    "a11y": [
+      "Ordered list semantics; current step uses aria-current=step.",
+      "Invalid steps described in text."
+    ]
+  },
+  "radio-button": {
+    "guidelines": [
+      "Exactly one choice from two to five options.",
+      "Default a sensible choice whenever possible.",
+      "Stack vertically; horizontal only for very short labels."
+    ],
+    "specs": {
+      "variants": "Default, disabled, read-only; tile variant",
+      "sizes": "20px circle; label clickable",
+      "notes": "Group label via RadioButtonGroup legend."
+    },
+    "a11y": [
+      "Native group with radiogroup role and roving tabindex.",
+      "Arrow keys move selection within the group."
+    ]
+  },
+  "search": {
+    "guidelines": [
+      "Use when people know what they are looking for by name.",
+      "Search scope must be obvious; placeholder hints the scope.",
+      "Empty results explain the miss and offer next steps."
+    ],
+    "specs": {
+      "variants": "Default, expandable, fluid; with scope selector",
+      "sizes": "sm, md (default), lg heights",
+      "notes": "Clear button appears with text."
+    },
+    "a11y": [
+      "Search role with labelled input; clear button labelled.",
+      "Result counts announced via live region in products."
+    ]
+  },
+  "select": {
+    "guidelines": [
+      "Use the native picker for long lists and platform familiarity.",
+      "Choose a default that is safe and honest.",
+      "Use Dropdown instead for rich item content."
+    ],
+    "specs": {
+      "variants": "Default, grouped items, invalid state; fluid",
+      "sizes": "sm, md (default), lg heights",
+      "notes": "Chevron indicates the native menu."
+    },
+    "a11y": [
+      "Native select semantics; label always associated.",
+      "Grouped options use optgroup labels."
+    ]
+  },
+  "slider": {
+    "guidelines": [
+      "Use for imprecise choice where the range matters more than the number.",
+      "Always show the current value next to the slider.",
+      "Pair with a number input when exactness matters."
+    ],
+    "specs": {
+      "variants": "Single, range (two thumbs), with text input",
+      "sizes": "Track full width; step configurable",
+      "notes": "Min, max, step; ticks optional."
+    },
+    "a11y": [
+      "Slider role with value text; arrows adjust by step.",
+      "Shift plus arrow for larger jumps."
+    ]
+  },
+  "structured-list": {
+    "guidelines": [
+      "Use for key-value rows people compare line by line.",
+      "Keep headers short; rows stay on one baseline.",
+      "Use DataTable when sorting or row actions are needed."
+    ],
+    "specs": {
+      "variants": "Default, selectable rows, condensed",
+      "sizes": "Up to four columns; row padding follows tokens",
+      "notes": "Selectable adds radio behavior to rows."
+    },
+    "a11y": [
+      "List and row semantics preserved.",
+      "Selectable rows expose selected state."
+    ]
+  },
+  "tabs": {
+    "guidelines": [
+      "Use for same-page views of related content at one level.",
+      "Labels one or two words; order by importance.",
+      "Never nest tabs inside tabs."
+    ],
+    "specs": {
+      "variants": "Line, contained, icon; scrollable overflow",
+      "sizes": "Default height 40px; panels attach below",
+      "notes": "Selected tab underlines in interactive color."
+    },
+    "a11y": [
+      "Tablist roles; arrows move, Tab enters the panel.",
+      "Panels labelled by their tab."
+    ]
+  },
+  "tag": {
+    "guidelines": [
+      "Use to categorize, filter, or show status briefly.",
+      "Text is one or two words; never a sentence.",
+      "Dismissible only when removal is a real action."
+    ],
+    "specs": {
+      "variants": "Read-only, dismissible, selectable, operational; 10+ colors",
+      "sizes": "sm, md (default), lg",
+      "notes": "Overflow collapses extras into a count tag."
+    },
+    "a11y": [
+      "Dismissible tags are real buttons with labels.",
+      "Meaning never carried by color alone."
+    ]
+  },
+  "text-input": {
+    "guidelines": [
+      "Use for short free text on one line.",
+      "Placeholder is an example, never the label.",
+      "Validate format inline with a fix-it message."
+    ],
+    "specs": {
+      "variants": "Text, password, fluid, read-only; with counter",
+      "sizes": "sm, md (default), lg heights",
+      "notes": "Helper text below; invalid state in red."
+    },
+    "a11y": [
+      "Label associated; helper and error via aria-describedby.",
+      "Password visibility toggle is a labelled button."
+    ]
+  },
+  "tile": {
+    "guidelines": [
+      "Use to group related content in a scannable block.",
+      "Clickable tiles act as one action; selected state is explicit.",
+      "Do not nest interactive controls inside a clickable tile."
+    ],
+    "specs": {
+      "variants": "Default, clickable, selectable, expandable, radio tile",
+      "sizes": "Width follows grid; min height keeps targets tappable",
+      "notes": "Expandable reveals content below with chevron."
+    },
+    "a11y": [
+      "Whole-tile click keeps one tab stop on the tile itself.",
+      "Selected exposed via aria-pressed or checked state."
+    ]
+  },
+  "toggle": {
+    "guidelines": [
+      "Use for on/off settings that take effect immediately.",
+      "Label the thing being toggled, never just On or Off.",
+      "Use a checkbox when the choice applies on submit."
+    ],
+    "specs": {
+      "variants": "Default, small, disabled, read-only; AI variant",
+      "sizes": "48px track default; small is 40px",
+      "notes": "State text optional (On/Off beside track)."
+    },
+    "a11y": [
+      "Switch role with checked state.",
+      "Space toggles; focus ring on the track."
+    ]
+  },
+  "toggletip": {
+    "guidelines": [
+      "Use to define a term inline without leaving the page.",
+      "Content is a sentence or two, focusable and dismissible.",
+      "Not for critical instructions; those stay visible."
+    ],
+    "specs": {
+      "variants": "Default, high contrast; placements all sides",
+      "sizes": "Trigger is inline icon or text with dotted underline",
+      "notes": "Opens on click, closes on Escape or outside click."
+    },
+    "a11y": [
+      "Trigger is a button with aria-expanded.",
+      "Content focusable; Escape returns focus."
+    ]
+  },
+  "tooltip": {
+    "guidelines": [
+      "Use for tiny clarifications: icon names, truncated text.",
+      "Never hide essential instructions in a tooltip.",
+      "Keep it to a short phrase."
+    ],
+    "specs": {
+      "variants": "Default, icon-only trigger; placements all sides with delay",
+      "sizes": "Max width caps long labels; delay 100ms show",
+      "notes": "Hover and focus both reveal; touch shows on tap."
+    },
+    "a11y": [
+      "Trigger focusable; tooltip uses tooltip role.",
+      "Content never the only way to learn a control name."
+    ]
+  },
+  "tree-view": {
+    "guidelines": [
+      "Use for nested hierarchies like files and folders.",
+      "Keep depth shallow; deep trees need search too.",
+      "Icons help scanning but labels carry meaning."
+    ],
+    "specs": {
+      "variants": "Default, with icons, multi-select, checkbox",
+      "sizes": "Row height follows size sm or default",
+      "notes": "Expand/collapse with chevrons; lazy nodes supported."
+    },
+    "a11y": [
+      "Tree role with levels and expanded states.",
+      "Arrows navigate; right expands, left collapses."
+    ]
+  },
+  "ui-shell-header": {
+    "guidelines": [
+      "Use the header for global identity, nav, search, and account.",
+      "Keep global actions few and predictable.",
+      "Header stays put while content scrolls."
+    ],
+    "specs": {
+      "variants": "With navigation, global actions, side nav toggle",
+      "sizes": "Fixed 48px height; full width",
+      "notes": "Pairs with left and right panels."
+    },
+    "a11y": [
+      "Banner landmark; skip-to-content is first.",
+      "Menu buttons expose expanded state."
+    ]
+  },
+  "ui-shell-left-panel": {
+    "guidelines": [
+      "Use the left nav for primary product sections.",
+      "Group by task, not by team. Labels stay short.",
+      "Collapse on small screens; never hide current location."
+    ],
+    "specs": {
+      "variants": "Rail (icons), expanded, overlay on small screens",
+      "sizes": "256px expanded; 48px rail",
+      "notes": "Selected item uses interactive highlight bar."
+    },
+    "a11y": [
+      "Nav landmark; current item uses aria-current.",
+      "Keyboard order matches visual order."
+    ]
+  },
+  "ui-shell-right-panel": {
+    "guidelines": [
+      "Use the right panel for contextual detail, help, or notifications.",
+      "Open on demand; closing returns to the task.",
+      "Never put the only copy of critical state here."
+    ],
+    "specs": {
+      "variants": "Notifications panel, switcher panel, custom content",
+      "sizes": "256px or 320px widths; overlays content",
+      "notes": "Header global actions toggle panels."
+    },
+    "a11y": [
+      "Panel labelled; Escape closes and returns focus.",
+      "Focus trapped only while modal behavior is required."
+    ]
+  }
+}
