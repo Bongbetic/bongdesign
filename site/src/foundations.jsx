@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as Carbon from '@carbon/react';
-import * as Icons from '@carbon/icons-react';
-import * as Pictograms from '@carbon/pictograms-react';
+import IconsLibrary from './icons.jsx';
+import { PictogramsLibrary } from './pictograms.jsx';
 import * as typeTokens from '@carbon/type';
 import * as colorTokens from '@carbon/colors';
 import * as themeTokens from '@carbon/themes';
@@ -239,26 +239,11 @@ function GridSection() {
   );
 }
 
-const ICON_SAMPLE = ['Add', 'Search', 'Settings', 'User', 'Warning', 'Checkmark', 'ArrowRight'];
-const PICTO_SAMPLE = ['Accessibility', 'Advocate', 'AiEthics', 'Api', 'AppConnector', 'Automation'];
-
 function IconsSection() {
   return (
     <div>
-      <p>Pinned @carbon/icons-react. Same glyphs everywhere.</p>
-      <div className="bong-demo-row">
-        {ICON_SAMPLE.map((name) => {
-          const Icon = Icons[name];
-          if (!Icon) return null;
-          return (
-            <span key={name} style={{ display: 'inline-block', textAlign: 'center', width: '5rem' }}>
-              <Icon size={32} />
-              <br />
-              <code>{name}</code>
-            </span>
-          );
-        })}
-      </div>
+      <p>Pinned @carbon/icons package. Search filters the full set.</p>
+      <IconsLibrary />
     </div>
   );
 }
@@ -266,20 +251,8 @@ function IconsSection() {
 function PictogramsSection() {
   return (
     <div>
-      <p>Pinned @carbon/pictograms-react, 1577 pictograms.</p>
-      <div className="bong-demo-row">
-        {PICTO_SAMPLE.map((name) => {
-          const P = Pictograms[name];
-          if (!P) return null;
-          return (
-            <span key={name} style={{ display: 'inline-block', textAlign: 'center', width: '6rem' }}>
-              <P width={48} height={48} />
-              <br />
-              <code>{name}</code>
-            </span>
-          );
-        })}
-      </div>
+      <p>Pinned @carbon/pictograms package. Search filters the full set.</p>
+      <PictogramsLibrary />
     </div>
   );
 }

@@ -26,7 +26,11 @@ const index = require(path.join(ROOT, 'data', 'components.json')).components;
 const guidelines = require(path.join(ROOT, 'data', 'guidelines.json'));
 
 const slugs = [...new Set(index.map((c) => c.doc).filter(Boolean))];
-const noEntry = slugs.filter((s) => !guidelines[s]);
+const names = [...new Set(index.map((c) => c.name))];
+const byDoc = Object.fromEntries(index.map((c) => [c.name, c.doc]));
+const noEntry = slugs
+  .filter((s) => !guidelines[s])
+  .concat(names.filter((n) => !guidelines[n] && !guidelines[byDoc[n]]));
 if (noEntry.length > 0) {
   console.error('Missing guidelines entries for: ' + JSON.stringify(noEntry));
   process.exit(1);

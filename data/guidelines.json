@@ -670,5 +670,1205 @@
       "Panel labelled; Escape closes and returns focus.",
       "Focus trapped only while modal behavior is required."
     ]
+  },
+  "AddSelect": {
+    "guidelines": [
+      "Use when people move items between two known lists.",
+      "Show counts on both sides so the state is visible.",
+      "Keep the available side searchable for long lists."
+    ],
+    "specs": {
+      "variants": "Single column, two column; with search and summary",
+      "sizes": "Panel heights configurable; full container width",
+      "notes": "Items transfer with add and remove actions."
+    },
+    "a11y": [
+      "Both lists are labelled listboxes.",
+      "Transfers announced with updated counts."
+    ]
+  },
+  "AISkeleton": {
+    "guidelines": [
+      "Use as a loading stand-in where AI content will appear.",
+      "Keep the shape of the coming content so layout does not jump.",
+      "Never leave skeletons on screen indefinitely."
+    ],
+    "specs": {
+      "variants": "AI text, AI icon, heading, avatar combinations",
+      "sizes": "Matches the content it replaces",
+      "notes": "AI gradient shimmer; respects reduced motion."
+    },
+    "a11y": [
+      "Marked busy or hidden from assistive tech while loading.",
+      "Content announced when it replaces the skeleton."
+    ]
+  },
+  "AspectRatio": {
+    "guidelines": [
+      "Use to hold a box at a fixed ratio while media loads.",
+      "Pick the ratio of the content, not the design.",
+      "Common cases: 16x9 video, 1x1 avatars, 2x1 banners."
+    ],
+    "specs": {
+      "variants": "1x1, 2x1, 4x3, 16x9, 9x16, 2x3, 1x2, 3x4, 1x3",
+      "sizes": "Fills container width; height derived",
+      "notes": "Prevents layout shift for images and video."
+    },
+    "a11y": [
+      "No semantics of its own; content inside stays labelled.",
+      "Does not trap focus."
+    ]
+  },
+  "BadgeIndicator": {
+    "guidelines": [
+      "Use for unread counts on icons and avatars.",
+      "Cap large numbers at 99+.",
+      "Clear the badge when the user sees the content."
+    ],
+    "specs": {
+      "variants": "Default, overflow (99+), with border offset",
+      "sizes": "Small dot or counted pill",
+      "notes": "Anchors to a positioned parent element."
+    },
+    "a11y": [
+      "Count exposed in text, not color or shape alone.",
+      "Hidden when the count is zero."
+    ]
+  },
+  "BigNumber": {
+    "guidelines": [
+      "Use for one headline metric that deserves the spotlight.",
+      "Pair with a label and a trend, never a bare number.",
+      "Keep the story honest: no cropped axes."
+    ],
+    "specs": {
+      "variants": "Default, with trend indicator, with sparkline slot",
+      "sizes": "Display type size; container responsive",
+      "notes": "Value, label, and optional trend arrow."
+    },
+    "a11y": [
+      "Value and label in one text node where possible.",
+      "Trend described in words, not color alone."
+    ]
+  },
+  "ButtonSet": {
+    "guidelines": [
+      "Use to group related buttons: Save with Cancel.",
+      "Stack on narrow screens; order primary first.",
+      "Keep groups to two or three buttons."
+    ],
+    "specs": {
+      "variants": "Default, stacked on small screens",
+      "sizes": "Spacing between buttons follows button size",
+      "notes": "Aligns trailing or full width in dialogs."
+    },
+    "a11y": [
+      "Buttons keep individual accessible names.",
+      "Order matches visual order for keyboard users."
+    ]
+  },
+  "Card": {
+    "guidelines": [
+      "Use to package a topic: media, title, body, actions.",
+      "One card, one subject; keep actions to two.",
+      "Cards scan in a grid; keep heights consistent."
+    ],
+    "specs": {
+      "variants": "With media ratio, title variants, footer actions",
+      "sizes": "Grid-driven width; media 16x9 or 1x1",
+      "notes": "Experimental card component; content slots optional."
+    },
+    "a11y": [
+      "Headings inside cards keep outline order.",
+      "Actions are labelled buttons and links."
+    ]
+  },
+  "ChatButton": {
+    "guidelines": [
+      "Use to open an assistant chat from anywhere.",
+      "Fixed corner placement; never block content.",
+      "Unread indicator when the assistant has something new."
+    ],
+    "specs": {
+      "variants": "Default, with unread indicator, AI styling",
+      "sizes": "Circular button with chat glyph",
+      "notes": "Floating action anchored to viewport corner."
+    },
+    "a11y": [
+      "Labelled as open chat; state announced.",
+      "Focusable without trapping the page."
+    ]
+  },
+  "ClassPrefix": {
+    "guidelines": [
+      "Use to scope Carbon styles under your own class prefix.",
+      "Wrap the subtree that needs isolation.",
+      "Rarely needed in normal product code."
+    ],
+    "specs": {
+      "variants": "Provider component with prefix string",
+      "sizes": "No visual output",
+      "notes": "Utility; renders children with prefixed class names."
+    },
+    "a11y": [
+      "No DOM footprint of its own.",
+      "Children keep their own semantics."
+    ]
+  },
+  "Coachmark": {
+    "guidelines": [
+      "Use to teach one new thing, then stop teaching.",
+      "One concept per coachmark; short heading and body.",
+      "Dismissible always; never block the task."
+    ],
+    "specs": {
+      "variants": "Default with beacon, content, tagline; auto position",
+      "sizes": "Max width constrains to a card",
+      "notes": "Beacon pulses on the target element."
+    },
+    "a11y": [
+      "Announced politely; Escape dismisses.",
+      "Focus handled without trapping."
+    ]
+  },
+  "ComboBox": {
+    "guidelines": [
+      "Use when users pick from a long list or type their own value.",
+      "Filter as they type; keep exact matches first.",
+      "Reject impossible values with a helpful message."
+    ],
+    "specs": {
+      "variants": "Default, warn and invalid states, fluid",
+      "sizes": "sm, md (default), lg heights",
+      "notes": "Combines text input with a filterable menu."
+    },
+    "a11y": [
+      "Combobox role with expanded listbox.",
+      "Typed text and selection both announced."
+    ]
+  },
+  "ComboButton": {
+    "guidelines": [
+      "Use when one click deserves a primary action plus options.",
+      "Primary click runs the main action; caret opens the rest.",
+      "Keep the options honest siblings of the main action."
+    ],
+    "specs": {
+      "variants": "Default, danger primary; menu with items",
+      "sizes": "Matches button sizes",
+      "notes": "Splits hit area into action and menu trigger."
+    },
+    "a11y": [
+      "Two focusable controls with clear names.",
+      "Menu trigger exposes expanded state."
+    ]
+  },
+  "ConditionBuilder": {
+    "guidelines": [
+      "Use for rule builders where people combine conditions.",
+      "Show the resulting sentence in plain language.",
+      "Keep operators to words people actually say."
+    ],
+    "specs": {
+      "variants": "Single group, nested groups, date and number fields",
+      "sizes": "Full container; rows stack",
+      "notes": "Experimental; items, operators, values compose."
+    },
+    "a11y": [
+      "Each row labelled; add and remove are buttons.",
+      "Preview readable as plain text."
+    ]
+  },
+  "Copy": {
+    "guidelines": [
+      "Use the copy hook to put exact text on the clipboard.",
+      "Give credit feedback every single time.",
+      "Never copy silently on hover or focus."
+    ],
+    "specs": {
+      "variants": "Hook or inline copy component usage",
+      "sizes": "No visual output of its own",
+      "notes": "Utility for clipboard interactions."
+    },
+    "a11y": [
+      "Copy action announced as completed.",
+      "Copied content available as text."
+    ]
+  },
+  "CopyButton": {
+    "guidelines": [
+      "Use beside code and IDs people need exactly.",
+      "Confirm with Copied feedback, then reset.",
+      "Place at the end of the line or block."
+    ],
+    "specs": {
+      "variants": "Default, with feedback timeout",
+      "sizes": "Icon button, 32px default",
+      "notes": "Feedback text appears beside the button."
+    },
+    "a11y": [
+      "Button labelled Copy; success announced.",
+      "Focus stays put after copying."
+    ]
+  },
+  "Dialog": {
+    "guidelines": [
+      "Use for floating attention that is not a full modal.",
+      "Close on outside action; keep a visible close too.",
+      "Small, specific, easy to dismiss."
+    ],
+    "specs": {
+      "variants": "Default floating panel with arrow",
+      "sizes": "Content-sized up to a max width",
+      "notes": "Positions relative to its trigger."
+    },
+    "a11y": [
+      "Escape closes; focus returns to trigger.",
+      "Content reachable in reading order."
+    ]
+  },
+  "Disclosure": {
+    "guidelines": [
+      "Use as the state primitive behind show and hide.",
+      "Keep the trigger and region paired in the DOM.",
+      "Name the trigger after what it reveals."
+    ],
+    "specs": {
+      "variants": "Hook with open, toggle, and props",
+      "sizes": "No visual output",
+      "notes": "Utility for expandable regions."
+    },
+    "a11y": [
+      "Expanded state exposed on the trigger.",
+      "Region labelled by the trigger."
+    ]
+  },
+  "EditInPlace": {
+    "guidelines": [
+      "Use when a value is read most of the time, edited rarely.",
+      "Clicking the value turns it into its field.",
+      "Save explicitly; Escape cancels without changes."
+    ],
+    "specs": {
+      "variants": "Text, with validation and max length",
+      "sizes": "Matches surrounding body text",
+      "notes": "Experimental inline editing component."
+    },
+    "a11y": [
+      "Edit trigger is a button with a clear name.",
+      "Errors announced before focus moves."
+    ]
+  },
+  "ErrorBoundary": {
+    "guidelines": [
+      "Use to contain failures to one part of the page.",
+      "Show a calm fallback with a next step, not a stack trace.",
+      "Log the real error for the team."
+    ],
+    "specs": {
+      "variants": "With custom fallback content",
+      "sizes": "No visual output",
+      "notes": "Catches render errors in its subtree."
+    },
+    "a11y": [
+      "Fallback is plain readable text.",
+      "Focus moved to the fallback on error."
+    ]
+  },
+  "FeatureFlags": {
+    "guidelines": [
+      "Use to gate unfinished work behind flags.",
+      "Flags default to released behavior in production.",
+      "Remove flags when the work ships."
+    ],
+    "specs": {
+      "variants": "Provider with flag names and scope",
+      "sizes": "No visual output",
+      "notes": "Utility for progressive rollout."
+    },
+    "a11y": [
+      "No DOM footprint of its own.",
+      "Flagged content keeps its own semantics."
+    ]
+  },
+  "FlexGrid": {
+    "guidelines": [
+      "Use for fluid full-bleed layouts with fine column control.",
+      "Nest rows deliberately, not by accident.",
+      "Gutters consistent: condensed, narrow, default."
+    ],
+    "specs": {
+      "variants": "Full width, condensed, narrow",
+      "sizes": "16 columns at large; 4 at small",
+      "notes": "New grid API replacing the legacy Grid."
+    },
+    "a11y": [
+      "Layout only; no semantics of its own.",
+      "Content order matches visual order."
+    ]
+  },
+  "FluidComboBox": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as ComboBox, full width.",
+      "Dividers between fields replace floating labels."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers",
+      "sizes": "64px height; error, warn, disabled states",
+      "notes": "Labels sit inside the field."
+    },
+    "a11y": [
+      "Same keyboard behavior as ComboBox.",
+      "Inner label associated with the input."
+    ]
+  },
+  "FluidDatePicker": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as DatePicker, full width.",
+      "Keep start and end visibly paired."
+    ],
+    "specs": {
+      "variants": "Fluid single and range",
+      "sizes": "64px height with inner labels",
+      "notes": "Calendar popover unchanged."
+    },
+    "a11y": [
+      "Same keyboard behavior as DatePicker.",
+      "Invalid dates flagged in text."
+    ]
+  },
+  "FluidDatePickerInput": {
+    "guidelines": [
+      "Use as the input part of a fluid date picker.",
+      "Never alone; pair with FluidDatePicker.",
+      "Placeholder shows the format."
+    ],
+    "specs": {
+      "variants": "Start, end, single inputs",
+      "sizes": "Matches fluid field height",
+      "notes": "Subcomponent; follows parent rules."
+    },
+    "a11y": [
+      "Label inside the field, associated programmatically.",
+      "Errors described in text."
+    ]
+  },
+  "FluidDropdown": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as Dropdown, full width.",
+      "Dividers replace floating labels."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers",
+      "sizes": "64px height; error, warn, disabled states",
+      "notes": "Labels sit inside the field."
+    },
+    "a11y": [
+      "Same keyboard behavior as Dropdown.",
+      "Inner label associated with the control."
+    ]
+  },
+  "FluidForm": {
+    "guidelines": [
+      "Use when every field fills the container width.",
+      "One field per row; dividers separate, not boxes.",
+      "Same validation rules as standard forms."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers between fields",
+      "sizes": "64px field height; full container",
+      "notes": "Inner labels inside each field."
+    },
+    "a11y": [
+      "Same labeling rules as standard forms.",
+      "Errors announced and linked."
+    ]
+  },
+  "FluidMultiSelect": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as MultiSelect, full width.",
+      "Chips show what is selected."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers",
+      "sizes": "64px height; error, warn, disabled states",
+      "notes": "Menu opens below the field."
+    },
+    "a11y": [
+      "Same keyboard behavior as MultiSelect.",
+      "Selections announced with counts."
+    ]
+  },
+  "FluidNumberInput": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as NumberInput, full width.",
+      "Steppers stay visible for quick taps."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers, with steppers",
+      "sizes": "64px height; error, warn states",
+      "notes": "Labels sit inside the field."
+    },
+    "a11y": [
+      "Same keyboard behavior as NumberInput.",
+      "Range errors flagged in text."
+    ]
+  },
+  "FluidSearch": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as Search, full width.",
+      "Clear button keeps one-tap reset."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers",
+      "sizes": "64px height",
+      "notes": "Labels sit inside the field."
+    },
+    "a11y": [
+      "Search role with labelled input.",
+      "Clear button labelled."
+    ]
+  },
+  "FluidSelect": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as Select, full width.",
+      "Chevron signals the native menu."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers",
+      "sizes": "64px height; error, warn states",
+      "notes": "Grouped items supported."
+    },
+    "a11y": [
+      "Native select semantics preserved.",
+      "Inner label associated programmatically."
+    ]
+  },
+  "FluidTextArea": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as TextArea, full width.",
+      "Rows fit the expected answer length."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers, with counter",
+      "sizes": "64px minimum height; grows with rows",
+      "notes": "Labels sit inside the field."
+    },
+    "a11y": [
+      "Same keyboard behavior as TextArea.",
+      "Counters announced politely."
+    ]
+  },
+  "FluidTextInput": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as TextInput, full width.",
+      "One field per row."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers, password, with counter",
+      "sizes": "64px height; error, warn, disabled states",
+      "notes": "Labels sit inside the field."
+    },
+    "a11y": [
+      "Label associated; errors via aria-describedby.",
+      "Password toggle is a labelled button."
+    ]
+  },
+  "FluidTimePicker": {
+    "guidelines": [
+      "Use inside fluid forms where fields fill the container.",
+      "Same rules as TimePicker, full width.",
+      "Format hint stays visible."
+    ],
+    "specs": {
+      "variants": "Fluid with dividers, with seconds and select",
+      "sizes": "64px height",
+      "notes": "AM/PM select supported."
+    },
+    "a11y": [
+      "Same keyboard behavior as TimePicker.",
+      "Format announced with the field."
+    ]
+  },
+  "FluidTimePickerSelect": {
+    "guidelines": [
+      "Use as the select part of a fluid time picker.",
+      "Never alone; pair with FluidTimePicker.",
+      "Options are the real choices: AM, PM, zones."
+    ],
+    "specs": {
+      "variants": "Attached to fluid time input",
+      "sizes": "Matches fluid field height",
+      "notes": "Subcomponent; follows parent rules."
+    },
+    "a11y": [
+      "Labelled as part of the time field.",
+      "Native select semantics."
+    ]
+  },
+  "FullPageError": {
+    "guidelines": [
+      "Use when the whole page cannot load or work.",
+      "Say what happened, what to do, give one action.",
+      "Keep brand calm; the user is already frustrated."
+    ],
+    "specs": {
+      "variants": "Default with action button, with icon",
+      "sizes": "Centered in viewport; max width constrains",
+      "notes": "One clear recovery action."
+    },
+    "a11y": [
+      "Heading names the error first.",
+      "Action is a real button, keyboard reachable."
+    ]
+  },
+  "Grid": {
+    "guidelines": [
+      "Use the legacy grid only inside old layouts.",
+      "New work uses FlexGrid with Row and Column.",
+      "Gutters consistent: condensed, narrow, default."
+    ],
+    "specs": {
+      "variants": "Full width, condensed, narrow",
+      "sizes": "16 columns at large; 4 at small",
+      "notes": "Legacy API; prefer FlexGrid."
+    },
+    "a11y": [
+      "Layout only; no semantics of its own.",
+      "Content order matches visual order."
+    ]
+  },
+  "Guidebanner": {
+    "guidelines": [
+      "Use to announce a new section or product area.",
+      "One message, one action, then it is gone.",
+      "Never stack guidebanners."
+    ],
+    "specs": {
+      "variants": "Default with image, with action",
+      "sizes": "Full container width; padded content",
+      "notes": "Experimental lineup banner component."
+    },
+    "a11y": [
+      "Heading level correct for the page.",
+      "Action is a real labelled button."
+    ]
+  },
+  "Heading": {
+    "guidelines": [
+      "Use one h1 per view; sections get h2 and down.",
+      "Headings describe, they do not decorate.",
+      "Never skip levels for looks."
+    ],
+    "specs": {
+      "variants": "Section, with subheading slots",
+      "sizes": "Follows type scale",
+      "notes": "Experimental heading helper."
+    },
+    "a11y": [
+      "Outline order matches visual order.",
+      "Exactly one top-level heading per view."
+    ]
+  },
+  "HideAtBreakpoint": {
+    "guidelines": [
+      "Use to remove decorations where space is tight.",
+      "Never hide actions or status people need.",
+      "If it matters, show it differently instead."
+    ],
+    "specs": {
+      "variants": "Hide below or above breakpoints sm to xlg",
+      "sizes": "No visual output when hidden",
+      "notes": "Utility; renders children or nothing."
+    },
+    "a11y": [
+      "Hidden content removed from reading order.",
+      "Critical content never hidden from anyone."
+    ]
+  },
+  "Icon": {
+    "guidelines": [
+      "Use the icon component to render pinned icons.",
+      "One meaning per icon; never redraw what exists.",
+      "Size 16 in text, 20 or 24 in buttons."
+    ],
+    "specs": {
+      "variants": "Any pinned icon by name",
+      "sizes": "16, 20, 24, 32 glyph sizes",
+      "notes": "Renders currentColor; pairs with text."
+    },
+    "a11y": [
+      "Decorative icons hidden; meaningful ones labelled.",
+      "No icon-only button without a name."
+    ]
+  },
+  "IconButton": {
+    "guidelines": [
+      "Use for toolbar actions and repeated table rows.",
+      "Label every button; tooltips confirm on hover.",
+      "Ghost or tertiary kinds for quiet surfaces."
+    ],
+    "specs": {
+      "variants": "Ghost, tertiary, danger, icon-only",
+      "sizes": "sm, md (default), lg",
+      "notes": "Wraps an icon with accessible naming."
+    },
+    "a11y": [
+      "aria-label is required, never empty.",
+      "Keyboard focus ring visible."
+    ]
+  },
+  "IconIndicator": {
+    "guidelines": [
+      "Use to mark state on an icon: new, beta, status.",
+      "One indicator per icon; more is noise.",
+      "Meaning in text nearby, not color alone."
+    ],
+    "specs": {
+      "variants": "Dot, count, beta tag styles",
+      "sizes": "Anchored to icon bounding box",
+      "notes": "Experimental indicator component."
+    },
+    "a11y": [
+      "State exposed in text.",
+      "Indicator decorative to assistive tech when labelled nearby."
+    ]
+  },
+  "Icons": {
+    "guidelines": [
+      "Use the icons entry to browse the pinned icon set.",
+      "Search by name; categories narrow the field.",
+      "What you see renders from the pinned package."
+    ],
+    "specs": {
+      "variants": "Searchable grid, size preview",
+      "sizes": "16 to 32 pixel previews",
+      "notes": "This gallery entry shows the icon library."
+    },
+    "a11y": [
+      "Grid navigable by keyboard.",
+      "Each icon has a text name."
+    ]
+  },
+  "IdPrefix": {
+    "guidelines": [
+      "Use to namespace generated IDs in embedded widgets.",
+      "Prevents ID collisions when Carbon mounts twice.",
+      "Rarely needed in normal product code."
+    ],
+    "specs": {
+      "variants": "Provider with prefix string",
+      "sizes": "No visual output",
+      "notes": "Utility; scopes useId output."
+    },
+    "a11y": [
+      "No DOM footprint of its own.",
+      "Children keep their own semantics."
+    ]
+  },
+  "InterstitialScreen": {
+    "guidelines": [
+      "Use for full-screen moments: loading, empty orgs, first run.",
+      "One message, one action, brand calm.",
+      "Exit always obvious."
+    ],
+    "specs": {
+      "variants": "With progress, with action, with illustration",
+      "sizes": "Full viewport; content centered",
+      "notes": "Experimental takeover component."
+    },
+    "a11y": [
+      "Heading names the state first.",
+      "Action keyboard reachable."
+    ]
+  },
+  "Layer": {
+    "guidelines": [
+      "Use layers to nest surfaces: page, card, modal.",
+      "Tokens shift per layer automatically.",
+      "Do not nest deeper than three layers."
+    ],
+    "specs": {
+      "variants": "Level one, two, three",
+      "sizes": "No visual output alone",
+      "notes": "Utility; rethemes its subtree tokens."
+    },
+    "a11y": [
+      "No semantics of its own.",
+      "Contrast checked per layer background."
+    ]
+  },
+  "Layout": {
+    "guidelines": [
+      "Use layout containers for gutters and alignment.",
+      "One layout per view section; avoid nesting.",
+      "Consistent spacing beats custom offsets."
+    ],
+    "specs": {
+      "variants": "Default, condensed spacing",
+      "sizes": "Follows container queries",
+      "notes": "Utility for responsive structure."
+    },
+    "a11y": [
+      "Layout only; no semantics.",
+      "Reading order matches visual order."
+    ]
+  },
+  "LayoutDirection": {
+    "guidelines": [
+      "Use to set reading direction for a subtree.",
+      "Match the document language direction.",
+      "Rarely set by hand; locale drives it."
+    ],
+    "specs": {
+      "variants": "Left to right, right to left",
+      "sizes": "No visual output",
+      "notes": "Utility for RTL locales."
+    },
+    "a11y": [
+      "Direction exposed to assistive tech correctly.",
+      "No mirrored semantics lost."
+    ]
+  },
+  "MultiSelect": {
+    "guidelines": [
+      "Use when people pick several from a long list.",
+      "Chips show what is picked; counts confirm.",
+      "Filter while typing for lists over ten."
+    ],
+    "specs": {
+      "variants": "Default, inline menu, fluid",
+      "sizes": "sm, md (default), lg heights",
+      "notes": "Selected items render as chips in the field."
+    },
+    "a11y": [
+      "Listbox with multiselect semantics.",
+      "Removals announced with counts."
+    ]
+  },
+  "OptionsTile": {
+    "guidelines": [
+      "Use to present a few rich choices in a row.",
+      "Each tile says what you get, not just a name.",
+      "Selectable state unmistakable."
+    ],
+    "specs": {
+      "variants": "Selectable options tiles",
+      "sizes": "Grid-driven widths",
+      "notes": "Experimental options component."
+    },
+    "a11y": [
+      "Radiogroup semantics for selection.",
+      "Arrows move between options."
+    ]
+  },
+  "OverflowHandler": {
+    "guidelines": [
+      "Use to collapse excess toolbar items into a menu.",
+      "Measure first; hide last resort, not first.",
+      "Menu keeps every hidden action reachable."
+    ],
+    "specs": {
+      "variants": "With ResizeObserver driven overflow",
+      "sizes": "Container width driven",
+      "notes": "Utility; composes with overflow menus."
+    },
+    "a11y": [
+      "Overflow trigger is a labelled button.",
+      "Hidden items remain keyboard reachable in the menu."
+    ]
+  },
+  "OverflowMenu": {
+    "guidelines": [
+      "Use for row-level or toolbar excess actions.",
+      "Keep to five or fewer items where possible.",
+      "Destructive last and clearly marked."
+    ],
+    "specs": {
+      "variants": "Default with items; danger item option",
+      "sizes": "sm, md (default), lg menu items",
+      "notes": "Three-dot trigger by convention."
+    },
+    "a11y": [
+      "Trigger exposes expanded state.",
+      "Menu keyboard navigable; Escape returns focus."
+    ]
+  },
+  "OverflowMenuItem": {
+    "guidelines": [
+      "Use as a single action inside an overflow menu.",
+      "Labels name the action and its object.",
+      "Danger items say Delete or Remove plainly."
+    ],
+    "specs": {
+      "variants": "Default, danger, disabled",
+      "sizes": "Matches menu item height",
+      "notes": "Subcomponent; follows menu rules."
+    },
+    "a11y": [
+      "Menuitem semantics in order.",
+      "Disabled items skipped in navigation."
+    ]
+  },
+  "OverflowMenuV2": {
+    "guidelines": [
+      "Use the new overflow menu for icon-triggered menus.",
+      "Same rules as OverflowMenu, modern internals.",
+      "Prefer where flag enables it."
+    ],
+    "specs": {
+      "variants": "Icon trigger with menu items",
+      "sizes": "Matches current icon sizes",
+      "notes": "Next-version overflow component."
+    },
+    "a11y": [
+      "Same keyboard contract as OverflowMenu.",
+      "Trigger exposes expanded state."
+    ]
+  },
+  "PageHeader": {
+    "guidelines": [
+      "Use to open a page: title, context, primary action.",
+      "One title, one primary action, supporting tags below.",
+      "Keep it consistent across every page in the product."
+    ],
+    "specs": {
+      "variants": "With breadcrumb, tags, tabs, actions",
+      "sizes": "Full container width; collapses on scroll",
+      "notes": "Experimental lineup page header."
+    },
+    "a11y": [
+      "Page title is the h1.",
+      "Actions are labelled buttons and links."
+    ]
+  },
+  "PageHeaderDeprecated": {
+    "guidelines": [
+      "Do not use in new work; it exists for old pages only.",
+      "Migrate to PageHeader when touching those pages.",
+      "Same content rules as the current header."
+    ],
+    "specs": {
+      "variants": "Legacy header layout",
+      "sizes": "Full container width",
+      "notes": "Deprecated; kept for migration."
+    },
+    "a11y": [
+      "Same landmark rules as PageHeader.",
+      "Migrate rather than extend."
+    ]
+  },
+  "Plex": {
+    "guidelines": [
+      "Use for the Carbon product typeface where bundled.",
+      "Body copy default; headings get the same family.",
+      "Never mix with system fallbacks mid-page."
+    ],
+    "specs": {
+      "variants": "Sans and serif cuts; weights 300 to 600",
+      "sizes": "Follows the type scale",
+      "notes": "Font package used by Carbon themes."
+    },
+    "a11y": [
+      "Text remains selectable real text.",
+      "Weights keep contrast at small sizes."
+    ]
+  },
+  "Portal": {
+    "guidelines": [
+      "Use to render overlays at the document root.",
+      "Keeps menus and modals above stacking traps.",
+      "Invisible to authors; picked by components."
+    ],
+    "specs": {
+      "variants": "Target node configurable",
+      "sizes": "No visual output",
+      "notes": "Utility for overlay rendering."
+    },
+    "a11y": [
+      "Focus and announcements still managed by the component.",
+      "DOM order preserved for reading."
+    ]
+  },
+  "RadioTile": {
+    "guidelines": [
+      "Use when a choice deserves a rich tile, not a bare radio.",
+      "Each tile says what you get at a glance.",
+      "Selectable state unmistakable."
+    ],
+    "specs": {
+      "variants": "Selectable and expandable radio tiles",
+      "sizes": "Grid-driven widths",
+      "notes": "Renders a radio input inside a tile."
+    },
+    "a11y": [
+      "Radiogroup semantics with names.",
+      "Keyboard moves and selects."
+    ]
+  },
+  "Resizer": {
+    "guidelines": [
+      "Use to let people resize panels and columns.",
+      "Show the handle on hover; affordance matters.",
+      "Respect min and max so layouts never break."
+    ],
+    "specs": {
+      "variants": "Horizontal and vertical handles",
+      "sizes": "Handle follows container edge",
+      "notes": "Experimental resize utility component."
+    },
+    "a11y": [
+      "Handle keyboard adjustable with arrow keys.",
+      "Size changes announced where meaningful."
+    ]
+  },
+  "ScrollGradient": {
+    "guidelines": [
+      "Use to hint that a region scrolls.",
+      "Gradient appears only while more exists.",
+      "Never a substitute for real scrollbars."
+    ],
+    "specs": {
+      "variants": "Top, bottom, directional fades",
+      "sizes": "Follows scroll container",
+      "notes": "Experimental scroll affordance."
+    },
+    "a11y": [
+      "Content itself remains fully reachable.",
+      "No information carried by the gradient alone."
+    ]
+  },
+  "ShapeIndicator": {
+    "guidelines": [
+      "Use to give data points a second channel besides color.",
+      "Pair shapes with labels in legends.",
+      "Keep the shape set small and consistent."
+    ],
+    "specs": {
+      "variants": "Circle, square, diamond, triangle markers",
+      "sizes": "Fixed marker sizes",
+      "notes": "Experimental data viz helper."
+    },
+    "a11y": [
+      "Shape plus label, never shape alone.",
+      "Legend explains every shape used."
+    ]
+  },
+  "SidePanel": {
+    "guidelines": [
+      "Use the side panel for forms and detail that stay in context.",
+      "Size fits the content; wider for forms.",
+      "Close returns to exactly where you were."
+    ],
+    "specs": {
+      "variants": "Slide-over right panel, sizes xs to 2xl",
+      "sizes": "320px up to 50 percent width",
+      "notes": "Experimental lineup side panel."
+    },
+    "a11y": [
+      "Labelled dialog; Escape closes.",
+      "Focus trapped while open."
+    ]
+  },
+  "SkeletonIcon": {
+    "guidelines": [
+      "Use where an icon will appear once loaded.",
+      "Keep the final icon size from the start.",
+      "Swap fast; never linger."
+    ],
+    "specs": {
+      "variants": "Square or circle shimmer blocks",
+      "sizes": "16, 20, 24, 32 matching icons",
+      "notes": "Placeholder for icon slots."
+    },
+    "a11y": [
+      "Hidden from assistive tech.",
+      "Replaced by labelled content."
+    ]
+  },
+  "SkeletonPlaceholder": {
+    "guidelines": [
+      "Use for blocks of unknown content shape.",
+      "Keep page layout stable while loading.",
+      "Replace, do not stack, with real content."
+    ],
+    "specs": {
+      "variants": "Block placeholder, full width option",
+      "sizes": "Configurable height and width",
+      "notes": "Generic shimmer block."
+    },
+    "a11y": [
+      "Hidden from assistive tech.",
+      "Container marked busy while loading."
+    ]
+  },
+  "SkeletonText": {
+    "guidelines": [
+      "Use where lines of text will appear.",
+      "Match line count and width roughly.",
+      "Headings get the heading width variant."
+    ],
+    "specs": {
+      "variants": "Single and multi-line, heading option",
+      "sizes": "Body line height; width percentage",
+      "notes": "Placeholder for text blocks."
+    },
+    "a11y": [
+      "Hidden from assistive tech.",
+      "Real text announced on arrival."
+    ]
+  },
+  "Stack": {
+    "guidelines": [
+      "Use to stack children with consistent gaps.",
+      "One gap scale for the whole stack.",
+      "Orientation vertical or horizontal."
+    ],
+    "specs": {
+      "variants": "Vertical, horizontal, with dividers",
+      "sizes": "Gap follows spacing scale",
+      "notes": "Layout utility with gap tokens."
+    },
+    "a11y": [
+      "Layout only; no semantics.",
+      "Order matches visual order."
+    ]
+  },
+  "Switch": {
+    "guidelines": [
+      "Use as a single choice inside ContentSwitcher.",
+      "Labels one or two words, never sentences.",
+      "Never use a Switch outside its switcher."
+    ],
+    "specs": {
+      "variants": "Text, with icon",
+      "sizes": "Matches switcher height",
+      "notes": "Subcomponent; follows switcher rules."
+    },
+    "a11y": [
+      "Exposes selected state in the group.",
+      "Arrow keys move between switches."
+    ]
+  },
+  "Tearsheet": {
+    "guidelines": [
+      "Use for multi-step transactional work in a slide-over.",
+      "Steps announced and skippable where safe.",
+      "Close only through explicit actions, never accidents."
+    ],
+    "specs": {
+      "variants": "Narrow, wide; single and multi-step",
+      "sizes": "40 or 50 percent width panels",
+      "notes": "Experimental lineup tearsheet."
+    },
+    "a11y": [
+      "Labelled dialog; focus trapped.",
+      "Steps announced with current position."
+    ]
+  },
+  "Text": {
+    "guidelines": [
+      "Use for plain text spans where no component fits.",
+      "Inherit surrounding size and color.",
+      "Headings and body stay semantic elements."
+    ],
+    "specs": {
+      "variants": "Inline text span",
+      "sizes": "Inherits context",
+      "notes": "Simple text wrapper."
+    },
+    "a11y": [
+      "No semantics changed.",
+      "Truncation needs title or tooltip for full text."
+    ]
+  },
+  "Theme": {
+    "guidelines": [
+      "Use to theme a subtree: white, light, dark zones.",
+      "Match theme to surface purpose, not mood.",
+      "One theme per surface; avoid flicker on load."
+    ],
+    "specs": {
+      "variants": "White, g10, g90, g100, all current themes",
+      "sizes": "No visual output alone",
+      "notes": "Utility; rethemes its subtree."
+    },
+    "a11y": [
+      "Contrast checked per theme surface.",
+      "No semantics of its own."
+    ]
+  },
+  "TimePicker": {
+    "guidelines": [
+      "Use when time matters: schedules, logs, alarms.",
+      "Accept typed input; validate the format.",
+      "AM/PM explicit, never assumed."
+    ],
+    "specs": {
+      "variants": "Default, with seconds, with select; fluid",
+      "sizes": "sm, md (default), lg heights",
+      "notes": "Light variant for gray backgrounds."
+    },
+    "a11y": [
+      "Labelled field; format announced.",
+      "Invalid times flagged in text."
+    ]
+  },
+  "TimePickerSelect": {
+    "guidelines": [
+      "Use as the AM/PM or zone select beside TimePicker.",
+      "Never alone; pair with the time field.",
+      "Options are the real choices."
+    ],
+    "specs": {
+      "variants": "Attached to time input",
+      "sizes": "Matches input height",
+      "notes": "Subcomponent; follows parent rules."
+    },
+    "a11y": [
+      "Labelled as part of the time field.",
+      "Native select semantics."
+    ]
+  },
+  "TruncatedText": {
+    "guidelines": [
+      "Use when long text must fit one line.",
+      "Always reveal the full text on demand.",
+      "Never truncate the only copy of a value."
+    ],
+    "specs": {
+      "variants": "Single line ellipsis with tooltip",
+      "sizes": "Follows container width",
+      "notes": "Experimental truncation helper."
+    },
+    "a11y": [
+      "Full text available via title or tooltip.",
+      "Keyboard users can reach the full text."
+    ]
+  },
+  "UserAvatar": {
+    "guidelines": [
+      "Use for the signed-in person or assignees.",
+      "Initials when no photo; photo when available.",
+      "Pair with a name nearby on first sight."
+    ],
+    "specs": {
+      "variants": "With image or initials fallback",
+      "sizes": "xs through xl",
+      "notes": "Experimental avatar component."
+    },
+    "a11y": [
+      "Decorative when the name is adjacent.",
+      "Otherwise labelled with the person."
+    ]
   }
 }

@@ -371,8 +371,10 @@ function snippet(name, curated) {
   return `import { ${name} } from '@carbon/react';\n<${name}${attrs}>${inner}</${name}>`;
 }
 
-function docSlug(entry) {
-  return entry && entry.doc ? `#foundations` : null;
+function guideFor(name, entry) {
+  if (entry && entry.doc && guidelines[entry.doc]) return guidelines[entry.doc];
+  if (guidelines[name]) return guidelines[name];
+  return null;
 }
 
 export function componentCards() {
@@ -463,7 +465,7 @@ export default function Explorer() {
           <p>{current.note}</p>
         )}
         {(() => {
-          const g = guidelines[byName[current.name] && byName[current.name].doc];
+          const g = guideFor(current.name, byName[current.name]);
           return (
             <Carbon.Tabs>
               <Carbon.TabList>
@@ -481,7 +483,7 @@ export default function Explorer() {
                       ))}
                     </ul>
                   ) : (
-                    <p>Usage follows the live demo and code below. See upstream docs.</p>
+                    <p>Guidance for this entry is being written.</p>
                   )}
                 </Carbon.TabPanel>
                 <Carbon.TabPanel>
@@ -498,7 +500,7 @@ export default function Explorer() {
                       </p>
                     </div>
                   ) : (
-                    <p>Specifications follow the pinned package props. See code.</p>
+                    <p>Specifications for this entry are being written.</p>
                   )}
                 </Carbon.TabPanel>
                 <Carbon.TabPanel>
@@ -514,18 +516,13 @@ export default function Explorer() {
                       ))}
                     </ul>
                   ) : (
-                    <p>Follows upstream keyboard and ARIA behavior. See upstream docs.</p>
+                    <p>Accessibility notes for this entry are being written.</p>
                   )}
                 </Carbon.TabPanel>
               </Carbon.TabPanels>
             </Carbon.Tabs>
           );
         })()}
-        {byName[current.name] && byName[current.name].doc ? (
-          <p>
-            <Link href={docSlug(byName[current.name])}>Foundations</Link>
-          </p>
-        ) : null}
       </section>
     </div>
   );

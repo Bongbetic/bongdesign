@@ -10,7 +10,9 @@
     "check:coverage": "node ../scripts/render-check.cjs"
   },
   "dependencies": {
+    "@carbon/icons": "^11.91.0",
     "@carbon/icons-react": "11.91.0",
+    "@carbon/pictograms": "^12.87.0",
     "@carbon/pictograms-react": "^11.113.0",
     "@carbon/react": "1.119.0",
     "@carbon/styles": "1.118.0",
