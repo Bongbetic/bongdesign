@@ -1,0 +1,24 @@
+name: Promote
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: boolean
+        description:
+          'Run as dry run (will not actually update dist tags)'
+        default: false
+
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./actions/promote
+        with:
+          NPM_TOKEN: ${{ secrets.CARBON_BOT_NPM_TOKEN }}
+          DRY_RUN: ${{ github.event.inputs.dry_run == 'true' }}

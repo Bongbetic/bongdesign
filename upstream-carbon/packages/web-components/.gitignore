@@ -1,0 +1,9 @@
+# Build folders
+scss/
+examples/**/.yarn
+examples/**/yarn.lock
+custom-elements.json
+
+# Storybook
+storybook-static
+storybook-static-v12

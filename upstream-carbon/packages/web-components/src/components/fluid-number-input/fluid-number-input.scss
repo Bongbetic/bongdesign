@@ -1,0 +1,60 @@
+/**
+ * Copyright IBM Corp. 2025, 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+$css--plex: true !default;
+@use '@carbon/styles/scss/config' as *;
+@use '@carbon/styles/scss/feature-flags' as flags;
+@use '@carbon/styles/scss/components/fluid-number-input/index';
+@use '@carbon/styles/scss/components/fluid-text-input' as *;
+@use '@carbon/styles/scss/utilities/layout' as *;
+@use '@carbon/styles/scss/spacing' as *;
+@use '@carbon/styles/scss/theme' as *;
+@use '@carbon/styles/scss/type' as *;
+@use '@carbon/styles/scss/utilities/skeleton' as *;
+@use '@carbon/styles/scss/utilities/ai-gradient' as *;
+@use '@carbon/styles/scss/components/number-input/index' as *;
+
+:host(#{$prefix}-fluid-number-input) {
+  @include emit-layout-tokens();
+
+  flex: 1 1 auto;
+}
+
+:host(#{$prefix}-fluid-number-input-skeleton) {
+  @extend .#{$prefix}--text-input--fluid__skeleton;
+
+  display: block;
+}
+
+:host(#{$prefix}-fluid-number-input[ai-label])
+  .#{$prefix}--number-input--fluid {
+  @include ai-gradient;
+
+  @if flags.enabled('enable-v12-release') {
+    background:
+      linear-gradient(
+          0deg,
+          $ai-aura-start-sm 0%,
+          15%,
+          $ai-aura-end 50%,
+          transparent 100%
+        )
+        padding-box,
+      linear-gradient($field, $field) padding-box,
+      linear-gradient(
+          to bottom,
+          $ai-border-start calc(100% - 4px),
+          $ai-border-strong 100%
+        )
+        border-box;
+    border-block-end-color: transparent;
+  }
+}
+
+:host(#{$prefix}-fluid-number-input[ai-label]) input {
+  background: transparent;
+}

@@ -61,7 +61,7 @@ export default function App() {
       <Header aria-label="BongDesign">
         <HeaderName href="#branding" prefix="">
           <img
-            src="https://bongbetic.com/branding/bongbetic-wordmark@2x.png"
+            src="/branding/bongbetic-wordmark@2x.png"
             alt="Bongbetic"
             width="125"
             height="28"
@@ -79,7 +79,7 @@ export default function App() {
       <header className="bong-header">
         <a href="https://bongbetic.com">
           <img
-            src="https://bongbetic.com/branding/bongbetic-wordmark@2x.png"
+            src="/branding/bongbetic-wordmark@2x.png"
             alt="Bongbetic"
             width="188"
             height="42"
@@ -262,7 +262,7 @@ export default function App() {
         <h3>Wordmark</h3>
         <p>Dark text, red o and e. For white and pale backgrounds.</p>
         <img
-          src="https://bongbetic.com/branding/bongbetic-wordmark@2x.png"
+          src="/branding/bongbetic-wordmark@2x.png"
           alt="Bongbetic wordmark for light backgrounds"
           width="314"
           height="70"
@@ -270,7 +270,7 @@ export default function App() {
         <p>White text, red o and e. For black and dark backgrounds.</p>
         <div style={{ background: '#000', padding: '1rem', display: 'inline-block' }}>
           <img
-            src="https://bongbetic.com/branding/bongbetic-wordmark-dark@2x.png"
+            src="/branding/bongbetic-wordmark-dark@2x.png"
             alt="Bongbetic wordmark for dark backgrounds"
             width="314"
             height="70"
@@ -279,7 +279,7 @@ export default function App() {
         <h3>Glyph</h3>
         <p>The B on its own, for places too small to spell the whole name.</p>
         <img
-          src="https://bongbetic.com/branding/bongbetic-glyph.svg"
+          src="/branding/bongbetic-glyph.svg"
           alt="Bongbetic glyph"
           width="96"
           height="96"
@@ -288,7 +288,7 @@ export default function App() {
         <div className="bong-demo-row">
           <figure style={{ margin: 0 }}>
             <img
-              src="https://bongbetic.com/branding/bongbetic-icon-light-192.png"
+              src="/branding/bongbetic-icon-light-192.png"
               alt="Bongbetic icon for light backgrounds"
               width="96"
               height="96"
@@ -298,7 +298,7 @@ export default function App() {
           <figure style={{ margin: 0 }}>
             <span style={{ background: '#000', padding: '0.5rem', display: 'inline-block' }}>
               <img
-                src="https://bongbetic.com/branding/bongbetic-icon-dark-192.png"
+                src="/branding/bongbetic-icon-dark-192.png"
                 alt="Bongbetic icon for dark backgrounds"
                 width="96"
                 height="96"
@@ -321,11 +321,11 @@ export default function App() {
         </p>
         <h3>Downloads</h3>
         <ul>
-          <li><Link href="https://bongbetic.com/branding/bongbetic-wordmark@2x.png">Wordmark, light backgrounds (PNG)</Link></li>
-          <li><Link href="https://bongbetic.com/branding/bongbetic-wordmark-dark@2x.png">Wordmark, dark backgrounds (PNG)</Link></li>
-          <li><Link href="https://bongbetic.com/branding/bongbetic-glyph.svg">Glyph (SVG)</Link></li>
-          <li><Link href="https://bongbetic.com/branding/bongbetic-icon-light-512.png">Icon, light (512 PNG)</Link></li>
-          <li><Link href="https://bongbetic.com/branding/bongbetic-icon-dark-512.png">Icon, dark (512 PNG)</Link></li>
+          <li><Link href="/branding/bongbetic-wordmark@2x.png">Wordmark, light backgrounds (PNG)</Link></li>
+          <li><Link href="/branding/bongbetic-wordmark-dark@2x.png">Wordmark, dark backgrounds (PNG)</Link></li>
+          <li><Link href="/branding/bongbetic-glyph.svg">Glyph (SVG)</Link></li>
+          <li><Link href="/branding/bongbetic-icon-light-512.png">Icon, light (512 PNG)</Link></li>
+          <li><Link href="/branding/bongbetic-icon-dark-512.png">Icon, dark (512 PNG)</Link></li>
         </ul>
       </div>
 

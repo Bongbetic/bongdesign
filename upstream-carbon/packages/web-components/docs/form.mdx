@@ -1,0 +1,67 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction/Form participation" />
+
+# Having components participate in a form
+
+## Native form association (preview)
+
+Preview form components associate with their `<form>` natively through
+[`ElementInternals`](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals).
+They need no listener and no manual collection — the browser serializes them the
+way it serializes an `<input>`.
+
+Import the `next` barrel and use the preview tag:
+
+```diff
+- import '@carbon/web-components/es/components/text-input/index.js';
++ import '@carbon/web-components/es/components/text-input/next/index.js';
+```
+
+```diff
+- <cds-text-input name="email"></cds-text-input>
++ <cds-preview-text-input name="email"></cds-preview-text-input>
+```
+
+Everything else is unchanged. Beyond submitting a value, this also makes
+`<label for>` associate with the control, puts it in `form.elements`, restores
+it on `form.reset()`, excludes it from a disabled `<fieldset>`, and lets
+`required` block submission.
+
+See **Preview → Form participation** for runnable examples of each, and the
+[v3 migration guide](../../../docs/guides/cwc-v3-migration.md#form-participation-moves-to-elementinternals)
+for the full picture.
+
+## The `formdata` event (deprecated)
+
+The mechanism below is how the v2 components participate in a form today. It is
+deprecated in v2 and removed in v3.
+
+Browsers fire the
+[`formdata` event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/formdata_event)
+when the user submits a `<form>`. The v2 form components listen for it and
+append their values.
+
+An application can also fire the event itself, to collect values without letting
+the form submit:
+
+```javascript
+const form = document.querySelector('form');
+const button = form.querySelector('button');
+button.addEventListener('click', () => {
+  const formData = new FormData(form);
+  const event = new CustomEvent('formdata', {
+    bubbles: true,
+    cancelable: false,
+    composed: false,
+  });
+  event.formData = formData;
+  form.dispatchEvent(event);
+  // `formData` is populated with the data in components such as
+  // `<cds-text-input>` or `<cds-dropdown>` in the `<form>`. You can pass it to
+  // `fetch()`/XHR instead of letting `<form>` submit.
+});
+```
+
+With a preview component this is unnecessary: `new FormData(form)` already
+contains the values, because the element is a real form control.

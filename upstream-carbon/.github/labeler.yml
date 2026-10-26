@@ -1,0 +1,325 @@
+# Purpose: Configure the github/issue-labeler action used by issue-triage.yml.
+# It adds repository labels when issue titles or bodies match these rules.
+# The workflow enables title matching, so every expression below is evaluated
+# against both the issue title and body.
+#
+# Keys within this file are the name of the label in the repository that we want
+# to add (eg: "package: styles", "browser: chrome") and the value is the regular
+# expression for when to apply the label. Should the regular expression not
+# match, the label will not be applied.
+#
+# This only adds labels. Labels are not removed if the regex doesn't match. This
+# is because we do not configure `sync-labels: 1` in the workflow file.
+#
+# When changes are made to this file, consider updating the `not-before` config
+# in the workflow file to match the day you open the PR of your changes. This
+# will ensure that only new issues moving forward are labelled with the contents
+# of this file.
+#
+# @see https://github.com/marketplace/actions/regex-issue-labeler
+
+# Values wrapped in /.../ are regular expressions. The optional trailing `i`
+# makes a rule case-insensitive. Prefer precise component identifiers here:
+# generic words such as "form" and "link" would create many false positives.
+
+# a11y labels, case insensitive
+'a11y: high contrast mode':
+  - '/(high contrast)/i'
+'a11y: JAWS':
+  - '/(jaws)/i'
+'a11y: NVDA':
+  - '/(nvda)/i'
+'a11y: TalkBack':
+  - '/(talkback)/i'
+'a11y: VoiceOver':
+  - '/(voiceover)/i'
+
+# Adopter labels
+# Add 'adopter: strategic-product' label if issue contains any of these
+# project names. Case insensitive.
+'adopter: strategic-product':
+  - '/(API Connect|Turbonomic|Instana|NS1|watsonx Orchestrate|watsonx Code
+    Assistant|Planning Analytics|SPSS
+    Statistics|watsonx\.data|watsonx\.ai|watsonx\.governance|Maximo Application
+    Suite|Environmental Intelligence Suite|Envizi ESG Suite|QRadar Log
+    Insights|QRadar XDR/EDR \(ReaQta\)|Randori ASM|QRadar
+    SIEM|MaaS360|Flash|Defender|Fusion|APP Connect|Apptio Cloudability|Apptio
+    Targetprocess|AIOps Insights|Hybrid Cloud Mesh|Aspera|Blueworks
+    Live|OpenPages|Databand\.ai|Cognos Analytics|Sterling B2B Integration
+    SaaS|Sterling Order & Inventory Management|Supply Chain Intelligence
+    Suite|TRIRIGA Application Suite|QRadar SOAR|Guardium Insights|Verify on
+    Cloud|DataPower)/i'
+
+# Browser labels, case insensitive
+'browser: chrome':
+  - '/(chrome)/i'
+'browser: firefox':
+  - '/(firefox)/i'
+'browser: safari':
+  - '/(safari)/i'
+
+# Component labels. Match canonical React component names and the custom element
+# tag spelling used by @carbon/web-components. Keeping these patterns specific
+# avoids treating ordinary words such as "form" or "link" as component names.
+'component: accordion':
+  - '/\bAccordion(Item|Skeleton)?\b/'
+  - '/\bcds-accordion(?!-)/i'
+'component: ai-label':
+  - '/\bAILabel\b/'
+  - '/\bcds-ai-label(?!-)/i'
+'component: ai-skeleton':
+  - '/\bAISkeleton\b/'
+  - '/\bcds-ai-skeleton-(icon|placeholder|text)(?!-)/i'
+'component: breadcrumb':
+  - '/\bBreadcrumb(Item|Skeleton)?\b/'
+  - '/\bcds-breadcrumb(?!-)/i'
+'component: button':
+  - '/\b(Button|ButtonSet|DangerButton|PrimaryButton|SecondaryButton)\b/'
+  - '/\bcds-button(?!-)/i'
+'component: checkbox':
+  - '/\bCheckbox(Skeleton)?\b/'
+  - '/\bcds-checkbox(?!-)/i'
+'component: code-snippet':
+  - '/\bCodeSnippet(Skeleton)?\b/'
+  - '/\bcds-code-snippet(?!-)/i'
+'component: combobox':
+  - '/\bComboBox\b/'
+  - '/\bcds-combo-box(?!-)/i'
+'component: combo-button':
+  - '/\b(ComboButton|combo button)\b/i'
+  - '/\bcds-combo-button(?!-)/i'
+'component: contained-list':
+  - '/\bContainedList(Item)?\b/'
+  - '/\bcds-contained-list(?!-)/i'
+'component: content-switcher':
+  - '/\bContentSwitcher\b/'
+  - '/\bcds-content-switcher(?!-)/i'
+'component: context-menu':
+  - '/\bContextMenu\b/'
+  - '/\bcds-context-menu(?!-)/i'
+'component: copy-button':
+  - '/\bCopyButton\b/'
+  - '/\bcds-copy-button(?!-)/i'
+'component: data-table':
+  - '/\bDataTable\b/'
+  - '/\bcds-table(?!-)/i'
+'component: date-picker':
+  - '/\bDatePicker(Input|Skeleton)?\b/'
+  - '/\bcds-date-picker(?!-)/i'
+'component: dialog':
+  - '/\bDialog\b/'
+  - '/\bcds-dialog(?!-)/i'
+'component: dropdown':
+  - '/\bDropdown(Skeleton)?\b/'
+  - '/\bcds-dropdown(?!-)/i'
+'component: file-uploader':
+  - '/\bFileUploader(Button|DropContainer|Item)?\b/'
+  - '/\bcds-file-uploader(?!-)/i'
+'component: filterable-multiselect':
+  - '/\bFilterableMultiSelect\b/'
+  - '/\bcds-filterable-multi-select(?!-)/i'
+'component: flex-grid':
+  - '/\bFlexGrid\b/'
+'component: fluid-input':
+  - '/\bFluid(ComboBox|DatePicker|Dropdown|MultiSelect|NumberInput|PasswordInput|Search|Select|TextArea|TextInput|TimePicker)\b/'
+  - '/\bcds-fluid-(combo-box|date-picker|dropdown|multi-select|number-input|password-input|search|select|text-input|textarea|time-picker)(?!-)/i'
+'component: form':
+  - '/\bForm(Group|Item|Label|Legend)?\b/'
+  - '/\bcds-form(?!-)/i'
+'component: grid':
+  - '/\b(Grid|Column)\b/'
+  - '/\bcds-grid(?!-)/i'
+'component: icon-button':
+  - '/\bIconButton\b/'
+  - '/\bcds-icon-button(?!-)/i'
+'component: link':
+  - '/\bLink\b/'
+  - '/\bcds-link(?!-)/i'
+'component: list':
+  - '/\bList(Item)?\b/'
+  - '/\bcds-(unordered-list|list-item)(?!-)/i'
+'component: loading':
+  - '/\b(InlineLoading|Loading)\b/'
+  - '/\bcds-(inline-)?loading(?!-)/i'
+'component: menu':
+  - '/\bMenu(Item|ItemDivider|ItemGroup|ItemRadioGroup|ItemSelectable)?\b/'
+  - '/\bcds-menu(?!-)/i'
+'component: menu-button':
+  - '/\bMenuButton\b/'
+  - '/\bcds-menu-button(?!-)/i'
+'component: modal':
+  - '/\b(ComposedModal|Modal|ModalWrapper)\b/'
+  - '/\bcds-modal(?!-)/i'
+'component: multiselect':
+  - '/\bMultiSelect\b/'
+  - '/\bcds-multi-select(?!-)/i'
+'component: notification':
+  - '/\b(ActionableNotification|InlineNotification|ToastNotification)\b/'
+  - '/\bcds-(inline|toast|actionable)-notification(?!-)/i'
+'component: number-input':
+  - '/\bNumberInput(Skeleton)?\b/'
+  - '/\bcds-number-input(?!-)/i'
+'component: ordered-list':
+  - '/\bOrderedList\b/'
+  - '/\bcds-ordered-list(?!-)/i'
+'component: overflow-menu':
+  - '/\bOverflowMenu(Item)?\b/'
+  - '/\bcds-overflow-menu(?!-)/i'
+'component: pageheader':
+  - '/\bPageHeader\b/'
+  - '/\bcds-page-header(?!-)/i'
+'component: pagination':
+  - '/\bPagination(Nav|Skeleton)?\b/'
+  - '/\bcds-pagination(?!-)/i'
+'component: password-input':
+  - '/\bPasswordInput\b/'
+  - '/\bcds-password-input(?!-)/i'
+'component: popover':
+  - '/\bPopover(Content)?\b/'
+  - '/\bcds-popover(?!-)/i'
+'component: progress-bar':
+  - '/\bProgressBar\b/'
+  - '/\bcds-progress-bar(?!-)/i'
+'component: progress-indicator':
+  - '/\bProgressIndicator\b/'
+  - '/\bcds-progress-indicator(?!-)/i'
+'component: radio-button':
+  - '/\bRadioButton(Group|Skeleton)?\b/'
+  - '/\bcds-radio-button(?!-)/i'
+'component: search':
+  - '/\bSearch(Skeleton)?\b/'
+  - '/\bcds-search(?!-)/i'
+'component: select':
+  - '/\bSelect(Item|ItemGroup|Skeleton)?\b/'
+  - '/\bcds-select(?!-)/i'
+'component: skeleton':
+  - '/\bSkeleton(Icon|Placeholder|Text)\b/'
+  - '/\bcds-skeleton-(icon|placeholder|text)(?!-)/i'
+'component: slider':
+  - '/\bSlider(Skeleton)?\b/'
+  - '/\bcds-slider(?!-)/i'
+'component: stack':
+  - '/\bStack\b/'
+  - '/\bcds-stack(?!-)/i'
+'component: structured-list':
+  - '/\bStructuredList(Body|Cell|Head|Input|Row|Wrapper)\b/'
+  - '/\bcds-structured-list(?!-)/i'
+'component: tabs':
+  - '/\b(Tab(List|Panel|Panels)?|Tabs)\b/'
+  - '/\bcds-tabs(?!-)/i'
+'component: tags':
+  - '/\bTag(Skeleton)?\b/'
+  - '/\bcds-tag(?!-)/i'
+'component: text-area':
+  - '/\bTextArea\b/'
+  - '/\bcds-textarea(?!-)/i'
+'component: text-input':
+  - '/\bTextInput(Skeleton)?\b/'
+  - '/\bcds-text-input(?!-)/i'
+'component: tile':
+  - '/\b(ClickableTile|ExpandableTile|RadioTile|SelectableTile|Tile)\b/'
+  - '/\bcds-(clickable|expandable|radio|selectable)-tile(?!-)/i'
+'component: time-picker':
+  - '/\bTimePicker(Select)?\b/'
+  - '/\bcds-time-picker(?!-)/i'
+'component: toggle':
+  - '/\bToggle(Skeleton|Small)?\b/'
+  - '/\bcds-toggle(?!-)/i'
+'component: toggle-tip':
+  - '/\bToggletip(Button|Content|Label)?\b/'
+  - '/\bcds-toggletip(?!-)/i'
+'component: tooltip':
+  - '/\bTooltip\b/'
+  - '/\bcds-tooltip(?!-)/i'
+'component: treeview':
+  - '/\bTreeView\b/'
+  - '/\bcds-tree-view(?!-)/i'
+'component: ui-shell':
+  - '/\b(Header|HeaderContainer|SideNav|SkipToContent|Switcher)\b/'
+  - '/\bcds-(header|side-nav|skip-to-content|switcher)(?!-)/i'
+
+# Status labels
+'status: needs design spec':
+  - '(Yes, (visual design|user interaction|both visual and interaction)|- \[x\]
+    The website documentation \(carbondesignsystem\.com\)|- \[x\] Figma kit
+    documentation|- \[x\] Storybook\(s\) documentation)'
+
+# Package labels
+'package: @carbon/labs':
+  - '(@carbon/labs)'
+'package: @carbon/react':
+  - '(@carbon/react)'
+'package: @carbon/web-components':
+  - '(@carbon/web-components)'
+'package: browserslist-config-carbon':
+  - '(browserslist-config-carbon)'
+'package: bundler':
+  - '(@carbon/bundler)'
+'package: cli':
+  - '(@carbon/cli)'
+'package: cli-reporter':
+  - '(@carbon/cli-reporter)'
+'package: colors':
+  - '(@carbon/colors)'
+'package: components':
+  - '(carbon-components)'
+'package: elements':
+  - '(@carbon/elements)'
+'package: eslint-config-carbon':
+  - '(eslint-config-carbon)'
+'package: feature-flags':
+  - '(@carbon/feature-flags)'
+'package: grid':
+  - '(@carbon/grid)'
+'package: icon-build-helpers':
+  - '(@carbon/icon-build-helpers)'
+'package: icon-helpers':
+  - '(@carbon/icon-helpers)'
+'package: icons':
+  - '(@carbon/icons)'
+'package: icons-angular':
+  - '(@carbon/icons-angular)'
+'package: icons-handlebars':
+  - '(@carbon/icons-handlebars)'
+'package: icons-react':
+  - '(@carbon/icons-react)'
+'package: icons-vue':
+  - '(@carbon/icons-vue)'
+'package: import-once':
+  - '(@carbon/import-once)'
+'package: layout':
+  - '(@carbon/layout)'
+'package: motion':
+  - '(@carbon/motion)'
+'package: pictograms':
+  - '(@carbon/pictograms)'
+'package: pictograms-react':
+  - '(@carbon/pictograms-react)'
+'package: react':
+  - '(carbon-components-react)'
+'package: scss-generator':
+  - '(@carbon/scss-generator)'
+'package: sketch':
+  - '(@carbon/sketch)'
+'package: stylelint-config-elements':
+  - '(@carbon/stylelint-config-elements)'
+'package: styles':
+  - '(@carbon/styles)'
+'package: text-utils':
+  - '(@carbon/text-utils)'
+'package: themes':
+  - '(@carbon/themes)'
+'package: type':
+  - '(@carbon/type)'
+'package: upgrade':
+  - '(@carbon/upgrade)'
+
+# Platform labels
+'platform: android':
+  - '/(android)/i'
+'platform: ios':
+  - '/(ios)/i'
+'platform: macos':
+  - '/(macos)/i'
+'platform: windows':
+  - '/(windows)/i'
