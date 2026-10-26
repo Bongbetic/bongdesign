@@ -41,6 +41,7 @@ import {
   TextInput,
   Toggle,
   Tooltip,
+  TreeView,
 } from '@carbon/react';
 import index from '../../data/components.json';
 import Explorer from './explorer.jsx';
@@ -72,7 +73,7 @@ export default function App() {
           <HeaderMenuItem href="#branding">Branding</HeaderMenuItem>
           <HeaderMenuItem href="#foundations">Foundations</HeaderMenuItem>
           <HeaderMenuItem href="#index">Components</HeaderMenuItem>
-          <HeaderMenuItem href="https://www.carbondesignsystem.com">Upstream docs</HeaderMenuItem>
+          <HeaderMenuItem href="#foundations">Foundations</HeaderMenuItem>
         </HeaderNavigation>
       </Header>
       <header className="bong-header">
@@ -103,33 +104,41 @@ export default function App() {
       <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
         <nav style={{ flex: '0 0 12rem', position: 'sticky', top: '4rem' }}>
           <strong>Building blocks</strong>
-          <div style={{ marginTop: '0.5rem' }}>
-            <div>Foundations</div>
-            <div style={{ paddingLeft: '1rem' }}>
-              <div><Link href="#foundations-2x-grid">2x Grid</Link></div>
-              <div><Link href="#foundations-accessibility">Accessibility</Link></div>
-              <div><Link href="#foundations-carbon-for-ai">Carbon for AI</Link></div>
-              <div><Link href="#foundations-color">Color</Link></div>
-              <div><Link href="#foundations-content">Content</Link></div>
-              <div><Link href="#foundations-icons">Icons</Link></div>
-              <div><Link href="#foundations-pictograms">Pictograms</Link></div>
-              <div><Link href="#foundations-motion">Motion</Link></div>
-              <div><Link href="#foundations-spacing">Spacing</Link></div>
-              <div><Link href="#foundations-themes">Themes</Link></div>
-              <div><Link href="#foundations-typography">Typography</Link></div>
-            </div>
-            <div style={{ marginTop: '0.5rem' }}><Link href="#index">Components</Link></div>
-            <div><Link href="#patterns">Patterns</Link></div>
-            <div><Link href="#data-viz">Data visualization</Link></div>
-          </div>
-          <div style={{ marginTop: '1rem' }}>
-            <strong>Building experiences</strong>
-            <div><Link href="#building-experiences">Overview</Link></div>
-          </div>
-          <div style={{ marginTop: '1rem' }}>
-            <strong>Support</strong>
-            <div><Link href="#support">Get help</Link></div>
-          </div>
+          <TreeView
+            label="Docs navigation"
+            nodes={[
+              {
+                id: 'nav-foundations',
+                label: 'Foundations',
+                nodes: [
+                  ['foundations-2x-grid', '2x Grid'],
+                  ['foundations-accessibility', 'Accessibility'],
+                  ['foundations-carbon-for-ai', 'Carbon for AI'],
+                  ['foundations-color', 'Color'],
+                  ['foundations-content', 'Content'],
+                  ['foundations-icons', 'Icons'],
+                  ['foundations-pictograms', 'Pictograms'],
+                  ['foundations-motion', 'Motion'],
+                  ['foundations-spacing', 'Spacing'],
+                  ['foundations-themes', 'Themes'],
+                  ['foundations-typography', 'Typography'],
+                ].map(([id, label]) => ({ id, label })),
+              },
+              { id: 'index', label: 'Components' },
+              { id: 'patterns', label: 'Patterns' },
+              { id: 'data-viz', label: 'Data visualization' },
+              { id: 'building-experiences', label: 'Building experiences' },
+              { id: 'support', label: 'Support' },
+            ]}
+            onSelect={(evt, node) => {
+              const el = document.getElementById(node.id);
+              if (el) {
+                evt.preventDefault();
+                el.scrollIntoView({ behavior: 'smooth' });
+                window.location.hash = node.id;
+              }
+            }}
+          />
         </nav>
         <div style={{ flex: '1', minWidth: 0 }}>
       <div className="bong-section" id="demos">
@@ -343,17 +352,15 @@ export default function App() {
           <li>Notifications: brief, specific, and gone when read.</li>
           <li>Search: fast feedback while typing, honest empty results.</li>
         </ul>
-        <p>
-          <Link href="https://www.carbondesignsystem.com/patterns/overview">Upstream patterns</Link>
-        </p>
+        <p>Every pattern here composes the components in this library.</p>
       </div>
 
       <div className="bong-section" id="data-viz">
         <h2>Data visualization</h2>
         <p>
-          Charts live in a separate upstream package and are not vendored here.
-          When a chart is needed, pin it the same way as the rest.{' '}
-          <Link href="https://www.carbondesignsystem.com/data-visualization/overview">Upstream guidance</Link>
+          Charts live in a separate package and are not vendored here. When a
+          chart is needed, pin it the same way as the rest. Color order follows
+          the palettes in Color above; categorical first, then sequential.
         </p>
       </div>
 
@@ -370,8 +377,8 @@ export default function App() {
         <p>
           Repo:{' '}
           <Link href="https://github.com/Bongbetic/bongdesign">Bongbetic/bongdesign</Link>.
-          Upstream: <Link href="https://www.carbondesignsystem.com">carbondesignsystem.com</Link>.
-          MCP: <code>/mcp</code> on this host, token required.
+          Upstream snapshot, own repo. MCP: <code>/mcp</code> on this host,
+          token required.
         </p>
       </div>
 

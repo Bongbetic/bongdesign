@@ -372,7 +372,7 @@ function snippet(name, curated) {
 }
 
 function docSlug(entry) {
-  return entry.doc ? `https://www.carbondesignsystem.com/components/${entry.doc}` : null;
+  return entry && entry.doc ? `#foundations` : null;
 }
 
 export function componentCards() {
@@ -523,7 +523,7 @@ export default function Explorer() {
         })()}
         {byName[current.name] && byName[current.name].doc ? (
           <p>
-            <Link href={docSlug(byName[current.name])}>Upstream docs</Link>
+            <Link href={docSlug(byName[current.name])}>Foundations</Link>
           </p>
         ) : null}
       </section>

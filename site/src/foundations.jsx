@@ -290,23 +290,38 @@ const FOUNDATION_SECTIONS = [
     id: 'foundations-accessibility',
     title: 'Accessibility',
     body: (
-      <p>
-        Build for everyone from the start. Keyboard-first navigation, visible
-        focus, and sufficient contrast are part of every component here, not an
-        afterthought.{' '}
-        <Link href="https://www.carbondesignsystem.com/guidelines/accessibility/overview">Upstream guidance</Link>
-      </p>
+      <div>
+        <p>
+          Build for everyone from the start. Keyboard-first navigation,
+          visible focus, and sufficient contrast are part of every component
+          here, not an afterthought.
+        </p>
+        <ul>
+          <li>Every action reachable and operable by keyboard alone.</li>
+          <li>Focus indicator always visible and never clipped.</li>
+          <li>Text contrast 4.5 to 1 or better; large text 3 to 1.</li>
+          <li>Never signal by color alone; pair with text or icon.</li>
+        </ul>
+      </div>
     ),
   },
   {
     id: 'foundations-carbon-for-ai',
     title: 'Carbon for AI',
     body: (
-      <p>
-        AI surfaces need the same clarity as any other UI. Generated content gets
-        labelled, machine output stays editable, and people stay in control.{' '}
-        <Link href="https://www.carbondesignsystem.com/guidelines/carbon-for-ai/overview">Upstream guidance</Link>
-      </p>
+      <div>
+        <p>
+          AI surfaces need the same clarity as any other UI. Generated content
+          gets labelled, machine output stays editable, and people stay in
+          control.
+        </p>
+        <ul>
+          <li>Label AI output with the AI label; provenance is never hidden.</li>
+          <li>Generated text stays editable before it is used.</li>
+          <li>Confidence shown honestly; no fake certainty.</li>
+          <li>A person can always undo, edit, or dismiss.</li>
+        </ul>
+      </div>
     ),
   },
   { id: 'foundations-color', title: 'Color', body: <ColorSection /> },
@@ -314,11 +329,17 @@ const FOUNDATION_SECTIONS = [
     id: 'foundations-content',
     title: 'Content',
     body: (
-      <p>
-        Write like a person speaking to a person. Short sentences, plain words,
-        action-first labels. The interface is a conversation.{' '}
-        <Link href="https://www.carbondesignsystem.com/guidelines/content/overview">Upstream guidance</Link>
-      </p>
+      <div>
+        <p>
+          Write like a person speaking to a person. Short sentences, plain
+          words, action-first labels. The interface is a conversation.
+        </p>
+        <ul>
+          <li>Buttons are verbs: Save, Delete, Create.</li>
+          <li>Errors say what broke and how to fix it.</li>
+          <li>One idea per sentence. Cut every spare word.</li>
+        </ul>
+      </div>
     ),
   },
   { id: 'foundations-icons', title: 'Icons', body: <IconsSection /> },
