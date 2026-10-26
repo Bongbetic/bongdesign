@@ -44,7 +44,18 @@ export default function App() {
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className="bong-page">
-      <h1>BongDesign</h1>
+      <header className="bong-header">
+        <a href="https://bongbetic.com">
+          <img
+            src="https://bongbetic.com/branding/bongbetic-wordmark@2x.png"
+            alt="Bongbetic"
+            width="188"
+            height="42"
+          />
+        </a>
+        <span className="bong-header-sub">BongDesign — self-hosted Carbon component library</span>
+      </header>
+      <div className="bong-red-rule" aria-hidden="true" />
       <p>
         Self-hosted Carbon component library, pinned to upstream Carbon{' '}
         {index.meta.carbonTag}. {index.components.length} components indexed.
@@ -179,6 +190,10 @@ export default function App() {
         <p>
           BongDesign {index.meta.carbonTag} · upstream Carbon snapshot, own repo ·
           MCP at <code>/mcp</code> · health at <code>/health</code>
+        </p>
+        <p>
+          Built by <Link href="https://bongbetic.com">Bongbetic</Link>. Free software,
+          loud opinions, no warranty (see your licence).
         </p>
       </div>
     </div>
