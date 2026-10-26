@@ -5,8 +5,9 @@ Run: python3 -m unittest tests.test_server
 """
 import json
 import unittest
+import urllib.parse
 
-from tests.support import TEST_TOKEN, ServerProcess
+from tests.support import TEST_PASS, TEST_TOKEN, TEST_USER, ServerProcess
 
 
 class ServerTestCase(unittest.TestCase):
@@ -29,6 +30,36 @@ class AuthWallTest(ServerTestCase):
         status, resp, _ = self.server.request('GET', '/')
         self.assertEqual(status, 302)
         self.assertEqual(resp.getheader('Location'), '/login')
+
+
+class LoginTest(ServerTestCase):
+    def _login(self, username, password):
+        form = urllib.parse.urlencode({'username': username, 'password': password})
+        return self.server.request(
+            'POST', '/login', form,
+            {'Content-Type': 'application/x-www-form-urlencoded'})
+
+    def test_api_without_session_redirects_to_login(self):
+        status, resp, _ = self.server.request('GET', '/api/components')
+        self.assertEqual(status, 302)
+        self.assertEqual(resp.getheader('Location'), '/login')
+
+    def test_login_with_test_credential_sets_cookie_that_authorizes_api(self):
+        status, resp, _ = self._login(TEST_USER, TEST_PASS)
+        self.assertEqual(status, 302)
+        cookie = resp.getheader('Set-Cookie').split(';')[0]
+        self.assertTrue(cookie.startswith('bongdesign_session='))
+
+        status, _, body = self.server.request('GET', '/api/components', headers={'Cookie': cookie})
+        self.assertEqual(status, 200)
+        components = json.loads(body)['components']
+        self.assertGreater(len(components), 0)
+        self.assertIn('name', components[0])
+
+    def test_login_with_wrong_password_answers_401_and_sets_no_cookie(self):
+        status, resp, _ = self._login(TEST_USER, 'wrong-pass')
+        self.assertEqual(status, 401)
+        self.assertIsNone(resp.getheader('Set-Cookie'))
 
 
 class McpTest(ServerTestCase):
