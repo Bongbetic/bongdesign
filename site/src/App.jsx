@@ -39,6 +39,7 @@ import {
   Tooltip,
 } from '@carbon/react';
 import index from '../../data/components.json';
+import Explorer from './explorer.jsx';
 
 const headers = [{ key: 'name', header: 'Component' }];
 const rows = [
@@ -265,16 +266,12 @@ export default function App() {
       </div>
 
       <div className="bong-section" id="index">
-        <h2>Component index</h2>
-        <p>Every component directory present in the pinned upstream release.</p>
-        <div className="bong-index">
-          {index.components.map((c) => (
-            <div key={c.name}>
-              {c.name}
-              {c.doc ? ` — ${c.doc}` : ''}
-            </div>
-          ))}
-        </div>
+        <h2>All components</h2>
+        <p>
+          Every component in the pinned upstream release, rendered live from
+          your own repo.
+        </p>
+        <Explorer />
       </div>
 
       <div className="bong-footer">

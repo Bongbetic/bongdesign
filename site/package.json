@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check:coverage": "node ../scripts/render-check.cjs"
   },
   "dependencies": {
     "@carbon/icons-react": "11.91.0",

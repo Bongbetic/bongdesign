@@ -3,3 +3,4 @@ site/dist/
 site/.vite/
 __pycache__/
 *.pyc
+upstream-carbon/
