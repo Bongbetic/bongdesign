@@ -272,6 +272,9 @@ const CURATED = {
       />
     ),
   },
+  Loading: {
+    demo: <Carbon.Loading withOverlay={false} small description="Loading" />,
+  },
   ProgressBar: { demo: <Carbon.ProgressBar label="Loading" value={65} /> },
   ProgressIndicator: {
     demo: (
@@ -408,6 +411,7 @@ export function componentCards() {
 
 export default function Explorer() {
   const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState('Button');
   const { cards, byName } = useMemo(componentCards, []);
   const q = query.trim().toLowerCase();
   const shown = cards.filter((c) => c.name.toLowerCase().includes(q));
@@ -416,47 +420,56 @@ export default function Explorer() {
     const g = category(c.name);
     (groups[g] = groups[g] || []).push(c);
   }
+  const current = cards.find((c) => c.name === selected) || cards[0];
   return (
-    <div>
-      <p>
-        {cards.length} of {cards.length} indexed components. Type to filter.
-      </p>
-      <Carbon.Search
-        id="explorer-search"
-        labelText="Filter components"
-        placeholder="e.g. modal"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      {Object.keys(groups)
-        .sort()
-        .map((g) => (
-          <div key={g} className="bong-section">
-            <h3>
-              {g} ({groups[g].length})
-            </h3>
-            {groups[g].map((c) => (
-              <div key={c.name} data-demo={c.name} style={{ marginTop: '1.5rem' }}>
-                <h4>{c.name}</h4>
-                {c.live ? (
-                  <DemoBoundary>
-                    <div className="bong-demo-row">{c.demo}</div>
-                  </DemoBoundary>
-                ) : (
-                  <p>{c.note}</p>
-                )}
-                <pre style={{ overflowX: 'auto', background: '#f4f4f4', padding: '1rem' }}>
-                  <code>{c.code}</code>
-                </pre>
-                {byName[c.name] && byName[c.name].doc ? (
-                  <p>
-                    <Link href={docSlug(byName[c.name])}>Upstream docs</Link>
-                  </p>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        ))}
+    <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+      <aside style={{ flex: '0 0 13rem' }}>
+        <Carbon.Search
+          id="explorer-search"
+          labelText="Filter components"
+          placeholder="e.g. modal"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        {Object.keys(groups)
+          .sort()
+          .map((g) => (
+            <div key={g} style={{ marginTop: '1.5rem' }}>
+              <h5>{g}</h5>
+              {groups[g].map((c) => (
+                <div key={c.name}>
+                  <Carbon.Link
+                    href={`#${c.name}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelected(c.name);
+                    }}
+                  >
+                    {c.name}
+                  </Carbon.Link>
+                </div>
+              ))}
+            </div>
+          ))}
+      </aside>
+      <section style={{ flex: '1', minWidth: 0 }} data-demo={current.name}>
+        <h3>{current.name}</h3>
+        {current.live ? (
+          <DemoBoundary key={current.name}>
+            <div className="bong-demo-row">{current.demo}</div>
+          </DemoBoundary>
+        ) : (
+          <p>{current.note}</p>
+        )}
+        <pre style={{ overflowX: 'auto', background: '#f4f4f4', padding: '1rem', marginTop: '2rem' }}>
+          <code>{current.code}</code>
+        </pre>
+        {byName[current.name] && byName[current.name].doc ? (
+          <p>
+            <Link href={docSlug(byName[current.name])}>Upstream docs</Link>
+          </p>
+        ) : null}
+      </section>
     </div>
   );
 }
