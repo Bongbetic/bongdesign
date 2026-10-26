@@ -1,0 +1,98 @@
+name: Deploy Packages
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [deploy-packages]
+
+jobs:
+  design-language-website:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: carbon-design-system/design-language-website
+          ref: master
+      - name: Use Node.js version from .nvmrc
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: '.nvmrc'
+      - name: Update dependencies
+        run: |
+          yarn upgrade \
+            @carbon/pictograms@latest \
+            @carbon/pictograms-react@latest \
+            @carbon/icons@latest \
+            @carbon/icons-react@latest \
+      - name: Generate token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: generate_token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          repositories: design-language-website
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          branch: 'release/update-carbon-deps'
+          commit-message: 'chore(release): update carbon deps'
+          delete-branch: true
+          title: 'chore(release): update carbon deps'
+          token: ${{ steps.generate_token.outputs.token }}
+          body: |
+            Automated pull request to update Carbon on the website
+
+            **Checklist**
+
+            - [ ] Verify package version bumps are accurate
+            - [ ] Verify CI passes as expected
+            - [ ] Verify no regressions on the website in the deploy preview
+  gatsby-theme-carbon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: carbon-design-system/gatsby-theme-carbon
+          ref: main
+      - name: Use Node.js version from .nvmrc
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Update dependencies
+        run: |
+          yarn workspace gatsby-theme-carbon up  \
+            @carbon/elements \
+            @carbon/grid \
+            @carbon/themes \
+            @carbon/pictograms-react \
+            @carbon/react
+      - name: Generate token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: generate_token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          repositories: gatsby-theme-carbon
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          branch: 'release/update-carbon-deps'
+          commit-message: 'chore(release): update carbon deps'
+          delete-branch: true
+          title: 'chore(release): update carbon deps'
+          token: ${{ steps.generate_token.outputs.token }}
+          body: |
+            Automated pull request to update Carbon in gatsby-theme-carbon
+
+            **Checklist**
+
+            - [ ] Verify package version bumps are accurate
+            - [ ] Verify CI passes as expected
+            - [ ] Verify no regressions on the website in the deploy preview

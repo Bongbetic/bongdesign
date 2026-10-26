@@ -1,0 +1,180 @@
+/**
+ * Copyright IBM Corp. 2019, 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { html } from 'lit';
+import { enabled } from '@carbon/feature-flags';
+import './breadcrumb';
+import './breadcrumb-item';
+import './breadcrumb-link';
+import './breadcrumb-overflow-menu';
+import '../overflow-menu/overflow-menu-body';
+import '../overflow-menu/overflow-menu-item';
+import '../overflow-menu/index';
+import '../menu/index';
+import './breadcrumb-skeleton';
+import { BREADCRUMB_SIZE } from './defs';
+
+import { prefix } from '../../globals/settings';
+
+import OverflowMenuHorizontal16 from '@carbon/icons/es/overflow-menu--horizontal/16.js';
+import { iconLoader } from '../../globals/internal/icon-loader';
+
+const args = {
+  ariaLabel: 'custom-breadcrumb-label',
+  noTrailingSlash: false,
+  size: BREADCRUMB_SIZE.MEDIUM,
+};
+
+const argTypes = {
+  ariaLabel: {
+    control: { type: 'text' },
+    description: 'Specify the aria-label for the breadcrumb container.',
+    name: 'aria-label',
+  },
+  noTrailingSlash: {
+    control: { type: 'boolean' },
+    description: 'Optional prop to omit the trailing slash for the breadcrumb.',
+  },
+  size: {
+    control: { type: 'select' },
+    description:
+      "Specify the size of the breadcrumb. Currently supports the following: `sm` & `md` (default: 'md')",
+    options: [BREADCRUMB_SIZE.SMALL, BREADCRUMB_SIZE.MEDIUM],
+    table: {
+      type: {
+        summary: `'${BREADCRUMB_SIZE.SMALL}' | '${BREADCRUMB_SIZE.MEDIUM}'`,
+      },
+    },
+  },
+};
+
+export const Default = {
+  args,
+  argTypes,
+  render: (args) => {
+    const { className, ariaLabel, noTrailingSlash, size } = args ?? {};
+    return html`
+      <cds-breadcrumb
+        ?no-trailing-slash="${noTrailingSlash}"
+        .class="${className}"
+        .size="${size}"
+        aria-label="${ariaLabel}">
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link href="#">Breadcrumb 1</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link href="#">Breadcrumb 2</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link href="#">Breadcrumb 3</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link href="#">Breadcrumb 4</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+      </cds-breadcrumb>
+    `;
+  },
+};
+
+const renderBreadcrumbOverflowMenu = () => {
+  const icon = iconLoader(OverflowMenuHorizontal16, {
+    class: `${prefix}--overflow-menu__icon`,
+    slot: 'icon',
+  });
+
+  if (enabled('enable-v12-overflowmenu')) {
+    return html`
+      <cds-overflow-menu
+        breadcrumb
+        align="bottom"
+        label="Overflow menu in a breadcrumb">
+        ${icon}
+        <cds-menu>
+          <cds-menu-item label="Breadcrumb 3"></cds-menu-item>
+          <cds-menu-item label="Breadcrumb 4"></cds-menu-item>
+        </cds-menu>
+      </cds-overflow-menu>
+    `;
+  }
+
+  return html`
+    <cds-overflow-menu breadcrumb align="bottom">
+      ${icon}
+      <span slot="tooltip-content"> Options </span>
+      <cds-overflow-menu-body>
+        <cds-overflow-menu-item>Breadcrumb 3</cds-overflow-menu-item>
+        <cds-overflow-menu-item>Breadcrumb 4</cds-overflow-menu-item>
+      </cds-overflow-menu-body>
+    </cds-overflow-menu>
+  `;
+};
+
+export const BreadcrumbWithOverflowMenu = {
+  args,
+  argTypes,
+  render: (args) => {
+    const { ariaLabel, className, noTrailingSlash, size } = args ?? {};
+    return html`
+      <cds-breadcrumb
+        ?no-trailing-slash="${noTrailingSlash}"
+        .class="${className}"
+        .size="${size}"
+        aria-label="${ariaLabel}">
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link href="#">Breadcrumb 1</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link href="#">Breadcrumb 2</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+        <cds-breadcrumb-item>
+          ${renderBreadcrumbOverflowMenu()}
+        </cds-breadcrumb-item>
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link href="#">Breadcrumb 5</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+        <cds-breadcrumb-item>
+          <cds-breadcrumb-link is-currentpage>Breadcrumb 6</cds-breadcrumb-link>
+        </cds-breadcrumb-item>
+      </cds-breadcrumb>
+    `;
+  },
+};
+const skeletonArgs = { items: 3, ...args };
+const skeletonArgTypes = {
+  items: {
+    control: 'number',
+    description: 'Specify the number of items',
+  },
+  ...argTypes,
+};
+
+export const Skeleton = {
+  args: skeletonArgs,
+  argTypes: skeletonArgTypes,
+  parameters: {
+    controls: {
+      exclude: ['aria-label'],
+    },
+  },
+  render: (args) => {
+    const { className, noTrailingSlash, size, items } = args ?? {};
+    return html`
+      <cds-breadcrumb-skeleton
+        .size="${size}"
+        .class="${className}"
+        ?no-trailing-slash="${noTrailingSlash}"
+        items="${items}">
+      </cds-breadcrumb-skeleton>
+    `;
+  },
+};
+
+const meta = {
+  title: 'Components/Breadcrumb',
+};
+
+export default meta;

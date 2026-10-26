@@ -1,0 +1,513 @@
+/**
+ * Copyright IBM Corp. 2025, 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import '@carbon/web-components/es/components/code-snippet/index.js';
+
+// Test data
+const inline = `node -v`;
+
+const single = `yarn add carbon-components@latest carbon-components-react@latest @carbon/icons-react@latest carbon-icons@latest`;
+
+const multiLong = `  "scripts": {
+    "build": "lerna run build --stream --prefix --npm-client yarn",
+    "ci-check": "carbon-cli ci-check",
+    "clean": "lerna run clean && lerna clean --yes && rimraf node_modules",
+    "doctoc": "doctoc --title '## Table of Contents'",
+    "format": "prettier --write '**/*.{js,md,scss,ts}' '!**/{build,es,lib,storybook,ts,umd}/**'",
+    "format:diff": "prettier --list-different '**/*.{js,md,scss,ts}' '!**/{build,es,lib,storybook,ts,umd}/**' '!packages/components/**'",
+    "lint": "eslint actions config codemods packages",
+    "lint:styles": "stylelint '**/*.{css,scss}' --report-needless-disables --report-invalid-scope-disables",
+    "test": "cross-env BABEL_ENV=test jest",
+    "test:e2e": "cross-env BABEL_ENV=test jest --testPathPattern=e2e --testPathIgnorePatterns='examples,/packages/components/,/packages/react/'"
+  },
+  "resolutions": {
+    "react": "~16.9.0",
+    "react-dom": "~16.9.0",
+    "react-is": "~16.9.0",
+    "react-test-renderer": "~16.9.0"
+  },
+  `;
+
+const multiShort = `  "scripts": {
+    "build": "lerna run build --stream --prefix --npm-client yarn",
+    "ci-check": "carbon-cli ci-check",
+    "clean": "lerna run clean && lerna clean --yes && rimraf node_modules",
+    "doctoc": "doctoc --title '## Table of Contents'",
+    "format": "prettier --write '**/*.{js,md,scss,ts}' '!**/{build,es,lib,storybook,ts,umd}/**'",
+    "format:diff": "prettier --list-different '**/*.{js,md,scss,ts}' '!**/{build,es,lib,storybook,ts,umd}/**' '!packages/components/**'",
+    "lint": "eslint actions config codemods packages",
+    "lint:styles": "stylelint '**/*.{css,scss}' --report-needless-disables --report-invalid-scope-disables",
+    "test": "cross-env BABEL_ENV=test jest",
+    "test:e2e": "cross-env BABEL_ENV=test jest --testPathPattern=e2e --testPathIgnorePatterns='examples,/packages/components/,/packages/react/'"
+  },`;
+
+const multi15 = `  "scripts": {
+    "build": "lerna run build --stream --prefix --npm-client yarn",
+    "ci-check": "carbon-cli ci-check",
+    "clean": "lerna run clean && lerna clean --yes && rimraf node_modules",
+    "doctoc": "doctoc --title '## Table of Contents'",
+    "format": "prettier --write '**/*.{js,md,scss,ts}' '!**/{build,es,lib,storybook,ts,umd}/**'",
+    "format:diff": "prettier --list-different '**/*.{js,md,scss,ts}' '!**/{build,es,lib,storybook,ts,umd}/**' '!packages/components/**'",
+    "lint": "eslint actions config codemods packages",
+    "lint:styles": "stylelint '**/*.{css,scss}' --report-needless-disables --report-invalid-scope-disables",
+    "test": "cross-env BABEL_ENV=test jest",
+    "test:e2e": "cross-env BABEL_ENV=test jest --testPathPattern=e2e --testPathIgnorePatterns='examples,/packages/components/,/packages/react/'"
+  },
+  "resolutions": {
+    "react": "~16.9.0",`;
+
+describe('cds-code-snippet', function () {
+  it('should render', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="single">${single}</cds-code-snippet>
+    `);
+    await expect(el).to.exist;
+  });
+
+  describe('automated accessibility testing', () => {
+    it('should have no Axe violations', async () => {
+      const el = await fixture(html`
+        <cds-code-snippet type="single">${single}</cds-code-snippet>
+      `);
+      await expect(el).to.be.accessible();
+    });
+  });
+
+  it('should use the appropriate snippet class when it is type single', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="single" data-testid="code-1">
+        ${single}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+    expect(el.type).to.equal('single');
+
+    const copyButton = el.shadowRoot?.querySelector('cds-copy-button');
+    expect(copyButton).to.exist;
+    expect(copyButton).to.have.attribute('size', 'md');
+    const buttonClassName = copyButton.getAttribute('button-class-name');
+    if (buttonClassName) {
+      expect(buttonClassName).to.include('cds--snippet--single');
+    }
+    const snippetContainer = el.shadowRoot?.querySelector(
+      '.cds--snippet-container'
+    );
+    expect(snippetContainer).to.exist;
+  });
+
+  it('should use the appropriate snippet class when it is type multi', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="multi" data-testid="code-2">
+        ${multiLong}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    expect(el.type).to.equal('multi');
+
+    const copyButton = el.shadowRoot?.querySelector('cds-copy-button');
+    expect(copyButton).to.exist;
+    expect(copyButton).to.have.attribute('size', 'sm');
+
+    const buttonClassName = copyButton.getAttribute('button-class-name');
+    if (buttonClassName) {
+      expect(buttonClassName).to.include('cds--snippet--multi');
+    }
+
+    const snippetContainer = el.shadowRoot?.querySelector(
+      '.cds--snippet-container'
+    );
+    expect(snippetContainer).to.exist;
+  });
+
+  it('should use the appropriate snippet class when it is type inline', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="inline" data-testid="code-3">
+        ${inline}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    expect(el.type).to.equal('inline');
+
+    const codeElement =
+      el.shadowRoot?.querySelector('code') ||
+      el.shadowRoot?.querySelector('span') ||
+      el.shadowRoot?.querySelector('[class*="snippet"]');
+
+    expect(codeElement).to.exist;
+
+    expect(el.textContent.trim()).to.equal(inline);
+  });
+
+  it('should render slot content as expected', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="inline" data-testid="code-4">
+        ${inline}
+      </cds-code-snippet>
+    `);
+
+    expect(el.textContent.trim()).to.equal(inline);
+  });
+
+  it('should allow custom classes to be applied when passed in via class', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="inline" data-testid="code-5" class="custom-class">
+        ${inline}
+      </cds-code-snippet>
+    `);
+
+    expect(el.classList.contains('custom-class')).to.be.true;
+  });
+
+  it('should allow hiding the copy button', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="single" hide-copy-button>
+        ${single}
+      </cds-code-snippet>
+    `);
+
+    expect(el.hideCopyButton).to.be.true;
+
+    const copyButton = el.shadowRoot.querySelector('.cds--copy-btn');
+    expect(copyButton).to.not.exist;
+  });
+
+  it('should set disabled on copy button if it is passed as an sttribute', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="single" disabled> ${single} </cds-code-snippet>
+    `);
+
+    expect(el.disabled).to.be.true;
+
+    const copyButton = el.shadowRoot.querySelector('.cds--copy-btn');
+    if (copyButton) {
+      expect(copyButton.hasAttribute('disabled')).to.be.true;
+    }
+  });
+
+  it('should use fallback container attributes when `type` is not recognized', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="other">${single}</cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    const snippetContainer = el.shadowRoot?.querySelector(
+      '.cds--snippet-container'
+    );
+
+    expect(snippetContainer).to.exist;
+    expect(snippetContainer.hasAttribute('role')).to.be.false;
+    expect(snippetContainer.getAttribute('aria-label')).to.equal(
+      'code-snippet'
+    );
+    expect(snippetContainer.hasAttribute('aria-readonly')).to.be.false;
+  });
+
+  it('should position tabindex, role, and ARIA attributes on container for single snippet', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="single">${single}</cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    const snippetContainer = el.shadowRoot?.querySelector(
+      '.cds--snippet-container'
+    );
+    const preElement = el.shadowRoot?.querySelector('pre');
+
+    expect(snippetContainer).to.exist;
+    expect(snippetContainer.getAttribute('role')).to.equal('textbox');
+    expect(snippetContainer.getAttribute('tabindex')).to.equal('0');
+    expect(snippetContainer.getAttribute('aria-label')).to.equal(
+      'code-snippet'
+    );
+    expect(snippetContainer.getAttribute('aria-readonly')).to.equal('true');
+
+    expect(preElement).to.exist;
+    expect(preElement.hasAttribute('role')).to.be.false;
+    expect(preElement.hasAttribute('tabindex')).to.be.false;
+    expect(preElement.hasAttribute('aria-label')).to.be.false;
+    expect(preElement.hasAttribute('aria-readonly')).to.be.false;
+    expect(preElement.hasAttribute('aria-multiline')).to.be.false;
+  });
+
+  it('should position tabindex, role, and ARIA attributes on pre for multi snippet', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="multi">${multiLong}</cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    const snippetContainer = el.shadowRoot?.querySelector(
+      '.cds--snippet-container'
+    );
+    const preElement = el.shadowRoot?.querySelector('pre');
+
+    expect(snippetContainer).to.exist;
+    expect(snippetContainer.hasAttribute('role')).to.be.false;
+    expect(snippetContainer.hasAttribute('tabindex')).to.be.false;
+    expect(snippetContainer.hasAttribute('aria-label')).to.be.false;
+    expect(snippetContainer.hasAttribute('aria-readonly')).to.be.false;
+
+    expect(preElement).to.exist;
+    expect(preElement.getAttribute('role')).to.equal('textbox');
+    expect(preElement.getAttribute('tabindex')).to.equal('0');
+    expect(preElement.getAttribute('aria-label')).to.equal('code-snippet');
+    expect(preElement.getAttribute('aria-readonly')).to.equal('true');
+    expect(preElement.getAttribute('aria-multiline')).to.equal('true');
+  });
+
+  describe('CodeSnippet events', () => {
+    it('should call the click handler when the copy button is clicked', async () => {
+      let clickEventFired = false;
+      const el = await fixture(html`
+        <cds-code-snippet type="single"> ${single} </cds-code-snippet>
+      `);
+
+      el.addEventListener('cds-copy-btn-clicked', () => {
+        clickEventFired = true;
+      });
+
+      const copyButton = el.shadowRoot.querySelector('.cds--copy-btn');
+      if (copyButton) {
+        copyButton.click();
+        expect(clickEventFired).to.be.true;
+      }
+    });
+
+    it('should call the click handler with type inline', async () => {
+      let clickEventFired = false;
+      const el = await fixture(html`
+        <cds-code-snippet type="inline" data-testid="code-6">
+          ${inline}
+        </cds-code-snippet>
+      `);
+
+      el.addEventListener('click', () => {
+        clickEventFired = true;
+      });
+
+      el.click();
+      expect(clickEventFired).to.be.true;
+    });
+  });
+
+  describe('Show more button', () => {
+    it('should not have show more button when less than 15 rows', async () => {
+      const el = await fixture(html`
+        <cds-code-snippet type="multi">${multiShort}</cds-code-snippet>
+      `);
+
+      const showMoreButton = el.shadowRoot.querySelector(
+        '.cds--snippet-btn--expand'
+      );
+      expect(showMoreButton).to.not.exist;
+    });
+
+    it('should not have show more button when exactly 15 rows', async () => {
+      const el = await fixture(html`
+        <cds-code-snippet type="multi">${multi15}</cds-code-snippet>
+      `);
+
+      const showMoreButton = el.shadowRoot.querySelector(
+        '.cds--snippet-btn--expand'
+      );
+      expect(showMoreButton).to.not.exist;
+    });
+
+    it('should have show more button when more than 15 rows', async () => {
+      const el = await fixture(html`
+        <cds-code-snippet type="multi">${multiLong}</cds-code-snippet>
+      `);
+
+      await el.updateComplete;
+
+      const showMoreButton = el.shadowRoot.querySelector(
+        '.cds--snippet-btn--expand'
+      );
+      if (showMoreButton) {
+        expect(showMoreButton).to.exist;
+        expect(showMoreButton.textContent.trim()).to.include('Show more');
+      }
+    });
+
+    it('should toggle between show more and show less', async () => {
+      const el = await fixture(html`
+        <cds-code-snippet type="multi">${multiLong}</cds-code-snippet>
+      `);
+
+      await el.updateComplete;
+
+      const showMoreButton = el.shadowRoot.querySelector(
+        '.cds--snippet-btn--expand'
+      );
+      if (showMoreButton) {
+        expect(showMoreButton.textContent.trim()).to.include('Show more');
+
+        showMoreButton.click();
+        await el.updateComplete;
+        expect(showMoreButton.textContent.trim()).to.include('Show less');
+        showMoreButton.click();
+        await el.updateComplete;
+
+        expect(showMoreButton.textContent.trim()).to.include('Show more');
+      }
+    });
+  });
+});
+
+describe('maxCollapsedNumberOfRows / minCollapsedNumberOfRows / maxExpandedNumberOfRows / minExpandedNumberOfRows', () => {
+  const rowHeight = 16;
+
+  it('should reflect default values for the four row attributes', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="multi">${multiLong}</cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    expect(el.maxCollapsedNumberOfRows).to.equal(15);
+    expect(el.minCollapsedNumberOfRows).to.equal(3);
+    expect(el.maxExpandedNumberOfRows).to.equal(0);
+    expect(el.minExpandedNumberOfRows).to.equal(16);
+  });
+
+  it('should set maxCollapsedNumberOfRows from attribute', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet type="multi" maxCollapsedNumberOfRows="5">
+        ${multiLong}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+    expect(el.maxCollapsedNumberOfRows).to.equal(5);
+  });
+
+  it('should apply maxCollapsedNumberOfRows as max-height on the snippet container when collapsed', async () => {
+    const rows = 5;
+    const el = await fixture(html`
+      <cds-code-snippet type="multi" maxCollapsedNumberOfRows="${rows}">
+        ${multiLong}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    const container = el.shadowRoot.querySelector('.cds--snippet-container');
+    expect(container.style.maxHeight).to.equal(`${rows * rowHeight}px`);
+  });
+
+  it('should apply minCollapsedNumberOfRows as min-height on the snippet container when collapsed', async () => {
+    const rows = 3;
+    const el = await fixture(html`
+      <cds-code-snippet type="multi" minCollapsedNumberOfRows="${rows}">
+        ${multiLong}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    const container = el.shadowRoot.querySelector('.cds--snippet-container');
+    expect(container.style.minHeight).to.equal(`${rows * rowHeight}px`);
+  });
+
+  it('should apply maxExpandedNumberOfRows as max-height on the snippet container when expanded', async () => {
+    const rows = 20;
+    const el = await fixture(html`
+      <cds-code-snippet
+        type="multi"
+        maxCollapsedNumberOfRows="5"
+        maxExpandedNumberOfRows="${rows}">
+        ${multiLong}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    // ResizeObserver never fires with real dimensions in a headless environment,
+    // so _shouldShowMoreLessBtn stays false and the show-more button is not
+    // rendered. Drive the expanded state directly to test the style application.
+    el._shouldShowMoreLessBtn = true;
+    el._expandedCode = true;
+    el.requestUpdate();
+    await el.updateComplete;
+
+    const container = el.shadowRoot.querySelector('.cds--snippet-container');
+    expect(container.style.maxHeight).to.equal(`${rows * rowHeight}px`);
+  });
+
+  it('should apply minExpandedNumberOfRows as min-height on the snippet container when expanded', async () => {
+    const rows = 10;
+    const el = await fixture(html`
+      <cds-code-snippet
+        type="multi"
+        maxCollapsedNumberOfRows="5"
+        minExpandedNumberOfRows="${rows}">
+        ${multiLong}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    // ResizeObserver never fires with real dimensions in a headless environment,
+    // so _shouldShowMoreLessBtn stays false and the show-more button is not
+    // rendered. Drive the expanded state directly to test the style application.
+    el._shouldShowMoreLessBtn = true;
+    el._expandedCode = true;
+    el.requestUpdate();
+    await el.updateComplete;
+
+    const container = el.shadowRoot.querySelector('.cds--snippet-container');
+    expect(container.style.minHeight).to.equal(`${rows * rowHeight}px`);
+  });
+
+  it('should not apply max-height when maxExpandedNumberOfRows is 0 (expanded)', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet
+        type="multi"
+        maxCollapsedNumberOfRows="5"
+        maxExpandedNumberOfRows="0">
+        ${multiLong}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    // ResizeObserver never fires with real dimensions in a headless environment,
+    // so _shouldShowMoreLessBtn stays false and the show-more button is not
+    // rendered. Drive the expanded state directly to test the style application.
+    el._shouldShowMoreLessBtn = true;
+    el._expandedCode = true;
+    el.requestUpdate();
+    await el.updateComplete;
+
+    const container = el.shadowRoot.querySelector('.cds--snippet-container');
+    expect(container.style.maxHeight).to.equal('');
+  });
+
+  it('should not apply max-height or min-height for non-multi snippet types', async () => {
+    const el = await fixture(html`
+      <cds-code-snippet
+        type="single"
+        maxCollapsedNumberOfRows="5"
+        minCollapsedNumberOfRows="2">
+        ${single}
+      </cds-code-snippet>
+    `);
+
+    await el.updateComplete;
+
+    const container = el.shadowRoot.querySelector('.cds--snippet-container');
+    expect(container.style.maxHeight).to.equal('');
+    expect(container.style.minHeight).to.equal('');
+  });
+});

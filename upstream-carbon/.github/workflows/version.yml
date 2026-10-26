@@ -1,0 +1,82 @@
+name: Version
+run-name: ${{ inputs.type }} - ${{ inputs.tag }} by @${{ github.actor }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        required: true
+        description: 'Specify the type of release'
+        type: choice
+        default: preminor
+        options:
+          - minor
+          - preminor
+          - prerelease
+      tag:
+        required: true
+        description: 'Specify the tag for this release'
+        type: string
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    if: github.repository == 'carbon-design-system/carbon'
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: '0'
+      - name: Use Node.js version from .nvmrc
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        id: cache
+        with:
+          path: |
+            node_modules
+            */**/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Install dependencies
+        run: yarn install --immutable --check-cache
+      - name: Update telemetry.yml
+        run: yarn run telemetry:config
+      - name: Create preminor release
+        if: ${{ github.event.inputs.type == 'preminor' }}
+        run: |
+          yarn lerna version preminor --no-git-tag-version --preid rc --yes
+      - name: Create prerelease
+        if: ${{ github.event.inputs.type == 'prerelease' }}
+        run: |
+          yarn lerna version prerelease --no-git-tag-version --preid rc --yes
+      - name: Create minor release
+        if: ${{ github.event.inputs.type == 'minor' }}
+        run: |
+          yarn lerna version minor --no-git-tag-version --no-push --yes
+      - name: Generate token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: generate_token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          branch: 'release/${{ github.event.inputs.tag }}'
+          commit-message: 'chore(release): ${{ github.event.inputs.tag }}'
+          delete-branch: true
+          title: 'chore(release): ${{ github.event.inputs.tag }}'
+          token: ${{ steps.generate_token.outputs.token }}
+          body: |
+            Automated release PR for ${{ github.event.inputs.tag }}
+
+            **Checklist**
+
+            - [ ] Verify package version bumps are accurate
+            - [ ] Verify CI passes as expected

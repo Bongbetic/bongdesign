@@ -1,0 +1,43 @@
+/**
+ * Copyright IBM Corp. 2016, 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { Row } from '../';
+
+describe('Row', () => {
+  it('should support a custom element as the root node', () => {
+    const { container } = render(<Row as="section" />);
+    expect(container.firstChild.tagName).toBe('SECTION');
+  });
+
+  it('should include a custom className', () => {
+    const { container } = render(<Row className="test" />);
+    expect(container.firstChild).toHaveClass('test');
+  });
+
+  it('should pass un-used props to the top-level node that is rendered', () => {
+    const { container } = render(<Row id="test" />);
+    expect(container.firstChild).toHaveAttribute('id', 'test');
+  });
+
+  it('should render `children` that are given', () => {
+    render(
+      <Row>
+        <span id="test">Test</span>
+      </Row>
+    );
+    expect(screen.getByText('Test')).toHaveAttribute('id', 'test');
+  });
+
+  it('should support setting the condensed class through the `condensed` prop', () => {
+    const { container } = render(<Row condensed />);
+    expect(container.firstChild.className).toEqual(
+      expect.stringContaining('row--condensed')
+    );
+  });
+});

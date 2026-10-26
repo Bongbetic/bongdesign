@@ -1,0 +1,1297 @@
+/**
+ * Copyright IBM Corp. 2019, 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { html } from 'lit';
+import { action } from 'storybook/actions';
+import { iconLoader } from '../../globals/internal/icon-loader';
+// Below path will be there when an application installs `@carbon/web-components` package.
+// In our dev env, we auto-generate the file and re-map below path to to point to the generated file.
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- https://github.com/carbon-design-system/carbon/issues/20452
+// @ts-ignore
+import Fade16 from '@carbon/icons/es/fade/16.js';
+import Search20 from '@carbon/icons/es/search/20.js';
+import Notification20 from '@carbon/icons/es/notification/20.js';
+import SwitcherIcon20 from '@carbon/icons/es/switcher/20.js';
+import contentStyles from '@carbon/styles/scss/components/ui-shell/content/_content.scss?lit';
+import { SIDE_NAV_COLLAPSE_MODE, SIDE_NAV_USAGE_MODE } from './side-nav';
+import { classMap } from 'lit/directives/class-map.js';
+import './index';
+import '../skip-to-content';
+import '../modal/modal';
+import '../button/button';
+import styles from './ui-shell-story.scss?lit';
+import { prefix } from '../../globals/settings';
+import '../badge-indicator/index';
+const linksHref = 'https://www.carbondesignsystem.com/';
+
+const headerArgs = {
+  headerAriaLabel: 'IBM Cloud',
+  platformName: 'Cloud console',
+  platformPrefix: 'IBM',
+};
+
+const headerArgTypes = {
+  headerAriaLabel: {
+    control: 'text',
+    description: 'Provide an accessible label for the header.',
+    table: { category: 'Header' },
+  },
+  platformName: {
+    control: 'text',
+    description: 'Specify the product name displayed in the header.',
+    table: { category: 'HeaderName' },
+  },
+  platformPrefix: {
+    control: 'text',
+    description: 'Specify the prefix displayed before the product name.',
+    table: { category: 'HeaderName' },
+  },
+};
+
+const navigationArgs = {
+  navigationAriaLabel: 'IBM Cloud',
+  navigationMenuLabel: 'Manage',
+};
+
+const navigationArgTypes = {
+  navigationAriaLabel: {
+    control: 'text',
+    description: 'Provide an accessible label for the header navigation.',
+    table: { category: 'HeaderNav' },
+  },
+  navigationMenuLabel: {
+    control: 'text',
+    description: 'Specify the label for the header navigation menu.',
+    table: { category: 'HeaderMenu' },
+  },
+};
+
+const sideNavAriaLabelArgs = {
+  sideNavAriaLabel: 'Side navigation',
+};
+
+const sideNavAriaLabelArgTypes = {
+  sideNavAriaLabel: {
+    control: 'text',
+    description: 'Provide an accessible label for the side navigation.',
+    table: { category: 'SideNav' },
+  },
+};
+
+const sideNavArgs = {
+  ...sideNavAriaLabelArgs,
+  expanded: true,
+};
+
+const sideNavArgTypes = {
+  ...sideNavAriaLabelArgTypes,
+  expanded: {
+    control: 'boolean',
+    description: 'Specify whether the side navigation is expanded.',
+    table: { category: 'SideNav' },
+  },
+};
+
+const StoryContent = ({ useResponsiveOffset = true }) => {
+  const firstColumnClasses = classMap({
+    [`${prefix}--col-lg-13`]: true,
+    [`${prefix}--offset-lg-3`]: useResponsiveOffset,
+  });
+  const toggleButton = () => {
+    document.querySelector('cds-modal')?.toggleAttribute('open');
+  };
+  return html`
+    <style type="text/css">
+      ${contentStyles.cssText}
+    </style>
+    <main class="${prefix}--content ${prefix}-ce-demo-devenv--ui-shell-content">
+      <div class="${prefix}--grid">
+        <div class="${prefix}--row">
+          <div
+            class="${firstColumnClasses}"
+            style="${!useResponsiveOffset ? `margin-left: 16rem;` : ''}">
+            <h2 style="margin: 0 0 30px">Purpose and function</h2>
+            <p>
+              The shell is perhaps the most crucial piece of any UI built with
+              <a href="https://www.carbondesignsystem.com/">Carbon</a>. It
+              contains the shared navigation framework for the entire design
+              system and ties the products in IBM’s portfolio together in a
+              cohesive and elegant way. The shell is the home of the topmost
+              navigation, where users can quickly and dependably gain their
+              bearings and move between pages.
+              <br />
+              <br />
+              The shell was designed with maximum flexibility built in, to serve
+              the needs of a broad range of products and users. Adopting the
+              shell ensures compliance with IBM design standards, simplifies
+              development efforts, and provides great user experiences. All IBM
+              products built with Carbon are required to use the shell’s header.
+              <br />
+              <br />
+              To better understand the purpose and function of the UI shell,
+              consider the “shell” of macOS, which contains the Apple menu,
+              top-level navigation, and universal, OS-level controls at the top
+              of the screen, as well as a universal dock along the bottom or
+              side of the screen. The Carbon UI shell is roughly analogous in
+              function to these parts of the Mac UI. For example, the app
+              switcher portion of the shell can be compared to the dock in
+              macOS.
+            </p>
+            <h2 style="margin: 30px 0px">Header responsive behavior</h2>
+            <p>
+              As a header scales down to fit smaller screen sizes, headers with
+              persistent side nav menus should have the side nav collapse into
+              “hamburger” menu. See the example to better understand responsive
+              behavior of the header.
+            </p>
+            <h2 style="margin: 30px 0px">Secondary navigation</h2>
+            <p>
+              The side-nav contains secondary navigation and fits below the
+              header. It can be configured to be either fixed-width or flexible,
+              with only one level of nested items allowed. Both links and
+              category lists can be used in the side-nav and may be mixed
+              together. There are several configurations of the side-nav, but
+              only one configuration should be used per product section. If tabs
+              are needed on a page when using a side-nav, then the tabs are
+              secondary in hierarchy to the side-nav.
+            </p>
+            <cds-modal>
+              <cds-modal-header>
+                <cds-modal-close-button></cds-modal-close-button>
+                <cds-modal-label>Account resources</cds-modal-label>
+                <cds-modal-heading>Add a custom domain</cds-modal-heading>
+              </cds-modal-header>
+              <cds-modal-body>
+                <cds-modal-body-content description>
+                  Custom domains direct requests for your apps in this Cloud
+                  Foundry organization to a URL that you own. A custom domain
+                  can be a shared domain, a shared subdomain, or a shared domain
+                  and host.
+                </cds-modal-body-content>
+              </cds-modal-body>
+              <cds-modal-footer>
+                <cds-modal-footer-button kind="secondary" data-modal-close
+                  >Cancel</cds-modal-footer-button
+                >
+                <cds-modal-footer-button>Add</cds-modal-footer-button>
+              </cds-modal-footer>
+            </cds-modal>
+            <cds-button @click="${toggleButton}">Launch modal</cds-button>
+          </div>
+        </div>
+      </div>
+    </main>
+  `;
+};
+
+export const FixedSideNav = {
+  name: 'Fixed Side Nav',
+  args: { ...sideNavArgs },
+  argTypes: { ...sideNavArgTypes },
+  render: ({ expanded, sideNavAriaLabel }) => {
+    return html`
+      <style>
+        ${styles}
+      </style>
+      <cds-side-nav
+        is-not-child-of-header
+        usage-mode="${SIDE_NAV_USAGE_MODE.REGULAR}"
+        aria-label="${sideNavAriaLabel}"
+        collapse-mode="${SIDE_NAV_COLLAPSE_MODE.FIXED}"
+        ?expanded="${expanded}">
+        <cds-side-nav-items>
+          <cds-side-nav-menu title="L0 menu">
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="L0 menu">
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item
+              active
+              aria-current="page"
+              target="_blank"
+              href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="L0 menu">
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-link href="javascript:void(0)"
+            >L0 link</cds-side-nav-link
+          >
+          <cds-side-nav-link href="javascript:void(0)"
+            >L0 link</cds-side-nav-link
+          >
+        </cds-side-nav-items>
+      </cds-side-nav>
+      ${StoryContent({ useResponsiveOffset: false })}
+    `;
+  },
+};
+
+export const FixedSideNavDivider = {
+  name: 'Fixed Side Nav with Divider',
+  args: { ...sideNavArgs },
+  argTypes: { ...sideNavArgTypes },
+  render: ({ expanded, sideNavAriaLabel }) => {
+    return html`
+      <style>
+        ${styles}
+      </style>
+      <cds-side-nav
+        is-not-child-of-header
+        aria-label="${sideNavAriaLabel}"
+        collapse-mode="${SIDE_NAV_COLLAPSE_MODE.FIXED}"
+        ?expanded="${expanded}">
+        <cds-side-nav-items>
+          <cds-side-nav-menu title="L0 menu">
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="L0 menu">
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item
+              active
+              aria-current="page"
+              href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="L0 menu">
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              L0 menu item
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-divider></cds-side-nav-divider>
+          <cds-side-nav-link href="javascript:void(0)"
+            >L0 link</cds-side-nav-link
+          >
+          <cds-side-nav-link href="javascript:void(0)"
+            >L0 link</cds-side-nav-link
+          >
+        </cds-side-nav-items>
+      </cds-side-nav>
+      ${StoryContent({ useResponsiveOffset: false })}
+    `;
+  },
+};
+
+export const FixedSideNavWMixedLinksAndButtons = {
+  name: 'Fixed Side Nav with Mixed Buttons and Links',
+  args: { ...sideNavArgs },
+  argTypes: { ...sideNavArgTypes },
+  render: ({ expanded, sideNavAriaLabel }) => html`
+    <style>
+      ${styles}
+    </style>
+    <cds-side-nav
+      is-not-child-of-header
+      aria-label="${sideNavAriaLabel}"
+      collapse-mode="${SIDE_NAV_COLLAPSE_MODE.FIXED}"
+      ?expanded="${expanded}">
+      <cds-side-nav-items>
+        <cds-side-nav-link href="${linksHref}"> Overview </cds-side-nav-link>
+        <cds-side-nav-link as="button" @click="${action('Open release notes')}">
+          Release notes
+        </cds-side-nav-link>
+        <cds-side-nav-menu title="Resources">
+          <cds-side-nav-menu-item href="${linksHref}">
+            Documentation
+          </cds-side-nav-menu-item>
+          <cds-side-nav-menu-item
+            as="button"
+            @click="${action('Open version details')}">
+            Version details
+          </cds-side-nav-menu-item>
+          <cds-side-nav-menu-item href="${linksHref}">
+            Support
+          </cds-side-nav-menu-item>
+        </cds-side-nav-menu>
+        <cds-side-nav-divider></cds-side-nav-divider>
+        <cds-side-nav-link active href="${linksHref}">
+          Settings
+        </cds-side-nav-link>
+        <cds-side-nav-link
+          as="button"
+          @click="${action('Open feedback modal')}">
+          Send feedback
+        </cds-side-nav-link>
+      </cds-side-nav-items>
+    </cds-side-nav>
+    ${StoryContent({ useResponsiveOffset: false })}
+  `,
+};
+
+export const FixedSideNavIcons = {
+  name: 'Fixed Side Nav with Icons',
+  args: { ...sideNavArgs },
+  argTypes: { ...sideNavArgTypes },
+  render: ({ expanded, sideNavAriaLabel }) => {
+    return html`
+      <style>
+        ${styles}
+      </style>
+      <cds-side-nav
+        is-not-child-of-header
+        aria-label="${sideNavAriaLabel}"
+        collapse-mode="${SIDE_NAV_COLLAPSE_MODE.FIXED}"
+        ?expanded="${expanded}">
+        <cds-side-nav-items>
+          <cds-side-nav-menu title="Category title">
+            ${iconLoader(Fade16, { slot: 'title-icon' })}
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="Category title">
+            ${iconLoader(Fade16, { slot: 'title-icon' })}
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item
+              active
+              aria-current="page"
+              href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="Category title">
+            ${iconLoader(Fade16, { slot: 'title-icon' })}
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-link href="javascript:void(0)"
+            >${iconLoader(Fade16, { slot: 'title-icon' })}
+            Link</cds-side-nav-link
+          >
+          <cds-side-nav-link href="javascript:void(0)"
+            >${iconLoader(Fade16, { slot: 'title-icon' })}
+            Link</cds-side-nav-link
+          >
+        </cds-side-nav-items>
+      </cds-side-nav>
+      ${StoryContent({ useResponsiveOffset: false })}
+    `;
+  },
+};
+
+export const HeaderBase = {
+  args: { ...headerArgs },
+  argTypes: { ...headerArgTypes },
+  render: ({ headerAriaLabel, platformName, platformPrefix }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+      </cds-header>`,
+};
+
+export const HeaderBaseWActions = {
+  name: 'Header Base with Actions',
+  args: { ...headerArgs },
+  argTypes: { ...headerArgTypes },
+  render: ({ headerAriaLabel, platformName, platformPrefix }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <div class="${prefix}--header__global">
+          <cds-header-global-action aria-label="Search" tooltip-text="Search">
+            ${iconLoader(Search20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="Notification"
+            tooltip-text="Notification">
+            ${iconLoader(Notification20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="App Switcher"
+            tooltip-text="App Switcher"
+            tooltip-alignment="right">
+            ${iconLoader(SwitcherIcon20, { slot: 'icon' })}
+          </cds-header-global-action>
+        </div>
+      </cds-header>`,
+};
+
+export const HeaderBaseWActionsRightPanel = {
+  name: 'Header Base with Actions and Right Panel',
+  argTypes: {
+    ...headerArgTypes,
+    badgeCount: {
+      control: 'number',
+      description:
+        ' **Experimental**: Display a badge on the button. An empty/dot badge if 0, a numbered badge if > 0. Must be used with size="lg" and kind="ghost"',
+    },
+  },
+  args: {
+    ...headerArgs,
+    badgeCount: 4,
+  },
+  render: ({ badgeCount, headerAriaLabel, platformName, platformPrefix }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <div class="${prefix}--header__global">
+          <cds-header-global-action aria-label="Search" tooltip-text="Search">
+            ${iconLoader(Search20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            panel-id="notification-panel"
+            aria-label="Notification"
+            tooltip-text="Notification">
+            ${iconLoader(Notification20, { slot: 'icon' })}
+            ${badgeCount > 0
+              ? html`<cds-badge-indicator
+                  count=${badgeCount}></cds-badge-indicator>`
+              : html`<cds-badge-indicator></cds-badge-indicator>`}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="App Switcher"
+            tooltip-text="App Switcher"
+            tooltip-alignment="right">
+            ${iconLoader(SwitcherIcon20, { slot: 'icon' })}
+          </cds-header-global-action>
+        </div>
+        <cds-header-panel
+          id="notification-panel"
+          aria-label="Header Panel"></cds-header-panel>
+      </cds-header>`,
+};
+
+export const HeaderBaseWActionsSwitcher = {
+  name: 'Header Base with Actions and Switcher',
+  args: { ...headerArgs },
+  argTypes: { ...headerArgTypes },
+  render: ({ headerAriaLabel, platformName, platformPrefix }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <div class="${prefix}--header__global">
+          <cds-header-global-action aria-label="Search" tooltip-text="Search">
+            ${iconLoader(Search20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="Notification"
+            tooltip-text="Notification">
+            ${iconLoader(Notification20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            button-label-active="Close switcher"
+            button-label-inactive="Open switcher"
+            tooltip-text="Open switcher"
+            panel-id="switcher-panel"
+            tooltip-alignment="right">
+            ${iconLoader(SwitcherIcon20, { slot: 'icon' })}
+          </cds-header-global-action>
+        </div>
+        <cds-header-panel id="switcher-panel" aria-label="Header Panel">
+          <cds-switcher aria-label="Switcher Container">
+            <cds-switcher-item aria-label="Link 1" href="#"
+              >Link 1</cds-switcher-item
+            >
+            <cds-switcher-divider></cds-switcher-divider>
+            <cds-switcher-item aria-label="Link 2" href="#"
+              >Link 2</cds-switcher-item
+            >
+            <cds-switcher-item aria-label="Link 3" href="#"
+              >Link 3</cds-switcher-item
+            >
+            <cds-switcher-item aria-label="Link 4" href="#"
+              >Link 4</cds-switcher-item
+            >
+            <cds-switcher-item aria-label="Link 5" href="#"
+              >Link 5</cds-switcher-item
+            >
+            <cds-switcher-divider></cds-switcher-divider>
+            <cds-switcher-item aria-label="Link 6" href="#"
+              >Link 6</cds-switcher-item
+            >
+          </cds-switcher>
+        </cds-header-panel>
+      </cds-header>
+      ${StoryContent({ useResponsiveOffset: true })}`,
+};
+
+export const HeaderBaseWNavigationActionsAndSideNav = {
+  name: 'Header Base with Navigation, Actions and Side Nav',
+  args: {
+    ...headerArgs,
+    ...navigationArgs,
+    ...sideNavAriaLabelArgs,
+  },
+  argTypes: {
+    ...headerArgTypes,
+    ...navigationArgTypes,
+    ...sideNavAriaLabelArgTypes,
+  },
+  render: ({
+    headerAriaLabel,
+    navigationAriaLabel,
+    navigationMenuLabel,
+    platformName,
+    platformPrefix,
+    sideNavAriaLabel,
+  }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-menu-button
+          button-label-active="Close menu"
+          button-label-inactive="Open menu"></cds-header-menu-button>
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <cds-header-nav menu-bar-label="${navigationAriaLabel}">
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 1</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 2</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 3</cds-header-nav-item
+          >
+          <cds-header-menu
+            menu-label="${navigationMenuLabel}"
+            trigger-content="${navigationMenuLabel}">
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 1</cds-header-menu-item
+            >
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 2</cds-header-menu-item
+            >
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 3</cds-header-menu-item
+            >
+          </cds-header-menu>
+        </cds-header-nav>
+        <div class="${prefix}--header__global">
+          <cds-header-global-action aria-label="Search" tooltip-text="Search">
+            ${iconLoader(Search20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="Notification"
+            tooltip-text="Notification">
+            ${iconLoader(Notification20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="App Switcher"
+            tooltip-text="App Switcher"
+            tooltip-alignment="right">
+            ${iconLoader(SwitcherIcon20, { slot: 'icon' })}
+          </cds-header-global-action>
+        </div>
+        <cds-side-nav
+          aria-label="${sideNavAriaLabel}"
+          collapse-mode="${SIDE_NAV_COLLAPSE_MODE.RESPONSIVE}">
+          <cds-side-nav-items>
+            <cds-header-side-nav-items has-divider>
+              <cds-side-nav-link href="javascript:void(0)">
+                Link 1
+              </cds-side-nav-link>
+              <cds-side-nav-link href="javascript:void(0)">
+                Link 2
+              </cds-side-nav-link>
+              <cds-side-nav-link href="javascript:void(0)">
+                Link 3
+              </cds-side-nav-link>
+              <cds-side-nav-menu title="Link 4">
+                <cds-side-nav-menu-item href="${linksHref}">
+                  Sub-link 1
+                </cds-side-nav-menu-item>
+                <cds-side-nav-menu-item href="${linksHref}">
+                  Sub-link 2
+                </cds-side-nav-menu-item>
+                <cds-side-nav-menu-item href="${linksHref}">
+                  Sub-link 3
+                </cds-side-nav-menu-item>
+              </cds-side-nav-menu>
+            </cds-header-side-nav-items>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item aria-current="page" href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item active href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-link href="javascript:void(0)"
+              >${iconLoader(Fade16, { slot: 'title-icon' })}
+              Link</cds-side-nav-link
+            >
+            <cds-side-nav-link href="javascript:void(0)"
+              >${iconLoader(Fade16, { slot: 'title-icon' })}
+              Link</cds-side-nav-link
+            >
+          </cds-side-nav-items>
+        </cds-side-nav>
+      </cds-header>
+      ${StoryContent({ useResponsiveOffset: true })}`,
+};
+
+export const HeaderBaseWNavigationActions = {
+  name: 'Header Base with Navigation and Actions',
+  args: {
+    ...headerArgs,
+    ...navigationArgs,
+    ...sideNavAriaLabelArgs,
+  },
+  argTypes: {
+    ...headerArgTypes,
+    ...navigationArgTypes,
+    ...sideNavAriaLabelArgTypes,
+  },
+  render: ({
+    headerAriaLabel,
+    navigationAriaLabel,
+    navigationMenuLabel,
+    platformName,
+    platformPrefix,
+    sideNavAriaLabel,
+  }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-menu-button
+          button-label-active="Close menu"
+          button-label-inactive="Open menu"></cds-header-menu-button>
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <cds-header-nav menu-bar-label="${navigationAriaLabel}">
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 1</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 2</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 3</cds-header-nav-item
+          >
+          <cds-header-menu
+            is-active
+            menu-label="${navigationMenuLabel}"
+            trigger-content="${navigationMenuLabel}">
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 1</cds-header-menu-item
+            >
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 2</cds-header-menu-item
+            >
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 3</cds-header-menu-item
+            >
+          </cds-header-menu>
+        </cds-header-nav>
+        <div class="${prefix}--header__global">
+          <cds-header-global-action aria-label="Search" tooltip-text="Search">
+            ${iconLoader(Search20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="Notification"
+            tooltip-text="Notification">
+            ${iconLoader(Notification20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="App Switcher"
+            tooltip-text="App Switcher"
+            tooltip-alignment="right">
+            ${iconLoader(SwitcherIcon20, { slot: 'icon' })}
+          </cds-header-global-action>
+        </div>
+        <cds-side-nav
+          is-not-persistent
+          aria-label="${sideNavAriaLabel}"
+          collapse-mode="${SIDE_NAV_COLLAPSE_MODE.RESPONSIVE}">
+          <cds-side-nav-items>
+            <cds-side-nav-link href="javascript:void(0)">
+              Link 1
+            </cds-side-nav-link>
+            <cds-side-nav-link href="javascript:void(0)">
+              Link 2
+            </cds-side-nav-link>
+            <cds-side-nav-link href="javascript:void(0)">
+              Link 3
+            </cds-side-nav-link>
+            <cds-side-nav-menu title="Link 4">
+              <cds-side-nav-menu-item href="${linksHref}">
+                Sub-link 1
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Sub-link 2
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Sub-link 3
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+          </cds-side-nav-items>
+        </cds-side-nav>
+      </cds-header>`,
+};
+
+export const HeaderBaseWNavigation = {
+  name: 'Header Base with Navigation',
+  args: {
+    ...headerArgs,
+    ...navigationArgs,
+    ...sideNavAriaLabelArgs,
+  },
+  argTypes: {
+    ...headerArgTypes,
+    ...navigationArgTypes,
+    ...sideNavAriaLabelArgTypes,
+  },
+  render: ({
+    headerAriaLabel,
+    navigationAriaLabel,
+    navigationMenuLabel,
+    platformName,
+    platformPrefix,
+    sideNavAriaLabel,
+  }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-menu-button
+          button-label-active="Close menu"
+          button-label-inactive="Open menu"></cds-header-menu-button>
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <cds-header-nav menu-bar-label="${navigationAriaLabel}">
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 1</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 2</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 3</cds-header-nav-item
+          >
+          <cds-header-menu
+            menu-label="${navigationMenuLabel}"
+            trigger-content="${navigationMenuLabel}">
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 1</cds-header-menu-item
+            >
+            <cds-header-menu-item is-active href="javascript:void 0"
+              >Sub-link 2</cds-header-menu-item
+            >
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 3</cds-header-menu-item
+            >
+          </cds-header-menu>
+        </cds-header-nav>
+        <cds-side-nav
+          is-not-persistent
+          aria-label="${sideNavAriaLabel}"
+          collapse-mode="${SIDE_NAV_COLLAPSE_MODE.RESPONSIVE}">
+          <cds-side-nav-items>
+            <cds-side-nav-link href="javascript:void(0)">
+              Link 1
+            </cds-side-nav-link>
+            <cds-side-nav-link href="javascript:void(0)">
+              Link 2
+            </cds-side-nav-link>
+            <cds-side-nav-link href="javascript:void(0)">
+              Link 3
+            </cds-side-nav-link>
+            <cds-side-nav-menu title="Link 4">
+              <cds-side-nav-menu-item href="${linksHref}">
+                Sub-link 1
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Sub-link 2
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Sub-link 3
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+          </cds-side-nav-items>
+        </cds-side-nav>
+      </cds-header>`,
+};
+
+export const HeaderBaseWSideNav = {
+  name: 'Header Base with Side Nav',
+  args: {
+    ...headerArgs,
+    ...sideNavAriaLabelArgs,
+  },
+  argTypes: {
+    ...headerArgTypes,
+    ...sideNavAriaLabelArgTypes,
+  },
+  render: ({
+    headerAriaLabel,
+    platformName,
+    platformPrefix,
+    sideNavAriaLabel,
+  }) => {
+    return html`
+      <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-menu-button
+          button-label-active="Close menu"
+          button-label-inactive="Open menu"></cds-header-menu-button>
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <cds-side-nav
+          aria-label="${sideNavAriaLabel}"
+          collapse-mode="${SIDE_NAV_COLLAPSE_MODE.RESPONSIVE}">
+          <cds-side-nav-items>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item
+                active
+                aria-current="page"
+                href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-link href="javascript:void(0)"
+              >${iconLoader(Fade16, {
+                slot: 'title-icon',
+              })}Link</cds-side-nav-link
+            >
+            <cds-side-nav-link href="javascript:void(0)"
+              >${iconLoader(Fade16, {
+                slot: 'title-icon',
+              })}Link</cds-side-nav-link
+            >
+          </cds-side-nav-items>
+        </cds-side-nav>
+      </cds-header>
+      ${StoryContent({ useResponsiveOffset: true })}
+    `;
+  },
+};
+
+export const HeaderBaseWSkipToContent = {
+  name: 'Header Base with SkipToContent',
+  args: { ...headerArgs },
+  argTypes: { ...headerArgTypes },
+  render: ({ headerAriaLabel, platformName, platformPrefix }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-skip-to-content></cds-skip-to-content>
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <div class="${prefix}--header__global">
+          <cds-header-global-action aria-label="Search" tooltip-text="Search">
+            ${iconLoader(Search20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="Notification"
+            tooltip-text="Notification">
+            ${iconLoader(Notification20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="App Switcher"
+            tooltip-text="App Switcher"
+            tooltip-alignment="right">
+            ${iconLoader(SwitcherIcon20, { slot: 'icon' })}
+          </cds-header-global-action>
+        </div>
+      </cds-header>
+      ${StoryContent({ useResponsiveOffset: true })}`,
+};
+
+export const SideNavRail = {
+  name: 'Side Nav Rail',
+  args: {
+    ...sideNavAriaLabelArgs,
+    expanded: false,
+  },
+  argTypes: { ...sideNavArgTypes },
+  render: ({ expanded, sideNavAriaLabel }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-side-nav
+        aria-label="${sideNavAriaLabel}"
+        collapse-mode="${SIDE_NAV_COLLAPSE_MODE.RAIL}"
+        ?expanded="${expanded}">
+        <cds-side-nav-items>
+          <cds-side-nav-menu title="Category title">
+            ${iconLoader(Fade16, { slot: 'title-icon' })}
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item
+              active
+              aria-current="page"
+              href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="Category title">
+            ${iconLoader(Fade16, { slot: 'title-icon' })}
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-menu title="Category title">
+            ${iconLoader(Fade16, { slot: 'title-icon' })}
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Link
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-link href="javascript:void(0)"
+            >${iconLoader(Fade16, {
+              slot: 'title-icon',
+            })}Link</cds-side-nav-link
+          >
+          <cds-side-nav-link href="javascript:void(0)"
+            >${iconLoader(Fade16, {
+              slot: 'title-icon',
+            })}Link</cds-side-nav-link
+          >
+        </cds-side-nav-items>
+      </cds-side-nav>
+      ${StoryContent({ useResponsiveOffset: true })}`,
+};
+
+export const SideNavRailWHeader = {
+  name: 'Side Nav Rail with Header',
+  args: {
+    ...headerArgs,
+    ...navigationArgs,
+    ...sideNavAriaLabelArgs,
+    expanded: false,
+  },
+  argTypes: {
+    ...headerArgTypes,
+    ...navigationArgTypes,
+    ...sideNavArgTypes,
+  },
+  render: ({
+    expanded,
+    headerAriaLabel,
+    navigationAriaLabel,
+    navigationMenuLabel,
+    platformName,
+    platformPrefix,
+    sideNavAriaLabel,
+  }) =>
+    html` <style>
+        ${styles}
+      </style>
+      <cds-header aria-label="${headerAriaLabel}">
+        <cds-header-menu-button
+          button-label-active="Close menu"
+          button-label-inactive="Open menu"></cds-header-menu-button>
+        <cds-header-name href="javascript:void 0" prefix="${platformPrefix}"
+          >${platformName}</cds-header-name
+        >
+        <cds-header-nav menu-bar-label="${navigationAriaLabel}">
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 1</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 2</cds-header-nav-item
+          >
+          <cds-header-nav-item href="javascript:void 0"
+            >Link 3</cds-header-nav-item
+          >
+          <cds-header-menu
+            menu-label="${navigationMenuLabel}"
+            trigger-content="${navigationMenuLabel}">
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 1</cds-header-menu-item
+            >
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 2</cds-header-menu-item
+            >
+            <cds-header-menu-item href="javascript:void 0"
+              >Sub-link 3</cds-header-menu-item
+            >
+          </cds-header-menu>
+        </cds-header-nav>
+        <div class="${prefix}--header__global">
+          <cds-header-global-action aria-label="Search" tooltip-text="Search">
+            ${iconLoader(Search20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="Notification"
+            tooltip-text="Notification">
+            ${iconLoader(Notification20, { slot: 'icon' })}
+          </cds-header-global-action>
+          <cds-header-global-action
+            aria-label="App Switcher"
+            tooltip-text="App Switcher"
+            tooltip-alignment="right">
+            ${iconLoader(SwitcherIcon20, { slot: 'icon' })}
+          </cds-header-global-action>
+        </div>
+        <cds-side-nav
+          aria-label="${sideNavAriaLabel}"
+          collapse-mode="${SIDE_NAV_COLLAPSE_MODE.RAIL}"
+          ?expanded="${expanded}">
+          <cds-side-nav-items>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item
+                active
+                aria-current="page"
+                href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-menu title="Category title">
+              ${iconLoader(Fade16, { slot: 'title-icon' })}
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+              <cds-side-nav-menu-item href="${linksHref}">
+                Link
+              </cds-side-nav-menu-item>
+            </cds-side-nav-menu>
+            <cds-side-nav-link href="javascript:void(0)"
+              >${iconLoader(Fade16, {
+                slot: 'title-icon',
+              })}Link</cds-side-nav-link
+            >
+            <cds-side-nav-link href="javascript:void(0)"
+              >${iconLoader(Fade16, {
+                slot: 'title-icon',
+              })}Link</cds-side-nav-link
+            >
+          </cds-side-nav-items>
+        </cds-side-nav>
+      </cds-header>
+      ${StoryContent({ useResponsiveOffset: true })}`,
+};
+
+export const SideNavWLargeSideNavItems = {
+  name: 'Side Nav with Large Side Nav Items',
+  args: { ...sideNavArgs },
+  argTypes: { ...sideNavArgTypes },
+  render: ({ expanded, sideNavAriaLabel }) => {
+    return html`
+      <style>
+        ${styles}
+      </style>
+      <cds-side-nav
+        is-not-child-of-header
+        aria-label="${sideNavAriaLabel}"
+        collapse-mode="${SIDE_NAV_COLLAPSE_MODE.FIXED}"
+        ?expanded="${expanded}">
+        <cds-side-nav-items>
+          <cds-side-nav-menu large title="Large menu">
+            <cds-side-nav-menu-item href="${linksHref}">
+              Menu 1
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Menu 2
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Menu 3
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-link large href="javascript:void(0)"
+            >Large link</cds-side-nav-link
+          >
+          <cds-side-nav-menu large title="Large menu with icon"
+            >${iconLoader(Fade16, { slot: 'title-icon' })}
+            <cds-side-nav-menu-item href="${linksHref}">
+              Menu 1
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Menu 2
+            </cds-side-nav-menu-item>
+            <cds-side-nav-menu-item href="${linksHref}">
+              Menu 3
+            </cds-side-nav-menu-item>
+          </cds-side-nav-menu>
+          <cds-side-nav-link large href="javascript:void(0)">
+            ${iconLoader(Fade16, { slot: 'title-icon' })} Large link with
+            icon</cds-side-nav-link
+          >
+        </cds-side-nav-items>
+      </cds-side-nav>
+      ${StoryContent({ useResponsiveOffset: true })}
+    `;
+  },
+};
+
+export default {
+  title: 'Components/UI Shell',
+};
