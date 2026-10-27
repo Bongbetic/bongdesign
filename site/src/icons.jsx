@@ -59,16 +59,20 @@ export default function IconsLibrary() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(7rem, 1fr))', gap: '1px', background: '#e0e0e0', border: '1px solid #e0e0e0', marginTop: '1rem' }}>
-        {shown.map((b) => (
-          <div key={b.name} style={{ background: '#fff', padding: '1rem', textAlign: 'center' }}>
-            <IconGlyph descriptor={b.descriptor} size={32} />
-            <div style={{ marginTop: '0.5rem' }}>
-              <code style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>{b.name}</code>
-            </div>
-          </div>
-        ))}
-      </div>
+      <Carbon.FlexGrid>
+        <Carbon.Row>
+          {shown.map((b) => (
+            <Carbon.Column key={b.name} sm={2} md={4} lg={4}>
+              <Carbon.Tile>
+                <IconGlyph descriptor={b.descriptor} size={32} />
+                <div>
+                  <code style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>{b.name}</code>
+                </div>
+              </Carbon.Tile>
+            </Carbon.Column>
+          ))}
+        </Carbon.Row>
+      </Carbon.FlexGrid>
     </div>
   );
 }

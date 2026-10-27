@@ -6,7 +6,12 @@ import {
   ClickableTile,
   DataTable,
   Link,
+  ListItem,
   Search,
+  StructuredListBody,
+  StructuredListCell,
+  StructuredListRow,
+  StructuredListWrapper,
   Tab,
   TabList,
   TabPanel,
@@ -18,6 +23,7 @@ import {
   TableHeader,
   TableRow,
   Tabs,
+  UnorderedList,
 } from '@carbon/react';
 import { DemoBoundary, category, componentCards } from '../explorer.jsx';
 import { RouteLink, navClick } from '../routes.jsx';
@@ -145,6 +151,40 @@ function introFor(card, g) {
   return `${card.name} ships in the pinned upstream release \u2014 rendered live from your own repo.`;
 }
 
+// Per-page index navigation: the old 147-link plain footer index (178
+// anchors per page) is a Carbon StructuredList with three rows — previous
+// sibling, the full component index, next sibling — so every pinned
+// component stays reachable without the raw anchor wall.
+function ComponentIndexNav({ card, others }) {
+  const idx = others.findIndex((c) => c.name === card.name);
+  const prev = others[(idx - 1 + others.length) % others.length];
+  const next = others[(idx + 1) % others.length];
+  const rows = [
+    { label: 'Previous', target: prev },
+    { label: 'Next', target: next },
+  ];
+  return (
+    <StructuredListWrapper>
+      <StructuredListBody>
+        <StructuredListRow>
+          <StructuredListCell>Full index</StructuredListCell>
+          <StructuredListCell>
+            <RouteLink to="/components">All {others.length} components</RouteLink>
+          </StructuredListCell>
+        </StructuredListRow>
+        {rows.map((r) => (
+          <StructuredListRow key={r.label}>
+            <StructuredListCell>{r.label}</StructuredListCell>
+            <StructuredListCell>
+              <RouteLink to={`/components/${r.target.name.toLowerCase()}`}>{r.target.name}</RouteLink>
+            </StructuredListCell>
+          </StructuredListRow>
+        ))}
+      </StructuredListBody>
+    </StructuredListWrapper>
+  );
+}
+
 // One component-page template, driven by data/*.json: live demo, guidance
 // tabs, and the mined props table. Utilities that cannot render alone get
 // an honest code-only state instead of a broken demo.
@@ -203,11 +243,11 @@ export function ComponentPage({ name }) {
         <TabPanels>
           <TabPanel>
             {g ? (
-              <ul>
+              <UnorderedList>
                 {g.guidelines.map((line, i) => (
-                  <li key={i}>{line}</li>
+                  <ListItem key={i}>{line}</ListItem>
                 ))}
-              </ul>
+              </UnorderedList>
             ) : (
               <p>Guidance for this entry is being written.</p>
             )}
@@ -236,11 +276,11 @@ export function ComponentPage({ name }) {
           </TabPanel>
           <TabPanel>
             {g ? (
-              <ul>
+              <UnorderedList>
                 {g.a11y.map((line, i) => (
-                  <li key={i}>{line}</li>
+                  <ListItem key={i}>{line}</ListItem>
                 ))}
-              </ul>
+              </UnorderedList>
             ) : (
               <p>Accessibility notes for this entry are being written.</p>
             )}
@@ -254,13 +294,12 @@ export function ComponentPage({ name }) {
       </div>
       <div className="bong-section">
         <h2>All components</h2>
-        <div className="bong-index">
-          {others.map((c) => (
-            <div key={c.name}>
-              <RouteLink to={`/components/${c.name.toLowerCase()}`}>{c.name}</RouteLink>
-            </div>
-          ))}
-        </div>
+        <p>
+          Every pinned component stays one click away through the{' '}
+          <RouteLink to="/components">component index</RouteLink>. Previous
+          and next walk the alphabetical set.
+        </p>
+        <ComponentIndexNav card={card} others={others} />
         <p style={{ marginTop: '1rem' }}>
           Pinned to upstream Carbon {index.meta.carbonTag} ·{' '}
           <Link href="https://github.com/Bongbetic/bongdesign">Bongbetic/bongdesign</Link>

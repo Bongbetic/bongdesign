@@ -646,6 +646,83 @@ routeCheck(
   /\.bong-demo\s*\{/.test(scssText) && /\.bong-code\s*\{/.test(scssText),
   'no .bong-demo/.bong-code styles in index.scss'
 );
+// Phase 7 (T15, issue #30): SC-5 round-2 remediation — design-system layout.
+// The /foundations index was a bare congested link list (0 Carbon tiles)
+// and every component page carried a 147-link plain footer index
+// (178 anchors). Acceptance: (a) /foundations SSR renders cds--tile cards;
+// (b) a component page anchor count is materially below 178 and its index
+// uses a Carbon primitive (cds--structured-list or cds--tile), with no
+// .bong-index anchor wall; (c) foundation/material pages lay out on Carbon
+// Grid/Tile/StructuredList primitives (token VALUE displays stay custom but
+// sit on the Carbon grid); (d) guidance content lists use Carbon list
+// primitives. Pinned token/icon values are asserted by the T07 phase above
+// and must not change.
+if (typeof app.AppForPath === 'function') {
+  let foundationsHtml = '';
+  try {
+    foundationsHtml = ssr('/foundations');
+  } catch (e) {
+    routeCheck("SSR renders '/foundations' for the T15 tile check", false, e.message.split('\n')[0]);
+  }
+  if (foundationsHtml) {
+    routeCheck(
+      '/foundations index renders Carbon tile cards',
+      foundationsHtml.includes('cds--tile'),
+      'no cds--tile cards in the foundations index SSR'
+    );
+  }
+  let sampleHtml = '';
+  try {
+    sampleHtml = ssr('/components/button');
+  } catch (e) {
+    routeCheck("SSR renders '/components/button' for the T15 anchor check", false, e.message.split('\n')[0]);
+  }
+  if (sampleHtml) {
+    const anchors = (sampleHtml.match(/<a\b/g) || []).length;
+    routeCheck(
+      'component page anchor count is materially below the 178-anchor wall (<100)',
+      anchors < 100,
+      'got ' + anchors + ' anchors'
+    );
+    routeCheck(
+      'component page index uses a Carbon primitive (structured list or tile)',
+      sampleHtml.includes('cds--structured-list') || sampleHtml.includes('cds--tile'),
+      'no cds--structured-list or cds--tile index in the component page SSR'
+    );
+    routeCheck(
+      'component page drops the plain .bong-index anchor wall',
+      !sampleHtml.includes('bong-index'),
+      'plain .bong-index footer still in the component page SSR'
+    );
+  }
+  for (const slug of ['color', 'typography', 'icons']) {
+    let html = '';
+    try {
+      html = ssr('/foundations/' + slug);
+    } catch (e) {
+      routeCheck("SSR renders '/foundations/" + slug + "' for the T15 grid check", false, e.message.split('\n')[0]);
+      continue;
+    }
+    routeCheck(
+      "'" + slug + "' foundation page lays out on Carbon Grid/Tile/StructuredList primitives",
+      html.includes('cds--tile') || html.includes('cds--col') || html.includes('cds--structured-list'),
+      'no Carbon layout primitive in the ' + slug + ' SSR'
+    );
+  }
+  let patternHtml = '';
+  try {
+    patternHtml = ssr('/patterns/empty-state');
+  } catch (e) {
+    routeCheck("SSR renders '/patterns/empty-state' for the T15 list check", false, e.message.split('\n')[0]);
+  }
+  if (patternHtml) {
+    routeCheck(
+      'guidance content lists use Carbon list primitives',
+      patternHtml.includes('cds--list--unordered') || patternHtml.includes('cds--list--ordered'),
+      'no cds--list primitive in the pattern page SSR'
+    );
+  }
+}
 if (routeFails.length > 0) {
   console.error('Route failures:\n' + routeFails.join('\n'));
   process.exit(1);

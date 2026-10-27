@@ -34,8 +34,11 @@ function MotionSection() {
       <Carbon.Button kind="tertiary" onClick={() => setGo(!go)}>
         {go ? 'Reset' : 'Play all'}
       </Carbon.Button>
+      <Carbon.FlexGrid>
       {EASINGS.map((e) => (
-        <div key={e.name} style={{ marginTop: '1rem' }}>
+        <Carbon.Row key={e.name}>
+          <Carbon.Column>
+          <Carbon.Tile>
           <strong>
             {e.name} <code>{e.value}</code>
           </strong>
@@ -57,8 +60,11 @@ function MotionSection() {
               </div>
             </div>
           ))}
-        </div>
+          </Carbon.Tile>
+          </Carbon.Column>
+        </Carbon.Row>
       ))}
+      </Carbon.FlexGrid>
     </div>
   );
 }
@@ -70,8 +76,11 @@ function ColorSection() {
   return (
     <div>
       <p>Palettes from the pinned token index (data/tokens.json).</p>
+      <Carbon.FlexGrid>
       {PALETTE_FAMILIES.map((fam) => (
-        <div key={fam} style={{ marginTop: '1.5rem' }}>
+        <Carbon.Row key={fam}>
+          <Carbon.Column>
+          <Carbon.Tile>
           <strong style={{ textTransform: 'capitalize' }}>{fam}</strong>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
             {GRADES.map((g) => {
@@ -96,8 +105,11 @@ function ColorSection() {
               );
             })}
           </div>
-        </div>
+          </Carbon.Tile>
+          </Carbon.Column>
+        </Carbon.Row>
       ))}
+      </Carbon.FlexGrid>
     </div>
   );
 }
@@ -108,17 +120,18 @@ function ThemesSection() {
   return (
     <div>
       <p>Theme tokens from the pinned token index (data/tokens.json).</p>
+      <Carbon.FlexGrid>
       {THEME_NAMES.map((t) => {
         const theme = tokens.themes[t];
         if (!theme) return null;
         return (
+          <Carbon.Row key={t}>
+          <Carbon.Column>
           <div
-            key={t}
             style={{
               background: theme.background,
               color: theme.textPrimary,
               padding: '1.5rem',
-              marginTop: '1.5rem',
             }}
           >
             <strong>
@@ -143,8 +156,11 @@ function ThemesSection() {
               </span>
             </div>
           </div>
+          </Carbon.Column>
+          </Carbon.Row>
         );
       })}
+      </Carbon.FlexGrid>
     </div>
   );
 }
@@ -160,13 +176,21 @@ function SpacingSection() {
   return (
     <div>
       <p>Carbon spacing scale. Same steps everywhere.</p>
-      {SPACING.map(([token, value]) => (
-        <div key={token} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
-          <code style={{ width: '7rem' }}>{token}</code>
-          <div style={{ background: '#0f62fe', height: '1rem', width: value }} />
-          <span>{value}</span>
-        </div>
-      ))}
+      <Carbon.StructuredListWrapper>
+        <Carbon.StructuredListBody>
+          {SPACING.map(([token, value]) => (
+            <Carbon.StructuredListRow key={token}>
+              <Carbon.StructuredListCell>
+                <code>{token}</code>
+              </Carbon.StructuredListCell>
+              <Carbon.StructuredListCell>
+                <div style={{ background: '#0f62fe', height: '1rem', width: value }} />
+              </Carbon.StructuredListCell>
+              <Carbon.StructuredListCell>{value}</Carbon.StructuredListCell>
+            </Carbon.StructuredListRow>
+          ))}
+        </Carbon.StructuredListBody>
+      </Carbon.StructuredListWrapper>
     </div>
   );
 }
@@ -188,18 +212,24 @@ function TypographySection() {
   return (
     <div>
       <p>Type tokens from the pinned token index (data/tokens.json).</p>
+      <Carbon.FlexGrid>
       {TYPE_SAMPLE.map((t) => {
         const s = tokens.type[t];
         if (!s) return null;
         return (
-          <div key={t} style={{ marginTop: '1rem', borderTop: '1px solid #e0e0e0', paddingTop: '1rem' }}>
+          <Carbon.Row key={t}>
+          <Carbon.Column>
+          <Carbon.Tile>
             <code>{t}</code>
             <div style={{ fontSize: s.fontSize, lineHeight: s.lineHeight, fontWeight: s.fontWeight, letterSpacing: s.letterSpacing }}>
               Bongbetic builds free software with loud opinions.
             </div>
-          </div>
+          </Carbon.Tile>
+          </Carbon.Column>
+          </Carbon.Row>
         );
       })}
+      </Carbon.FlexGrid>
     </div>
   );
 }
@@ -264,12 +294,12 @@ export const FOUNDATION_SECTIONS = [
           visible focus, and sufficient contrast are part of every component
           here, not an afterthought.
         </p>
-        <ul>
-          <li>Every action reachable and operable by keyboard alone.</li>
-          <li>Focus indicator always visible and never clipped.</li>
-          <li>Text contrast 4.5 to 1 or better; large text 3 to 1.</li>
-          <li>Never signal by color alone; pair with text or icon.</li>
-        </ul>
+        <Carbon.UnorderedList>
+          <Carbon.ListItem>Every action reachable and operable by keyboard alone.</Carbon.ListItem>
+          <Carbon.ListItem>Focus indicator always visible and never clipped.</Carbon.ListItem>
+          <Carbon.ListItem>Text contrast 4.5 to 1 or better; large text 3 to 1.</Carbon.ListItem>
+          <Carbon.ListItem>Never signal by color alone; pair with text or icon.</Carbon.ListItem>
+        </Carbon.UnorderedList>
       </div>
     ),
   },
@@ -283,12 +313,12 @@ export const FOUNDATION_SECTIONS = [
           gets labelled, machine output stays editable, and people stay in
           control.
         </p>
-        <ul>
-          <li>Label AI output with the AI label; provenance is never hidden.</li>
-          <li>Generated text stays editable before it is used.</li>
-          <li>Confidence shown honestly; no fake certainty.</li>
-          <li>A person can always undo, edit, or dismiss.</li>
-        </ul>
+        <Carbon.UnorderedList>
+          <Carbon.ListItem>Label AI output with the AI label; provenance is never hidden.</Carbon.ListItem>
+          <Carbon.ListItem>Generated text stays editable before it is used.</Carbon.ListItem>
+          <Carbon.ListItem>Confidence shown honestly; no fake certainty.</Carbon.ListItem>
+          <Carbon.ListItem>A person can always undo, edit, or dismiss.</Carbon.ListItem>
+        </Carbon.UnorderedList>
       </div>
     ),
   },
@@ -302,11 +332,11 @@ export const FOUNDATION_SECTIONS = [
           Write like a person speaking to a person. Short sentences, plain
           words, action-first labels. The interface is a conversation.
         </p>
-        <ul>
-          <li>Buttons are verbs: Save, Delete, Create.</li>
-          <li>Errors say what broke and how to fix it.</li>
-          <li>One idea per sentence. Cut every spare word.</li>
-        </ul>
+        <Carbon.UnorderedList>
+          <Carbon.ListItem>Buttons are verbs: Save, Delete, Create.</Carbon.ListItem>
+          <Carbon.ListItem>Errors say what broke and how to fix it.</Carbon.ListItem>
+          <Carbon.ListItem>One idea per sentence. Cut every spare word.</Carbon.ListItem>
+        </Carbon.UnorderedList>
       </div>
     ),
   },
