@@ -1,9 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Breadcrumb,
   BreadcrumbItem,
+  Button,
+  ClickableTile,
   DataTable,
   Link,
+  Search,
   Tab,
   TabList,
   TabPanel,
@@ -16,8 +19,8 @@ import {
   TableRow,
   Tabs,
 } from '@carbon/react';
-import Explorer, { DemoBoundary, componentCards } from '../explorer.jsx';
-import { RouteLink } from '../routes.jsx';
+import { DemoBoundary, category, componentCards } from '../explorer.jsx';
+import { RouteLink, navClick } from '../routes.jsx';
 import guidelines from '../../../data/guidelines.json';
 import propsIndex from '../../../data/props.json';
 import index from '../../../data/components.json';
@@ -73,8 +76,14 @@ function PropsTable({ name }) {
   );
 }
 
-// Gallery route: the full explorer, unchanged, mounted inside the shell.
+// Gallery route: searchable card grid over the explorer index. Every card
+// deep-links to its per-component page; the filter narrows by name. The
+// live demos themselves (explorer.jsx) render on the component pages.
 export function ComponentsOverview() {
+  const { cards } = useMemo(componentCards, []);
+  const [query, setQuery] = useState('');
+  const q = query.trim().toLowerCase();
+  const shown = cards.filter((c) => c.name.toLowerCase().includes(q));
   return (
     <div>
       <h1>All components</h1>
@@ -82,13 +91,63 @@ export function ComponentsOverview() {
         Every component in the pinned upstream release, rendered live from
         your own repo.
       </p>
-      <Explorer />
+      <Search
+        id="components-filter"
+        labelText="Filter components"
+        placeholder="e.g. modal"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <p>
+        Showing {shown.length} of {cards.length} components.
+      </p>
+      <div className="bong-card-grid">
+        {shown.map((c) => {
+          const to = `/components/${c.name.toLowerCase()}`;
+          return (
+            <ClickableTile key={c.name} href={to} onClick={navClick(to)}>
+              <h3>{c.name}</h3>
+              <p>
+                {category(c.name)} · {c.live ? 'Live demo' : c.note || 'Code only'}
+              </p>
+            </ClickableTile>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
+// Button page mirrors the locked prototype screen
+// (carbon/.heimdall/design/prototype/component-button.html): breadcrumb,
+// title, one-primary-button intro, Guidelines / Specifications / Code /
+// Accessibility tabs, Primary / Secondary / Tertiary demo, usage snippet,
+// and the real props table from the pinned source.
+const BUTTON_INTRO =
+  'Buttons communicate actions users can take. Each page should have only one primary button.';
+const BUTTON_CODE = `import { Button } from '@carbon/react';
+
+<Button kind="primary">Save</Button>`;
+const BUTTON_PROPS_NOTE =
+  'Real props table (kind, size, disabled, renderIcon\u2026) served from the pinned source.';
+
+function ButtonDemo() {
+  return (
+    <>
+      <Button>Primary</Button> <Button kind="secondary">Secondary</Button>{' '}
+      <Button kind="tertiary">Tertiary</Button>
+    </>
+  );
+}
+
+function introFor(card, g) {
+  if (g && g.guidelines && g.guidelines.length > 0) return g.guidelines[0];
+  return `${card.name} ships in the pinned upstream release \u2014 rendered live from your own repo.`;
+}
+
 // One component-page template, driven by data/*.json: live demo, guidance
-// tabs, and the mined props table.
+// tabs, and the mined props table. Utilities that cannot render alone get
+// an honest code-only state instead of a broken demo.
 export function ComponentPage({ name }) {
   const { cards, byName } = useMemo(componentCards, []);
   const card = cards.find((c) => c.name.toLowerCase() === String(name).toLowerCase());
@@ -109,6 +168,8 @@ export function ComponentPage({ name }) {
     );
   }
   const g = guideFor(card.name, byName[card.name]);
+  const isButton = card.name === 'Button';
+  const code = isButton ? BUTTON_CODE : card.code;
   return (
     <div>
       <Breadcrumb>
@@ -118,7 +179,14 @@ export function ComponentPage({ name }) {
         <BreadcrumbItem isCurrentPage>{card.name}</BreadcrumbItem>
       </Breadcrumb>
       <h1>{card.name}</h1>
-      {card.live ? (
+      <p>{isButton ? BUTTON_INTRO : introFor(card, g)}</p>
+      {isButton ? (
+        <DemoBoundary>
+          <div className="bong-demo-row">
+            <ButtonDemo />
+          </div>
+        </DemoBoundary>
+      ) : card.live ? (
         <DemoBoundary>
           <div className="bong-demo-row">{card.demo}</div>
         </DemoBoundary>
@@ -163,7 +231,7 @@ export function ComponentPage({ name }) {
           </TabPanel>
           <TabPanel>
             <pre style={{ overflowX: 'auto', background: '#f4f4f4', padding: '1rem' }}>
-              <code>{card.code}</code>
+              <code>{code}</code>
             </pre>
           </TabPanel>
           <TabPanel>
@@ -181,6 +249,7 @@ export function ComponentPage({ name }) {
       </Tabs>
       <div className="bong-section">
         <h2>Props</h2>
+        {isButton && <p>{BUTTON_PROPS_NOTE}</p>}
         <PropsTable name={card.name} />
       </div>
       <div className="bong-section">

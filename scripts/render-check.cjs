@@ -153,6 +153,90 @@ if (typeof app.AppForPath === 'function') {
   }
   routeCheck("unknown path renders a not-found page", missing.includes('not found'), 'no not-found copy');
 }
+
+// Phase 3 (T06): components overview card grid + per-component pages.
+// Acceptance: (1) searchable grid where every card opens its component
+// page; (2) all 147 component URLs render four tabs + props/code-only;
+// (3) Button page matches the prototype screen in layout/flow/copy.
+if (typeof app.AppForPath === 'function') {
+  let overview = '';
+  try {
+    overview = ssr('/components');
+  } catch (e) {
+    routeCheck("overview SSR renders '/components'", false, e.message.split('\n')[0]);
+  }
+  if (overview) {
+    routeCheck('overview has a search filter', /filter components/i.test(overview), 'no filter input');
+    const unlinked = index
+      .map((c) => c.name)
+      .filter((n) => !overview.includes('/components/' + n.toLowerCase()));
+    routeCheck(
+      'every overview card opens its component page',
+      unlinked.length === 0,
+      unlinked.length ? 'unlinked: ' + JSON.stringify(unlinked.slice(0, 8)) : ''
+    );
+  }
+  const TAB_MARKERS = ['Guidelines', 'Specifications', 'Code', 'Accessibility'];
+  const pageFails = [];
+  for (const entry of index) {
+    const url = '/components/' + entry.name.toLowerCase();
+    let html;
+    try {
+      html = ssr(url);
+    } catch (e) {
+      pageFails.push(url + ' SSR threw: ' + e.message.split('\n')[0]);
+      continue;
+    }
+    if (html.includes('Component not found')) {
+      pageFails.push(url + ' renders not-found');
+      continue;
+    }
+    for (const t of TAB_MARKERS) {
+      if (!html.includes(t)) {
+        pageFails.push(url + ' missing tab ' + t);
+        break;
+      }
+    }
+    if (!html.includes('Prop') && !html.includes('No documented props')) {
+      pageFails.push(url + ' missing props table');
+    }
+    if (!html.includes('bong-demo-row') && !/code only|see code/i.test(html)) {
+      pageFails.push(url + ' neither live demo nor code-only note');
+    }
+  }
+  routeCheck(
+    'all ' + index.length + ' component URLs render tabs+props+demo-or-code-only',
+    pageFails.length === 0,
+    pageFails.slice(0, 10).join('; ')
+  );
+  let button = '';
+  try {
+    button = ssr('/components/button');
+  } catch (e) {
+    routeCheck("SSR renders '/components/button'", false, e.message.split('\n')[0]);
+  }
+  if (button) {
+    const protoMarkers = [
+      'Buttons communicate actions users can take',
+      'Each page should have only one primary button',
+      'Guidelines',
+      'Specifications',
+      'Code',
+      'Accessibility',
+      'Primary',
+      'Secondary',
+      'Tertiary',
+      'Real props table (kind, size, disabled, renderIcon',
+    ];
+    for (const m of protoMarkers) {
+      routeCheck(
+        'Button page renders prototype copy ' + m.slice(0, 42),
+        button.includes(m),
+        'missing from SSR html'
+      );
+    }
+  }
+}
 const fs = require('fs');
 let routesSrc = '';
 try {
