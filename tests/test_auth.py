@@ -3,7 +3,7 @@ import time
 import unittest
 import urllib.parse
 
-from .support import ServerProcess, TEST_USER, TEST_PASS
+from tests.support import ServerProcess, TEST_USER, TEST_PASS
 
 
 def login(srv, user=TEST_USER, password=TEST_PASS):
