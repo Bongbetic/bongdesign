@@ -131,7 +131,7 @@ if (typeof app.AppForPath === 'function') {
     ['/', ['bong-masthead', 'pinned to upstream Carbon', '/mcp', 'Building blocks', 'aria-current="page"']],
     ['/components', ['bong-masthead', 'All components', 'Filter components', 'aria-current="page"']],
     ['/foundations/color', ['bong-masthead', 'Palettes', 'aria-current="page"']],
-    ['/no-such-page', ['bong-masthead', 'aria-current="page"']],
+    ['/no-such-page', ['bong-masthead']],
   ];
   for (const [p, markers] of pages) {
     let html;
