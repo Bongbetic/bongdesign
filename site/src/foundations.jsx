@@ -257,7 +257,7 @@ function PictogramsSection() {
   );
 }
 
-const FOUNDATION_SECTIONS = [
+export const FOUNDATION_SECTIONS = [
   { id: 'foundations-2x-grid', title: '2x Grid', body: <GridSection /> },
   {
     id: 'foundations-accessibility',
