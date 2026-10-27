@@ -22,6 +22,7 @@ const { renderToString } = require(path.join(
   'server.node.js'
 ));
 const { componentCards } = require('/tmp/bongdesign-explorer.ssr.cjs');
+require(path.join(ROOT, 'scripts', 'validate-data.cjs'))();
 const index = require(path.join(ROOT, 'data', 'components.json')).components;
 const guidelines = require(path.join(ROOT, 'data', 'guidelines.json'));
 
