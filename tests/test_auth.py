@@ -96,6 +96,14 @@ class LoginPageTest(AuthTestCase):
         self.assertIn('/branding/bongbetic-wordmark', text)
         self.assertIn('cds--btn', text)
 
+    def test_sign_in_page_uses_the_color_wordmark_not_the_glyph(self):
+        status, _, body = self.srv.request('GET', '/login')
+        self.assertEqual(status, 200)
+        text = body.decode()
+        self.assertIn('/branding/bongbetic-wordmark@2x.png', text)
+        self.assertNotIn('bongbetic-glyph', text)
+        self.assertNotIn('bongbetic-wordmark-dark', text)
+
 
 if __name__ == '__main__':
     unittest.main()

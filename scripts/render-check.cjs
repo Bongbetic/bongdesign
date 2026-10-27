@@ -861,6 +861,44 @@ if (typeof app.AppForPath === 'function') {
     );
   }
 }
+// Phase 10 (T18, issue #36): masthead uses the COLOR wordmark, not the
+// monochrome glyph + typed text (wrong asset). Acceptance: (a) the SSR
+// header contains the light-background color wordmark img and no glyph img;
+// (b) index.scss pins .bong-lockup-logo height (1.75rem, width auto) so the
+// ~4.49:1 wordmark fits the 48px masthead on one line; (c) the dark
+// (white-text) variant is never used on the white masthead.
+routeCheck(
+  'masthead lockup logo CSS pins an explicit height (one-line wordmark)',
+  /\.bong-lockup-logo\s*\{[^}]*height:\s*1\.75rem/.test(scssText),
+  'no .bong-lockup-logo { height:1.75rem } rule in index.scss'
+);
+if (typeof app.AppForPath === 'function') {
+  let t18Html = '';
+  try {
+    t18Html = ssr('/');
+  } catch (e) {
+    routeCheck("SSR renders '/' for the T18 logo check", false, e.message.split('\n')[0]);
+  }
+  if (t18Html) {
+    const hm = t18Html.match(/<header[\s\S]*?<\/header>/);
+    const headerSeg = hm ? hm[0] : t18Html;
+    routeCheck(
+      'masthead uses the color wordmark img',
+      headerSeg.includes('/branding/bongbetic-wordmark@2x.png'),
+      'no color wordmark img in the header SSR'
+    );
+    routeCheck(
+      'masthead carries no monochrome glyph img',
+      !headerSeg.includes('bongbetic-glyph'),
+      'glyph img still in the header SSR'
+    );
+    routeCheck(
+      'masthead never uses the dark (white-text) wordmark variant',
+      !headerSeg.includes('bongbetic-wordmark-dark'),
+      'dark wordmark variant in the header SSR'
+    );
+  }
+}
 if (routeFails.length > 0) {
   console.error('Route failures:\n' + routeFails.join('\n'));
   process.exit(1);
