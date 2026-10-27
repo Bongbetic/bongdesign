@@ -7,6 +7,11 @@ export const ROUTES = [
   { id: 'components', path: '/components', label: 'Components', section: 'components' },
   { id: 'component', path: '/components/:name', label: 'Component', section: 'components' },
   { id: 'foundations', path: '/foundations/:slug', label: 'Foundations', section: 'foundations' },
+  { id: 'patterns', path: '/patterns', label: 'Patterns', section: 'patterns' },
+  { id: 'pattern', path: '/patterns/:name', label: 'Pattern', section: 'patterns' },
+  { id: 'data-viz', path: '/data-visualization', label: 'Data visualization', section: 'data-viz' },
+  { id: 'support', path: '/support', label: 'Support', section: 'support' },
+  { id: 'mcp', path: '/mcp', label: 'MCP', section: 'support' },
 ];
 
 export function normalizePath(pathname) {
@@ -27,6 +32,12 @@ export function matchRoute(pathname) {
   if (p === '/foundations') return { id: 'foundations', params: { slug: '' } };
   m = p.match(/^\/foundations\/([^/]+)$/);
   if (m) return { id: 'foundations', params: { slug: decodeURIComponent(m[1]).toLowerCase() } };
+  if (p === '/patterns') return { id: 'patterns', params: {} };
+  m = p.match(/^\/patterns\/([^/]+)$/);
+  if (m) return { id: 'pattern', params: { name: decodeURIComponent(m[1]).toLowerCase() } };
+  if (p === '/data-visualization') return { id: 'data-viz', params: {} };
+  if (p === '/support') return { id: 'support', params: {} };
+  if (p === '/mcp') return { id: 'mcp', params: {} };
   return { id: 'notfound', params: {} };
 }
 

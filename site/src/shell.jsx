@@ -12,6 +12,7 @@ import {
 } from '@carbon/react';
 import { navClick, sectionFor } from './routes.jsx';
 import { FOUNDATION_SECTIONS } from './foundations.jsx';
+import { PATTERNS } from './pages/guidance.jsx';
 
 function slugOf(id) {
   return id.replace(/^foundations-/, '');
@@ -108,6 +109,59 @@ export default function Shell({ route, children }) {
                 aria-current={active('components') ? 'page' : undefined}
               >
                 Overview
+              </SideNavMenuItem>
+            </SideNavMenu>
+            <SideNavMenu renderIcon={() => null} title="Patterns" defaultExpanded={active('patterns')}>
+              <SideNavMenuItem
+                href="/patterns"
+                onClick={navClick('/patterns')}
+                isActive={active('patterns') && !(route.params && route.params.name)}
+                aria-current={active('patterns') && !(route.params && route.params.name) ? 'page' : undefined}
+              >
+                Overview
+              </SideNavMenuItem>
+              {PATTERNS.map((p) => {
+                const to = '/patterns/' + p.slug;
+                const on = active('patterns') && route.params && route.params.name === p.slug;
+                return (
+                  <SideNavMenuItem
+                    key={p.slug}
+                    href={to}
+                    onClick={navClick(to)}
+                    isActive={on}
+                    aria-current={on ? 'page' : undefined}
+                  >
+                    {p.title}
+                  </SideNavMenuItem>
+                );
+              })}
+            </SideNavMenu>
+            <SideNavMenu renderIcon={() => null} title="Data visualization" defaultExpanded={active('data-viz')}>
+              <SideNavMenuItem
+                href="/data-visualization"
+                onClick={navClick('/data-visualization')}
+                isActive={active('data-viz')}
+                aria-current={active('data-viz') ? 'page' : undefined}
+              >
+                Guidance
+              </SideNavMenuItem>
+            </SideNavMenu>
+            <SideNavMenu renderIcon={() => null} title="Support" defaultExpanded={active('support')}>
+              <SideNavMenuItem
+                href="/support"
+                onClick={navClick('/support')}
+                isActive={route.id === 'support'}
+                aria-current={route.id === 'support' ? 'page' : undefined}
+              >
+                Support home
+              </SideNavMenuItem>
+              <SideNavMenuItem
+                href="/mcp"
+                onClick={navClick('/mcp')}
+                isActive={route.id === 'mcp'}
+                aria-current={route.id === 'mcp' ? 'page' : undefined}
+              >
+                Connect the MCP
               </SideNavMenuItem>
             </SideNavMenu>
           </SideNavItems>

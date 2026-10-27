@@ -3,6 +3,7 @@ import Shell from './shell.jsx';
 import HomePage from './pages/home.jsx';
 import { ComponentPage, ComponentsOverview } from './pages/components.jsx';
 import FoundationPage from './pages/foundations.jsx';
+import { DataVisualizationPage, McpPage, PatternPage, PatternsIndex, SupportPage } from './pages/guidance.jsx';
 import NotFoundPage from './pages/notfound.jsx';
 import { ROUTES, matchRoute, useRoute } from './routes.jsx';
 
@@ -15,6 +16,11 @@ const TITLES = {
   components: 'Components — BongDesign',
   component: 'Component — BongDesign',
   foundations: 'Foundations — BongDesign',
+  patterns: 'Patterns — BongDesign',
+  pattern: 'Pattern — BongDesign',
+  'data-viz': 'Data visualization — BongDesign',
+  support: 'Support — BongDesign',
+  mcp: 'Connect the MCP — BongDesign',
   notfound: 'Not found — BongDesign',
 };
 
@@ -28,6 +34,16 @@ export function PageForRoute({ route }) {
       return <ComponentPage name={route.params.name} />;
     case 'foundations':
       return <FoundationPage slug={route.params.slug} />;
+    case 'patterns':
+      return <PatternsIndex />;
+    case 'pattern':
+      return <PatternPage name={route.params.name} />;
+    case 'data-viz':
+      return <DataVisualizationPage />;
+    case 'support':
+      return <SupportPage />;
+    case 'mcp':
+      return <McpPage />;
     default:
       return <NotFoundPage />;
   }

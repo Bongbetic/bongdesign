@@ -17,12 +17,12 @@ const BLOCKS = [
   {
     title: 'Patterns',
     copy: 'Core patterns for common product moments.',
-    to: null,
+    to: '/patterns',
   },
   {
     title: 'Data visualization',
     copy: 'Guidance for charts and dashboards.',
-    to: null,
+    to: '/data-visualization',
   },
 ];
 
