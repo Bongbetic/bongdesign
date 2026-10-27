@@ -42,7 +42,7 @@ const ITEMS = [
 ];
 
 function DemoModal() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const { Modal, Button } = Carbon;
   return (
     <>
@@ -61,7 +61,7 @@ function DemoModal() {
 }
 
 function DemoComposedModal() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const { Button, ComposedModal, ModalHeader, ModalBody, ModalFooter, TextInput, Select, SelectItem } = Carbon;
   const close = () => setOpen(false);
   return (
@@ -195,6 +195,7 @@ const CURATED = {
         id="x-multi"
         titleText="Pick"
         label="Choose several"
+        open
         items={ITEMS}
         itemToString={(i) => (i ? i.text : '')}
       />
@@ -227,7 +228,7 @@ const CURATED = {
   },
   OverflowMenu: {
     demo: (
-      <Carbon.OverflowMenu ariaLabel="Report actions">
+      <Carbon.OverflowMenu aria-label="Report actions" open>
         <Carbon.OverflowMenuItem itemText="Download CSV" onClick={() => {}} />
         <Carbon.OverflowMenuItem itemText="Schedule email" onClick={() => {}} />
         <Carbon.OverflowMenuItem itemText="Rename dashboard" onClick={() => {}} />
@@ -284,7 +285,6 @@ const CURATED = {
       <Carbon.TimePicker
         id="x-time"
         labelText="Daily sync"
-        helperText="Workspace timezone."
         placeholder="hh:mm"
       />
     ),
@@ -296,6 +296,7 @@ const CURATED = {
         labelTitle="Upload"
         labelDescription="Max 5MB"
         buttonLabel="Add file"
+        filenameStatus="edit"
       />
     ),
   },
@@ -315,14 +316,14 @@ const CURATED = {
   },
   Tooltip: {
     demo: (
-      <Carbon.Tooltip label="Helpful hint">
+      <Carbon.Tooltip label="Helpful hint" defaultOpen>
         <Carbon.Button kind="ghost">Hover me</Carbon.Button>
       </Carbon.Tooltip>
     ),
   },
   Toggletip: {
     demo: (
-      <Carbon.Toggletip label="More info">
+      <Carbon.Toggletip label="More info" defaultOpen>
         <p>Extra detail.</p>
       </Carbon.Toggletip>
     ),
@@ -613,7 +614,7 @@ npm run build`}</Carbon.CodeSnippet>
   },
   FluidMultiSelect: {
     demo: (
-      <Carbon.FluidMultiSelect id="bd-fluid-multi" titleText="Reviewers" label="Choose reviewers" helperText="Two approvals required." items={[{ id: 'a', text: 'Design' }, { id: 'b', text: 'Engineering' }]} itemToString={(i) => (i ? i.text : '')} onChange={() => {}} />
+      <Carbon.FluidMultiSelect id="bd-fluid-multi" titleText="Reviewers" label="Choose reviewers" helperText="Two approvals required." open items={[{ id: 'a', text: 'Design' }, { id: 'b', text: 'Engineering' }]} itemToString={(i) => (i ? i.text : '')} onChange={() => {}} />
     ),
   },
   FluidNumberInput: {
@@ -647,11 +648,11 @@ npm run build`}</Carbon.CodeSnippet>
   FluidTimePicker: {
     demo: (
       <Carbon.FluidTimePicker id="bd-fluid-sync" labelText="Daily sync" placeholder="hh:mm">
-        <Carbon.FluidTimePickerSelect id="bd-fluid-clock" labelText="Clock">
+        <Carbon.FluidTimePickerSelect id="bd-fluid-clock">
           <Carbon.SelectItem value="am" text="AM" />
           <Carbon.SelectItem value="pm" text="PM" />
         </Carbon.FluidTimePickerSelect>
-        <Carbon.FluidTimePickerSelect id="bd-fluid-tz" labelText="Timezone">
+        <Carbon.FluidTimePickerSelect id="bd-fluid-tz">
           <Carbon.SelectItem value="cet" text="CET" />
           <Carbon.SelectItem value="utc" text="UTC" />
         </Carbon.FluidTimePickerSelect>
@@ -661,11 +662,11 @@ npm run build`}</Carbon.CodeSnippet>
   FluidTimePickerSelect: {
     demo: (
       <Carbon.FluidTimePicker id="bd-fluid-standup" labelText="Standup time" placeholder="hh:mm">
-        <Carbon.FluidTimePickerSelect id="bd-fluid-mer" labelText="Meridiem">
+        <Carbon.FluidTimePickerSelect id="bd-fluid-mer">
           <Carbon.SelectItem value="am" text="AM" />
           <Carbon.SelectItem value="pm" text="PM" />
         </Carbon.FluidTimePickerSelect>
-        <Carbon.FluidTimePickerSelect id="bd-fluid-zone" labelText="Timezone">
+        <Carbon.FluidTimePickerSelect id="bd-fluid-zone">
           <Carbon.SelectItem value="cet" text="CET" />
           <Carbon.SelectItem value="utc" text="UTC" />
         </Carbon.FluidTimePickerSelect>
@@ -727,7 +728,7 @@ npm run build`}</Carbon.CodeSnippet>
   InlineCheckbox: {
     demo: (
       <div>
-        Include prerelease builds <Carbon.InlineCheckbox id="bd-inline-pre" aria-label="Include prerelease builds" />
+        Include prerelease builds <Carbon.InlineCheckbox id="bd-inline-pre" name="bd-inline-pre" aria-label="Include prerelease builds" />
       </div>
     ),
   },
@@ -793,7 +794,7 @@ npm run build`}</Carbon.CodeSnippet>
   },
   OverflowMenuItem: {
     demo: (
-      <Carbon.OverflowMenu ariaLabel="Export actions">
+      <Carbon.OverflowMenu aria-label="Export actions" open>
         <Carbon.OverflowMenuItem itemText="Download CSV" onClick={() => {}} />
         <Carbon.OverflowMenuItem itemText="Schedule email" onClick={() => {}} hasDivider />
         <Carbon.OverflowMenuItem itemText="Delete report" onClick={() => {}} isDelete />
@@ -893,7 +894,7 @@ npm run build`}</Carbon.CodeSnippet>
   },
   Slider: {
     demo: (
-      <Carbon.Slider id="bd-budget" labelText="Monthly build minutes" helperText="Resets on the first of the month." defaultValue={600} min={0} max={2000} step={50} onChange={() => {}} />
+      <Carbon.Slider id="bd-budget" labelText="Monthly build minutes" value={600} min={0} max={2000} step={50} onChange={() => {}} />
     ),
   },
   Switch: {
@@ -931,7 +932,7 @@ npm run build`}</Carbon.CodeSnippet>
         <Carbon.Tag type="blue">Design</Carbon.Tag>
         <Carbon.Tag type="green">Ready to build</Carbon.Tag>
         <Carbon.Tag type="red">Blocked</Carbon.Tag>
-        <Carbon.Tag type="gray" filter onClose={() => {}}>Needs scope</Carbon.Tag>
+        <Carbon.Tag type="gray">Needs scope</Carbon.Tag>
       </div>
     ),
   },
@@ -948,7 +949,7 @@ npm run build`}</Carbon.CodeSnippet>
   TimePickerSelect: {
     demo: (
       <Carbon.TimePicker id="bd-standup" labelText="Standup time" placeholder="hh:mm">
-        <Carbon.TimePickerSelect id="bd-standup-tz" labelText="Timezone">
+        <Carbon.TimePickerSelect id="bd-standup-tz">
           <Carbon.SelectItem value="cet" text="CET" />
           <Carbon.SelectItem value="utc" text="UTC" />
         </Carbon.TimePickerSelect>

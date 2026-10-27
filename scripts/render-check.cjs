@@ -3,6 +3,25 @@
 // Run: npm run check:coverage (needs site/node_modules installed).
 const path = require('path');
 const { execSync } = require('child_process');
+const util = require('util');
+
+// Phase 8 (T16, issue #31): demo visibility — capture console output from the
+// top of this gate, BEFORE componentCards() creates elements (React validates
+// propTypes at createElement time, not at render time). The log therefore
+// covers every demo creation + render and every route/component page SSR
+// below. Passthrough: messages are still printed, only also collected.
+const t16Console = [];
+for (const method of ['error', 'warn']) {
+  const orig = console[method];
+  console[method] = (...args) => {
+    try {
+      t16Console.push(util.format(...args).split('\n')[0]);
+    } catch (e) {
+      t16Console.push(args.map(String).join(' ').split('\n')[0]);
+    }
+    return orig.apply(console, args);
+  };
+}
 
 const ROOT = path.join(__dirname, '..');
 const SITE = path.join(ROOT, 'site');
@@ -723,6 +742,98 @@ if (typeof app.AppForPath === 'function') {
     );
   }
 }
+// Phase 8 (T16, issue #31): demo visibility ("a lot of components are
+// missing"). (a) Zero required-prop noise: re-render every live demo plus
+// every route and all 147 component pages under the capture above, then fail
+// on any "Failed prop type" / missing-required-prop warning. React dedupes
+// repeated warnings, so the collected log already holds the earlier phases;
+// the explicit loop keeps the gate honest as demos change. console.error and
+// console.warn both log printf-style templates ("Failed %s type"), hence
+// the util.format at capture time. (b) Overlays visibly open: each live demo
+// SSR must contain its component's defining cds-- marker; overlays must show
+// open-state markup (open classes, menu items present), matching the Carbon
+// reference instead of a closed trigger. T16_NO_MARKER exempts components
+// whose reference render carries no cds-- class at all.
+const T16_OPEN_MARKERS = {
+  Modal: ['cds--modal'],
+  ComposedModal: ['cds--modal'],
+  ModalWrapper: ['cds--modal'],
+  Popover: ['cds--popover'],
+  Menu: ['cds--menu', 'Copy link'],
+  MenuButton: ['One', 'Two'],
+  ComboButton: ['Publish now'],
+  Tooltip: ['cds--popover--open'],
+  Toggletip: ['cds--toggletip--open'],
+  OverflowMenu: ['cds--overflow-menu--open'],
+  OverflowMenuItem: ['cds--overflow-menu--open'],
+  MultiSelect: ['Alpha', 'Beta'],
+  FluidMultiSelect: ['Design', 'Engineering'],
+};
+const T16_NO_MARKER = new Set(['Heading']);
+const t16Fails = [];
+if (typeof app.AppForPath === 'function') {
+  const T16_ROUTES = [
+    '/',
+    '/components',
+    '/foundations',
+    '/patterns',
+    '/patterns/empty-state',
+    '/data-visualization',
+    '/support',
+    '/mcp',
+    '/no-such-page',
+    ...index.map((c) => '/components/' + c.name.toLowerCase()),
+  ];
+  for (const p of T16_ROUTES) {
+    try {
+      ssr(p);
+    } catch (e) {
+      // Render throws are reported by earlier phases; the warning gate below
+      // only cares about console noise.
+    }
+  }
+  for (const c of cards) {
+    if (!c.live) continue;
+    try {
+      renderToString(React.createElement(React.Fragment, null, c.demo));
+    } catch (e) {
+      // Likewise reported by the render-failure gate above.
+    }
+  }
+}
+const t16PropFails = [
+  ...new Set(
+    t16Console.filter(
+      (m) => /failed prop type/i.test(m) || /failed %s type/i.test(m) || /marked as required/i.test(m)
+    )
+  ),
+];
+for (const m of t16PropFails) t16Fails.push('prop-type warning :: ' + m.slice(0, 220));
+for (const c of cards) {
+  if (!c.live || T16_NO_MARKER.has(c.name)) continue;
+  let html;
+  try {
+    html = renderToString(React.createElement(React.Fragment, null, c.demo));
+  } catch (e) {
+    continue; // reported by the render-failure gate above
+  }
+  const want = T16_OPEN_MARKERS[c.name];
+  if (want) {
+    const absent = want.filter((m) => !html.includes(m));
+    if (absent.length > 0) {
+      t16Fails.push(c.name + ' :: closed/hidden overlay, SSR lacks ' + JSON.stringify(absent));
+    }
+  } else if (!html.includes('cds--')) {
+    t16Fails.push(c.name + ' :: live demo SSR carries no cds-- visual marker');
+  }
+}
+if (t16Fails.length > 0) {
+  console.error('Demo visibility failures (T16, issue #31):\n' + t16Fails.join('\n'));
+  process.exit(1);
+}
+console.log(
+  `OK: ${cards.filter((c) => c.live).length} live demos carry zero prop-type warnings and open-state overlay markup.`
+);
 if (routeFails.length > 0) {
   console.error('Route failures:\n' + routeFails.join('\n'));
   process.exit(1);
