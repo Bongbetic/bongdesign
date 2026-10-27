@@ -29,11 +29,10 @@ export default function Shell({ route, children }) {
       <Header aria-label="BongDesign" className="bong-masthead">
         <HeaderName href="/" prefix="" onClick={navClick('/')} className="bong-lockup">
           <img
-            src="/branding/bongbetic-glyph.svg"
-            alt=""
-            className="bong-lockup-glyph"
+            src="/branding/bongbetic-wordmark@2x.png"
+            alt="Bongbetic"
+            className="bong-lockup-logo"
           />
-          <span className="bong-lockup-word">bongbetic</span>
           <span className="bong-lockup-suffix">BongDesign</span>
         </HeaderName>
         <HeaderNavigation aria-label="Site">

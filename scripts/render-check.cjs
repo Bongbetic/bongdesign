@@ -840,7 +840,7 @@ console.log(
 // word/suffix to a second line clipped by the 48px header (glyph only in the
 // user screenshot). Acceptance: (a) index.scss targets the wrapper with a
 // flex row (.bong-lockup > span { display:flex ... }); (b) the SSR header
-// segment keeps glyph+word+suffix inside one wrapper span.
+// segment keeps the lockup (T18: wordmark logo+suffix) inside one wrapper span.
 routeCheck(
   'masthead lockup wrapper span is a flex row (no clipped wordmark)',
   /\.bong-lockup\s*>\s*span\s*\{[^}]*display:\s*flex/.test(scssText),
@@ -855,9 +855,9 @@ if (typeof app.AppForPath === 'function') {
   }
   if (t17Html) {
     routeCheck(
-      'SSR header keeps glyph+word+suffix in one lockup wrapper',
-      /cds--header__name[^>]*><span>[\s\S]*?bong-lockup-glyph[\s\S]*?bong-lockup-word[\s\S]*?bong-lockup-suffix[\s\S]*?<\/span>\s*<\/a>/.test(t17Html),
-      'glyph+word+suffix are not in one header wrapper span in the shell SSR'
+      'SSR header keeps wordmark logo+suffix in one lockup wrapper',
+      /cds--header__name[^>]*><span>[\s\S]*?bong-lockup-logo[\s\S]*?bong-lockup-suffix[\s\S]*?<\/span>\s*<\/a>/.test(t17Html),
+      'wordmark logo+suffix are not in one header wrapper span in the shell SSR'
     );
   }
 }
