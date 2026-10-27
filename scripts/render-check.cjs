@@ -237,6 +237,175 @@ if (typeof app.AppForPath === 'function') {
     }
   }
 }
+// Phase 4 (T07): foundations as routed pages from the pinned token/icon
+// indexes. Acceptance: (1) every foundation URL renders its page with
+// swatches/type equal to data/tokens.json; (2) icon + pictogram libraries
+// search the full pinned sets from data/icons.json; (3) no foundation
+// content remains only on the old single page (/foundations is an index).
+if (typeof app.AppForPath === 'function') {
+  const tokens = require(path.join(ROOT, 'data', 'tokens.json'));
+  const iconIndex = require(path.join(ROOT, 'data', 'icons.json'));
+  const SLUGS = {
+    '2x-grid': '2x Grid',
+    accessibility: 'Accessibility',
+    'carbon-for-ai': 'Carbon for AI',
+    color: 'Color',
+    content: 'Content',
+    icons: 'Icons',
+    pictograms: 'Pictograms',
+    motion: 'Motion',
+    spacing: 'Spacing',
+    themes: 'Themes',
+    typography: 'Typography',
+  };
+  const BODY_MARKERS = {
+    '2x-grid': 'Full width',
+    accessibility: 'Build for everyone',
+    'carbon-for-ai': 'Label AI output',
+    color: 'Palettes',
+    content: 'Write like a person',
+    icons: 'Search icons',
+    pictograms: 'Search pictograms',
+    motion: 'Durations and easings',
+    spacing: 'Carbon spacing scale',
+    themes: 'Theme tokens',
+    typography: 'Type tokens',
+  };
+  for (const slug of Object.keys(SLUGS)) {
+    const title = SLUGS[slug];
+    let html;
+    try {
+      html = ssr('/foundations/' + slug);
+    } catch (e) {
+      routeCheck("SSR renders '/foundations/" + slug + "'", false, e.message.split('\n')[0]);
+      continue;
+    }
+    routeCheck(
+      "'" + slug + "' page renders its title",
+      html.includes('>' + title + '</h2>'),
+      'title missing from SSR html'
+    );
+    routeCheck(
+      "'" + slug + "' page renders its section body",
+      html.includes(BODY_MARKERS[slug]),
+      "marker '" + BODY_MARKERS[slug] + "' missing from SSR html"
+    );
+  }
+  let fourohfour = '';
+  try {
+    fourohfour = ssr('/foundations/nope');
+  } catch (e) {
+    routeCheck("SSR renders '/foundations/nope'", false, e.message.split('\n')[0]);
+  }
+  if (fourohfour) {
+    routeCheck(
+      'unknown foundation slug renders not-found',
+      fourohfour.includes('Foundation not found'),
+      'no not-found copy'
+    );
+  }
+  let colorHtml = '';
+  try {
+    colorHtml = ssr('/foundations/color');
+  } catch (e) {
+    routeCheck("SSR renders '/foundations/color'", false, e.message.split('\n')[0]);
+  }
+  if (colorHtml) {
+    const swatches = ['blue60', 'red60', 'gray100', 'green60'];
+    for (const key of swatches) {
+      const hex = tokens.colors[key];
+      routeCheck(
+        'color swatch ' + key + ' equals tokens.json (' + hex + ')',
+        Boolean(hex) && colorHtml.includes(hex),
+        'hex missing from SSR html'
+      );
+    }
+  }
+  let typeHtml = '';
+  try {
+    typeHtml = ssr('/foundations/typography');
+  } catch (e) {
+    routeCheck("SSR renders '/foundations/typography'", false, e.message.split('\n')[0]);
+  }
+  if (typeHtml) {
+    const size = tokens.type.body01 && tokens.type.body01.fontSize;
+    routeCheck(
+      'type sample equals tokens.json body01 (' + size + ')',
+      Boolean(size) && typeHtml.includes(size),
+      'font-size missing from SSR html'
+    );
+  }
+  let iconsHtml = '';
+  try {
+    iconsHtml = ssr('/foundations/icons');
+  } catch (e) {
+    routeCheck("SSR renders '/foundations/icons'", false, e.message.split('\n')[0]);
+  }
+  if (iconsHtml) {
+    const total = 'of ' + iconIndex.icons.bases.length;
+    routeCheck(
+      'icons library covers the full pinned set',
+      iconsHtml.includes(total),
+      "expected '" + total + "' in SSR html"
+    );
+    routeCheck('icons library is searchable', /search icons/i.test(iconsHtml), 'no search input');
+  }
+  let pictoHtml = '';
+  try {
+    pictoHtml = ssr('/foundations/pictograms');
+  } catch (e) {
+    routeCheck("SSR renders '/foundations/pictograms'", false, e.message.split('\n')[0]);
+  }
+  if (pictoHtml) {
+    const total = 'of ' + iconIndex.pictograms.total;
+    routeCheck(
+      'pictograms library covers the full pinned set',
+      pictoHtml.includes(total),
+      "expected '" + total + "' in SSR html"
+    );
+    routeCheck('pictograms library is searchable', /search pictograms/i.test(pictoHtml), 'no search input');
+  }
+  let indexHtml = '';
+  try {
+    indexHtml = ssr('/foundations');
+  } catch (e) {
+    routeCheck("SSR renders '/foundations'", false, e.message.split('\n')[0]);
+  }
+  if (indexHtml) {
+    const unlinked = Object.keys(SLUGS).filter((s) => !indexHtml.includes('/foundations/' + s));
+    routeCheck(
+      'foundations index links every foundation page',
+      unlinked.length === 0,
+      unlinked.length ? 'unlinked: ' + JSON.stringify(unlinked) : ''
+    );
+    const leaked = Object.values(BODY_MARKERS).filter((m) => indexHtml.includes(m));
+    routeCheck(
+      'no foundation content remains only on the old single page',
+      leaked.length === 0,
+      leaked.length ? 'single-page bodies leaked: ' + JSON.stringify(leaked) : ''
+    );
+  }
+  const srcFiles = {
+    'src/foundations.jsx': 'tokens.json',
+    'src/icons.jsx': 'icons.json',
+    'src/pictograms.jsx': 'icons.json',
+  };
+  for (const file of Object.keys(srcFiles)) {
+    const want = srcFiles[file];
+    let srcText = '';
+    try {
+      srcText = require('fs').readFileSync(path.join(SITE, file), 'utf8');
+    } catch (e) {
+      routeCheck(file + ' exists', false, 'missing file');
+      continue;
+    }
+    routeCheck(
+      file + ' is driven by the generated ' + want,
+      srcText.includes(want),
+      'no ' + want + ' import'
+    );
+  }
+}
 const fs = require('fs');
 let routesSrc = '';
 try {

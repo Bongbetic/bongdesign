@@ -2,31 +2,35 @@ import React, { useState } from 'react';
 import * as Carbon from '@carbon/react';
 import IconsLibrary from './icons.jsx';
 import { PictogramsLibrary } from './pictograms.jsx';
-import * as typeTokens from '@carbon/type';
-import * as colorTokens from '@carbon/colors';
-import * as themeTokens from '@carbon/themes';
+import tokens from '../../data/tokens.json';
 
 const Link = Carbon.Link;
 
+// Duration and easing values come from the generated token index
+// (data/tokens.json), mined from the pinned @carbon/motion package.
 const DURATIONS = [
-  { token: 'duration-fast-01', ms: 70, use: 'Micro-interactions: small toggles, snaps' },
-  { token: 'duration-fast-02', ms: 110, use: 'Micro-interactions: small expansion' },
-  { token: 'duration-moderate-01', ms: 150, use: 'Small expansion: short distances' },
-  { token: 'duration-moderate-02', ms: 240, use: 'Expansion: system communication' },
-  { token: 'duration-slow-01', ms: 400, use: 'Large expansion: important updates' },
-  { token: 'duration-slow-02', ms: 700, use: 'Large expansion: large elements' },
+  { key: 'durationFast01', label: 'duration-fast-01', use: 'Micro-interactions: small toggles, snaps' },
+  { key: 'durationFast02', label: 'duration-fast-02', use: 'Micro-interactions: small expansion' },
+  { key: 'durationModerate01', label: 'duration-moderate-01', use: 'Small expansion: short distances' },
+  { key: 'durationModerate02', label: 'duration-moderate-02', use: 'Expansion: system communication' },
+  { key: 'durationSlow01', label: 'duration-slow-01', use: 'Large expansion: important updates' },
+  { key: 'durationSlow02', label: 'duration-slow-02', use: 'Large expansion: large elements' },
 ];
 
 const EASINGS = [
-  { name: 'productive', value: 'cubic-bezier(0.2, 0, 0.38, 0.9)' },
-  { name: 'expressive', value: 'cubic-bezier(0.4, 0.14, 0.3, 1)' },
+  { name: 'productive', value: tokens.motion.easings.standard.productive },
+  { name: 'expressive', value: tokens.motion.easings.standard.expressive },
 ];
+
+function motionMs(key) {
+  return parseInt(tokens.motion[key], 10);
+}
 
 function MotionSection() {
   const [go, setGo] = useState(false);
   return (
     <div>
-      <p>Durations and easings from the pinned @carbon/motion tokens.</p>
+      <p>Durations and easings from the pinned token index (data/tokens.json).</p>
       <Carbon.Button kind="tertiary" onClick={() => setGo(!go)}>
         {go ? 'Reset' : 'Play all'}
       </Carbon.Button>
@@ -38,7 +42,7 @@ function MotionSection() {
           {DURATIONS.map((d) => (
             <div key={d.token} style={{ marginTop: '0.5rem' }}>
               <code>
-                {d.token} ({d.ms}ms) — {d.use}
+                {d.label} ({motionMs(d.key)}ms) — {d.use}
               </code>
               <div style={{ background: '#e0e0e0', height: '1.25rem', width: '100%', marginTop: '0.25rem' }}>
                 <div
@@ -47,7 +51,7 @@ function MotionSection() {
                     height: '100%',
                     width: '2.5rem',
                     transform: go ? 'translateX(calc(100vw / 3))' : 'translateX(0)',
-                    transition: `transform ${d.ms}ms ${e.value}`,
+                    transition: `transform ${motionMs(d.key)}ms ${e.value}`,
                   }}
                 />
               </div>
@@ -65,13 +69,13 @@ const GRADES = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 function ColorSection() {
   return (
     <div>
-      <p>Palettes from the pinned @carbon/colors package.</p>
+      <p>Palettes from the pinned token index (data/tokens.json).</p>
       {PALETTE_FAMILIES.map((fam) => (
         <div key={fam} style={{ marginTop: '1.5rem' }}>
           <strong style={{ textTransform: 'capitalize' }}>{fam}</strong>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
             {GRADES.map((g) => {
-              const hex = colorTokens[`${fam}${g}`];
+              const hex = tokens.colors[`${fam}${g}`];
               if (!hex) return null;
               return (
                 <span key={g} style={{ width: '5.5rem', textAlign: 'center' }}>
@@ -103,9 +107,9 @@ const THEME_NAMES = ['white', 'g10', 'g90', 'g100'];
 function ThemesSection() {
   return (
     <div>
-      <p>Theme tokens from the pinned @carbon/themes package.</p>
+      <p>Theme tokens from the pinned token index (data/tokens.json).</p>
       {THEME_NAMES.map((t) => {
-        const theme = themeTokens[t];
+        const theme = tokens.themes[t];
         if (!theme) return null;
         return (
           <div
@@ -145,21 +149,12 @@ function ThemesSection() {
   );
 }
 
-const SPACING = [
-  ['spacing-01', '0.125rem'],
-  ['spacing-02', '0.25rem'],
-  ['spacing-03', '0.5rem'],
-  ['spacing-04', '0.75rem'],
-  ['spacing-05', '1rem'],
-  ['spacing-06', '1.5rem'],
-  ['spacing-07', '2rem'],
-  ['spacing-08', '2.5rem'],
-  ['spacing-09', '3rem'],
-  ['spacing-10', '4rem'],
-  ['spacing-11', '5rem'],
-  ['spacing-12', '6rem'],
-  ['spacing-13', '10rem'],
-];
+// Spacing steps from the generated token index (data/tokens.json),
+// mined from the pinned @carbon/layout package.
+const SPACING = Array.from({ length: 13 }, (_, i) => {
+  const n = String(i + 1).padStart(2, '0');
+  return [`spacing-${n}`, tokens.layout[`spacing${n}`]];
+});
 
 function SpacingSection() {
   return (
@@ -192,9 +187,9 @@ const TYPE_SAMPLE = [
 function TypographySection() {
   return (
     <div>
-      <p>Type tokens from the pinned @carbon/type package.</p>
+      <p>Type tokens from the pinned token index (data/tokens.json).</p>
       {TYPE_SAMPLE.map((t) => {
-        const s = typeTokens.styles ? typeTokens.styles[t] : typeTokens[t];
+        const s = tokens.type[t];
         if (!s) return null;
         return (
           <div key={t} style={{ marginTop: '1rem', borderTop: '1px solid #e0e0e0', paddingTop: '1rem' }}>
@@ -242,7 +237,7 @@ function GridSection() {
 function IconsSection() {
   return (
     <div>
-      <p>Pinned @carbon/icons package. Search filters the full set.</p>
+      <p>Pinned icon index (data/icons.json). Search filters the full set.</p>
       <IconsLibrary />
     </div>
   );
@@ -251,7 +246,7 @@ function IconsSection() {
 function PictogramsSection() {
   return (
     <div>
-      <p>Pinned @carbon/pictograms package. Search filters the full set.</p>
+      <p>Pinned pictogram index (data/icons.json). Search filters the full set.</p>
       <PictogramsLibrary />
     </div>
   );
