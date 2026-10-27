@@ -120,16 +120,27 @@
 // T13: prototype lockup — vendored glyph + bongbetic (600) + BongDesign
 // (regular, muted). Explicit 1.5rem glyph height keeps it fully inside the
 // 48px masthead; nothing clips.
+// T17 (issue #34): Carbon HeaderName wraps children in its own <span>, so
+// flex must target the wrapper — flex on the anchor alone leaves the wrapper
+// as a block and the block-level glyph pushes word/suffix to a clipped line.
 .bong-lockup {
   display: flex;
   align-items: center;
   gap: 0.625rem;
 }
 
+.bong-lockup > span {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
 .bong-lockup-glyph {
   height: 1.5rem;
   width: auto;
   display: block;
+  flex: none;
 }
 
 .bong-lockup-word {
