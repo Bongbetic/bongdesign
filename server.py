@@ -342,6 +342,11 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header('Location', '/login')
             self.end_headers()
             return
+        if path == '/mcp' and 'text/html' in self.headers.get('Accept', ''):
+            if not self.authed():
+                return self._deny()
+            self.path = '/index.html'
+            return super().do_GET()
         if not self.authed():
             return self._deny(mcp=(path == '/mcp'))
         if path == '/api/components':
