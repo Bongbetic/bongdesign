@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, ClickableTile } from '@carbon/react';
+import { Breadcrumb, BreadcrumbItem, ClickableTile, ListItem, UnorderedList } from '@carbon/react';
 import { RouteLink, navClick } from '../routes.jsx';
 
 // Guidance module (T08): patterns, data-visualization and support/MCP pages.
@@ -105,13 +105,13 @@ function Attribution() {
 
 function BlockLinks({ names }) {
   return (
-    <ul>
+    <UnorderedList>
       {names.map((n) => (
-        <li key={n}>
+        <ListItem key={n}>
           <RouteLink to={'/components/' + n.toLowerCase()}>{n}</RouteLink>
-        </li>
+        </ListItem>
       ))}
-    </ul>
+    </UnorderedList>
   );
 }
 
@@ -171,11 +171,11 @@ export function PatternPage({ name }) {
       <p>{pattern.intro}</p>
       <div className="bong-section">
         <h2>When to use it</h2>
-        <ul>
+        <UnorderedList>
           {pattern.when.map((w, i) => (
-            <li key={i}>{w}</li>
+            <ListItem key={i}>{w}</ListItem>
           ))}
-        </ul>
+        </UnorderedList>
       </div>
       <div className="bong-section">
         <h2>Building blocks</h2>
@@ -183,11 +183,11 @@ export function PatternPage({ name }) {
       </div>
       <div className="bong-section">
         <h2>Do this</h2>
-        <ul>
+        <UnorderedList>
           {pattern.done.map((d, i) => (
-            <li key={i}>{d}</li>
+            <ListItem key={i}>{d}</ListItem>
           ))}
-        </ul>
+        </UnorderedList>
       </div>
       <Attribution />
     </div>
@@ -212,19 +212,19 @@ export function DataVisualizationPage() {
       </p>
       <div className="bong-section">
         <h2>Choosing a chart</h2>
-        <ul>
-          <li>Trend over time -- line or bar; never pie for change.</li>
-          <li>Part of a whole -- stacked bar first, donut only for few slices.</li>
-          <li>Comparison -- grouped bars with a shared baseline at zero.</li>
-        </ul>
+        <UnorderedList>
+          <ListItem>Trend over time -- line or bar; never pie for change.</ListItem>
+          <ListItem>Part of a whole -- stacked bar first, donut only for few slices.</ListItem>
+          <ListItem>Comparison -- grouped bars with a shared baseline at zero.</ListItem>
+        </UnorderedList>
       </div>
       <div className="bong-section">
         <h2>Accessible by default</h2>
-        <ul>
-          <li>Never encode meaning with color alone -- add labels or patterns.</li>
-          <li>Pair every chart with its data table so screen readers get the numbers.</li>
-          <li>Keep animation subtle and honour reduced-motion preferences.</li>
-        </ul>
+        <UnorderedList>
+          <ListItem>Never encode meaning with color alone -- add labels or patterns.</ListItem>
+          <ListItem>Pair every chart with its data table so screen readers get the numbers.</ListItem>
+          <ListItem>Keep animation subtle and honour reduced-motion preferences.</ListItem>
+        </UnorderedList>
       </div>
       <div className="bong-section">
         <h2>Building blocks</h2>
@@ -299,30 +299,30 @@ export function McpPage() {
       </div>
       <div className="bong-section">
         <h2>Calls the server answers</h2>
-        <ul>
-          <li>
+        <UnorderedList>
+          <ListItem>
             <code>initialize</code> -- handshake, returns protocol version and server identity.
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <code>ping</code> -- health probe for the endpoint.
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <code>tools/list</code> -- the tool catalogue below.
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             <code>tools/call</code> -- run one tool by name with arguments.
-          </li>
-        </ul>
+          </ListItem>
+        </UnorderedList>
       </div>
       <div className="bong-section">
         <h2>Tools</h2>
-        <ul>
+        <UnorderedList>
           {MCP_TOOLS.map((t) => (
-            <li key={t.name}>
+            <ListItem key={t.name}>
               <code>{t.name}</code> -- {t.description}
-            </li>
+            </ListItem>
           ))}
-        </ul>
+        </UnorderedList>
       </div>
     </div>
   );

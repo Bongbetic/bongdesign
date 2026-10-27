@@ -40,18 +40,22 @@ export function PictogramsLibrary() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(8rem, 1fr))', gap: '1px', background: '#e0e0e0', border: '1px solid #e0e0e0', marginTop: '1rem' }}>
-        {shown.map((p) => (
-          <div key={p.name} style={{ background: '#fff', padding: '1rem', textAlign: 'center' }}>
-            <svg {...p.descriptor.attrs} width={64} height={64} focusable="false" role="img" aria-hidden="true">
-              {(p.descriptor.content || []).map((c, i) => renderNode(c, i))}
-            </svg>
-            <div style={{ marginTop: '0.5rem' }}>
-              <code style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>{p.name}</code>
-            </div>
-          </div>
-        ))}
-      </div>
+      <Carbon.FlexGrid>
+        <Carbon.Row>
+          {shown.map((p) => (
+            <Carbon.Column key={p.name} sm={2} md={4} lg={4}>
+              <Carbon.Tile>
+                <svg {...p.descriptor.attrs} width={64} height={64} focusable="false" role="img" aria-hidden="true">
+                  {(p.descriptor.content || []).map((c, i) => renderNode(c, i))}
+                </svg>
+                <div>
+                  <code style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>{p.name}</code>
+                </div>
+              </Carbon.Tile>
+            </Carbon.Column>
+          ))}
+        </Carbon.Row>
+      </Carbon.FlexGrid>
     </div>
   );
 }
