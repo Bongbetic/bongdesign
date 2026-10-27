@@ -74,6 +74,42 @@ with open(DATA, encoding='utf-8') as f:
     INDEX = json.load(f)
 COMPONENTS = INDEX['components']
 BY_NAME = {c['name'].lower(): c for c in COMPONENTS}
+
+
+def _load_data(name):
+    with open(os.path.join(ROOT, 'data', name), encoding='utf-8') as f:
+        return json.load(f)
+
+
+CARBON_TAG = INDEX['meta']['carbonTag']
+PROPS = _load_data('props.json')['components']
+TOKENS = _load_data('tokens.json')
+ICONS = _load_data('icons.json')
+GUIDELINES = _load_data('guidelines.json')
+BRANDING_DIR = os.path.join(ROOT, 'site', 'public', 'branding')
+
+
+def _flatten(prefix, obj, out):
+    if isinstance(obj, dict):
+        for key, val in obj.items():
+            _flatten(f'{prefix}.{key}' if prefix else key, val, out)
+    else:
+        out.append((prefix, obj))
+
+
+TOKEN_INDEX = []
+for _section in ('colors', 'layout', 'motion', 'type', 'themes'):
+    _flat = []
+    _flatten('', TOKENS.get(_section, {}), _flat)
+    for _path, _val in _flat:
+        TOKEN_INDEX.append((_section, _path, _path.split('.')[-1], _val))
+
+
+def branding_assets():
+    try:
+        return sorted(os.listdir(BRANDING_DIR))
+    except OSError:
+        return []
 SITE_BASE = os.environ.get('BONGDESIGN_PUBLIC_BASE', 'https://design.bongbetic.com')
 
 EXAMPLES = {
@@ -109,6 +145,14 @@ TOOLS = [
      'inputSchema': {'type': 'object', 'properties': {'name': {'type': 'string'}}, 'required': ['name']}},
     {'name': 'search_components', 'description': 'Substring search over component names.',
      'inputSchema': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'required': ['query']}},
+    {'name': 'lookup_token', 'description': 'Look up a Carbon design token (color, layout, motion, type, theme) by name; pinned values.',
+     'inputSchema': {'type': 'object', 'properties': {'name': {'type': 'string'}}, 'required': ['name']}},
+    {'name': 'search_icons', 'description': 'Substring search over pinned Carbon icon names.',
+     'inputSchema': {'type': 'object', 'properties': {'query': {'type': 'string'}, 'limit': {'type': 'integer'}}, 'required': ['query']}},
+    {'name': 'search_pictograms', 'description': 'Substring search over pinned Carbon pictogram names.',
+     'inputSchema': {'type': 'object', 'properties': {'query': {'type': 'string'}, 'limit': {'type': 'integer'}}, 'required': ['query']}},
+    {'name': 'get_branding', 'description': 'Bongbetic brand summary: accent colour and vendored local assets.',
+     'inputSchema': {'type': 'object', 'properties': {}}},
 ]
 
 
@@ -125,19 +169,56 @@ def call_tool(name, args):
     if name == 'list_components':
         filt = (args.get('filter') or '').lower()
         names = [c['name'] for c in COMPONENTS if filt in c['name'].lower()]
-        return tool_result({'count': len(names), 'components': names})
+        return tool_result({'carbonTag': CARBON_TAG, 'count': len(names), 'components': names})
     if name == 'get_component':
         c = BY_NAME.get((args.get('name') or '').lower())
         if not c:
             return {'content': [{'type': 'text', 'text': f"Unknown component '{args.get('name')}'."}],
                     'isError': True}
-        return tool_result({'name': c['name'], 'docs': doc_url(c['doc']),
-                            'example': example_for(c['name']),
+        entry = PROPS.get(c['name'], {})
+        mined = entry.get('example', '')
+        if mined and 'import' not in mined:
+            example = f"import {{ {c['name']} }} from '@carbon/react';\n{mined}"
+        else:
+            example = mined or example_for(c['name'])
+        guide = GUIDELINES.get(c['name'].lower(), {})
+        return tool_result({'name': c['name'], 'carbonTag': CARBON_TAG,
+                            'docs': doc_url(c['doc']),
+                            'example': example,
+                            'props': entry.get('props', []),
+                            'guidelines': guide.get('guidelines', []),
+                            'specs': guide.get('specs', {}),
+                            'a11y': guide.get('a11y', []),
                             'gallery': f'{SITE_BASE}/#index'})
     if name == 'search_components':
         q = (args.get('query') or '').lower()
         hits = [c['name'] for c in COMPONENTS if q in c['name'].lower()]
-        return tool_result({'query': args.get('query'), 'count': len(hits), 'hits': hits})
+        return tool_result({'query': args.get('query'), 'carbonTag': CARBON_TAG,
+                            'count': len(hits), 'hits': hits})
+    if name == 'lookup_token':
+        q = (args.get('name') or '').strip().lower()
+        exact = [m for m in TOKEN_INDEX if m[2].lower() == q or m[1].lower() == q]
+        found = exact if exact else [m for m in TOKEN_INDEX
+                                     if q and (q in m[2].lower() or q in m[1].lower())][:20]
+        return tool_result({'query': args.get('name'), 'carbonTag': CARBON_TAG,
+                            'count': len(found),
+                            'matches': [{'section': s, 'token': p, 'value': v}
+                                        for s, p, _, v in found]})
+    if name in ('search_icons', 'search_pictograms'):
+        group = ICONS['icons'] if name == 'search_icons' else ICONS['pictograms']
+        q = (args.get('query') or '').lower()
+        try:
+            limit = int(args.get('limit') or 20)
+        except (TypeError, ValueError):
+            limit = 20
+        hits = [n for n in group['names'] if q in n.lower()]
+        return tool_result({'query': args.get('query'), 'carbonTag': CARBON_TAG,
+                            'count': len(hits), 'total': group['total'],
+                            'hits': hits[:max(limit, 0)]})
+    if name == 'get_branding':
+        return tool_result({'carbonTag': CARBON_TAG, 'accent': '#e11d2a',
+                            'assets': branding_assets(),
+                            'note': 'Brand assets are vendored locally, never hotlinked.'})
     return {'content': [{'type': 'text', 'text': f'Unknown tool {name}.'}], 'isError': True}
 
 

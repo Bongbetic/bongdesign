@@ -76,6 +76,10 @@ export const MCP_TOOLS = [
   { name: 'list_components', description: 'List all indexed components, optional substring filter.' },
   { name: 'get_component', description: 'Details, docs URL and React example for one component.' },
   { name: 'search_components', description: 'Substring search over component names.' },
+  { name: 'lookup_token', description: 'Look up a Carbon design token (color, layout, motion, type, theme) by name; pinned values.' },
+  { name: 'search_icons', description: 'Substring search over pinned Carbon icon names.' },
+  { name: 'search_pictograms', description: 'Substring search over pinned Carbon pictogram names.' },
+  { name: 'get_branding', description: 'Bongbetic brand summary: accent colour and vendored local assets.' },
 ];
 
 export const MCP_PLACEHOLDER = 'YOUR_BONGDESIGN_TOKEN';
