@@ -60,3 +60,110 @@ if (bad.length > 0) {
 console.log(
   `OK: ${cards.length} cards, ${cards.filter((c) => c.live).length} live demos, 0 missing, 0 render failures.`
 );
+
+// Phase 2 (T05): routed pages — every route renders inside the shell.
+// The App entry must export the route registry (ROUTES, matchRoute) and an
+// SSR entry (AppForPath) that renders a path inside the Carbon shell.
+const appBundle = '/tmp/bongdesign-app.ssr.cjs';
+try {
+  execSync(
+    `${path.join(SITE, 'node_modules', '.bin', 'esbuild')} src/App.jsx --bundle --platform=node --format=cjs --outfile=${appBundle} --external:react --external:react-dom --loader:.scss=empty --loader:.css=empty`,
+    { cwd: SITE, stdio: 'pipe' }
+  );
+} catch (e) {
+  console.error('Routes bundle failed: src/App.jsx must export the routed shell.');
+  process.exit(1);
+}
+let app;
+try {
+  app = require(appBundle);
+} catch (e) {
+  console.error('Routes bundle unloadable: ' + e.message.split('\n')[0]);
+  process.exit(1);
+}
+const routeFails = [];
+function routeCheck(label, ok, detail) {
+  if (!ok) routeFails.push(label + (detail ? ' :: ' + detail : ''));
+}
+routeCheck('matchRoute is exported', typeof app.matchRoute === 'function');
+routeCheck('ROUTES registry is exported', Array.isArray(app.ROUTES));
+routeCheck('AppForPath SSR entry is exported', typeof app.AppForPath === 'function');
+if (typeof app.matchRoute === 'function') {
+  const cases = [
+    ['/', 'home', {}],
+    ['/components', 'components', {}],
+    ['/components/button', 'component', { name: 'button' }],
+    ['/foundations/color', 'foundations', { slug: 'color' }],
+    ['/no-such-page', 'notfound', {}],
+  ];
+  for (const [p, id, params] of cases) {
+    let got;
+    try {
+      got = app.matchRoute(p);
+    } catch (e) {
+      got = null;
+    }
+    routeCheck(
+      `matchRoute('${p}') is ${id}`,
+      got && got.id === id && Object.entries(params).every(([k, v]) => got.params && got.params[k] === v),
+      'got ' + JSON.stringify(got)
+    );
+  }
+  routeCheck(
+    "matchRoute strips query and trailing slash",
+    (() => {
+      const got = app.matchRoute('/components/?q=modal');
+      return got && got.id === 'components';
+    })()
+  );
+}
+if (Array.isArray(app.ROUTES)) {
+  const paths = app.ROUTES.map((r) => r.path);
+  for (const p of ['/', '/components', '/components/:name', '/foundations/:slug']) {
+    routeCheck(`ROUTES registers '${p}'`, paths.includes(p), 'got ' + JSON.stringify(paths));
+  }
+}
+function ssr(pathname) {
+  return renderToString(React.createElement(app.AppForPath, { path: pathname }));
+}
+if (typeof app.AppForPath === 'function') {
+  const pages = [
+    ['/', ['bong-masthead', 'pinned to upstream Carbon', '/mcp', 'Building blocks', 'aria-current="page"']],
+    ['/components', ['bong-masthead', 'All components', 'Filter components', 'aria-current="page"']],
+    ['/foundations/color', ['bong-masthead', 'Palettes', 'aria-current="page"']],
+    ['/no-such-page', ['bong-masthead', 'aria-current="page"']],
+  ];
+  for (const [p, markers] of pages) {
+    let html;
+    try {
+      html = ssr(p);
+    } catch (e) {
+      routeCheck(`SSR renders '${p}'`, false, e.message.split('\n')[0]);
+      continue;
+    }
+    for (const m of markers) {
+      routeCheck(`'${p}' renders marker '${m}'`, html.includes(m), 'missing from SSR html');
+    }
+  }
+  let missing;
+  try {
+    missing = ssr('/no-such-page').toLowerCase();
+  } catch (e) {
+    missing = '';
+  }
+  routeCheck("unknown path renders a not-found page", missing.includes('not found'), 'no not-found copy');
+}
+const fs = require('fs');
+let routesSrc = '';
+try {
+  routesSrc = fs.readFileSync(path.join(SITE, 'src', 'routes.jsx'), 'utf8');
+} catch (e) {
+  routeCheck('src/routes.jsx registry exists', false, 'missing file');
+}
+routeCheck('router drives back/forward from popstate', routesSrc.includes('popstate'));
+routeCheck('router navigates without reload via pushState', routesSrc.includes('pushState'));
+if (routeFails.length > 0) {
+  console.error('Route failures:\n' + routeFails.join('\n'));
+  process.exit(1);
+}
+console.log(`OK: routed pages render inside the shell (${app.ROUTES.length} routes).`);
