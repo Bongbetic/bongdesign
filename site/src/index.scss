@@ -117,12 +117,14 @@
   box-shadow: inset 0 -2px 0 0 #0f62fe;
 }
 
-// T13: prototype lockup — vendored glyph + bongbetic (600) + BongDesign
-// (regular, muted). Explicit 1.5rem glyph height keeps it fully inside the
-// 48px masthead; nothing clips.
+// T13: prototype lockup — vendored wordmark + BongDesign (regular, muted).
+// Explicit 1.75rem logo height keeps the ~4.49:1 wordmark fully inside the
+// 48px masthead on one line; nothing clips.
 // T17 (issue #34): Carbon HeaderName wraps children in its own <span>, so
 // flex must target the wrapper — flex on the anchor alone leaves the wrapper
-// as a block and the block-level glyph pushes word/suffix to a clipped line.
+// as a block and the block-level logo pushes the suffix to a clipped line.
+// T18 (issue #36): the monochrome glyph + typed text was the wrong asset;
+// the lockup is the vendored COLOR wordmark (light-background variant).
 .bong-lockup {
   display: flex;
   align-items: center;
@@ -136,15 +138,11 @@
   min-width: 0;
 }
 
-.bong-lockup-glyph {
-  height: 1.5rem;
+.bong-lockup-logo {
+  height: 1.75rem;
   width: auto;
   display: block;
   flex: none;
-}
-
-.bong-lockup-word {
-  font-weight: 600;
 }
 
 .bong-lockup-suffix {

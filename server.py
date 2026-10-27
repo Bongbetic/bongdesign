@@ -266,7 +266,7 @@ LOGIN_PAGE = '''<!doctype html>
 .cds--btn{{margin-top:1.5rem;background:#0f62fe;color:#fff;border:0;padding:.9375rem 1rem;font-size:.875rem;cursor:pointer;width:100%}}
 .err{{color:#da1e28}}</style>
 </head><body>
-<div class="bar"><img src="/branding/bongbetic-glyph.svg" alt="Bongbetic" width="24" height="24" />
+<div class="bar"><img src="/branding/bongbetic-wordmark@2x.png" alt="Bongbetic" style="height:2rem;width:auto" />
 <strong>BongDesign</strong></div>
 <div class="rule"></div>
 <div class="card">
