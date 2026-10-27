@@ -415,6 +415,78 @@ try {
 }
 routeCheck('router drives back/forward from popstate', routesSrc.includes('popstate'));
 routeCheck('router navigates without reload via pushState', routesSrc.includes('pushState'));
+// Phase 5 (T08): patterns, data-visualization and support/MCP pages.
+// Acceptance: (1) guidance URLs render inside the shell; (2) the MCP page
+// shows a placeholder-token client config plus every tool name the server
+// actually exposes (TOOLS in server.py, served over POST /mcp); (3) no page
+// tells the user to paste a real secret anywhere.
+if (typeof app.AppForPath === 'function') {
+  const T08_PAGES = [
+    ['/patterns', ['Patterns', '/patterns/empty-state']],
+    ['/patterns/empty-state', ['Empty state', 'Patterns']],
+    ['/data-visualization', ['Data visualization']],
+    ['/support', ['Support', '/mcp']],
+    ['/mcp', ['YOUR_BONGDESIGN_TOKEN']],
+  ];
+  for (const [p, markers] of T08_PAGES) {
+    let html;
+    try {
+      html = ssr(p);
+    } catch (e) {
+      routeCheck(`SSR renders '${p}'`, false, e.message.split('\n')[0]);
+      continue;
+    }
+    for (const m of markers) {
+      routeCheck(`'${p}' renders marker '${m}'`, html.includes(m), 'missing from SSR html');
+    }
+  }
+  let serverSrc = '';
+  try {
+    serverSrc = fs.readFileSync(path.join(ROOT, 'server.py'), 'utf8');
+  } catch (e) {
+    routeCheck('server.py is readable for the MCP tool sync check', false, 'missing file');
+  }
+  const toolNames = [...serverSrc.matchAll(/\{'name': '([a-z_]+)'/g)].map((m) => m[1]);
+  routeCheck('server.py exposes at least one MCP tool', toolNames.length > 0, 'no TOOLS entries parsed');
+  let mcpHtml = '';
+  try {
+    mcpHtml = ssr('/mcp');
+  } catch (e) {
+    routeCheck("SSR renders '/mcp' for the tool sync check", false, e.message.split('\n')[0]);
+  }
+  if (mcpHtml) {
+    for (const name of toolNames) {
+      routeCheck(`MCP page lists the server tool '${name}'`, mcpHtml.includes(name), 'missing from SSR html');
+    }
+    routeCheck('MCP page documents the POST /mcp endpoint', mcpHtml.includes('/mcp'), 'missing from SSR html');
+  }
+  const SECRET_PHRASES = [
+    'paste your token',
+    'paste your secret',
+    'paste the token',
+    'enter your token',
+    'enter your secret',
+    'your real token',
+    'your actual token',
+    'production token',
+  ];
+  const hygieneUrls = ['/patterns', '/patterns/empty-state', '/data-visualization', '/support', '/mcp', '/'];
+  for (const p of hygieneUrls) {
+    let html;
+    try {
+      html = ssr(p).toLowerCase();
+    } catch (e) {
+      routeCheck(`SSR renders '${p}' for the secret-hygiene check`, false, e.message.split('\n')[0]);
+      continue;
+    }
+    const leaked = SECRET_PHRASES.filter((s) => html.includes(s));
+    routeCheck(
+      `'${p}' never instructs pasting a real secret`,
+      leaked.length === 0,
+      leaked.length ? 'forbidden copy: ' + JSON.stringify(leaked) : ''
+    );
+  }
+}
 if (routeFails.length > 0) {
   console.error('Route failures:\n' + routeFails.join('\n'));
   process.exit(1);
