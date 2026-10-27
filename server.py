@@ -32,8 +32,40 @@ USER = os.environ.get('BONGDESIGN_USER', '')
 PASS = os.environ.get('BONGDESIGN_PASS', '')
 TOKEN = os.environ.get('BONGDESIGN_TOKEN', '')
 OPEN = os.environ.get('BONGDESIGN_OPEN', '') == '1'
-SESSION_TTL = 12 * 3600
+SESSION_TTL = int(os.environ.get('BONGDESIGN_SESSION_TTL', str(12 * 3600)))
 SESSIONS = {}
+LOGIN_MAX_FAILS = 10
+LOGIN_WINDOW = 5 * 60
+LOGIN_COOLDOWN = 60
+_LOGIN_FAILS = {}
+_LOGIN_BLOCKED_UNTIL = {}
+
+
+def login_allowed(ip):
+    now = time.time()
+    if _LOGIN_BLOCKED_UNTIL.get(ip, 0) > now:
+        return False
+    recent = [t for t in _LOGIN_FAILS.get(ip, []) if now - t < LOGIN_WINDOW]
+    _LOGIN_FAILS[ip] = recent
+    return True
+
+
+def record_login_fail(ip):
+    now = time.time()
+    fails = _LOGIN_FAILS.get(ip, [])
+    fails.append(now)
+    _LOGIN_FAILS[ip] = fails
+    if len(fails) >= LOGIN_MAX_FAILS:
+        _LOGIN_BLOCKED_UNTIL[ip] = now + LOGIN_COOLDOWN
+
+
+def record_login_ok(ip):
+    _LOGIN_FAILS.pop(ip, None)
+    _LOGIN_BLOCKED_UNTIL.pop(ip, None)
+
+
+def session_cookie_value(tok):
+    return f'bongdesign_session={tok}; HttpOnly; Path=/; SameSite=Lax; Secure'
 
 if not OPEN and (not USER or not PASS):
     raise SystemExit('Set BONGDESIGN_USER and BONGDESIGN_PASS, or BONGDESIGN_OPEN=1 for local dev.')
@@ -144,20 +176,27 @@ LOGIN_PAGE = '''<!doctype html>
 <html lang="en"><head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sign in — BongDesign</title>
-<style>body{{font-family:sans-serif;background:#fff;color:#000;max-width:28rem;margin:4rem auto;padding:0 1rem}}
-img{{display:block}}input{{display:block;width:100%;margin:.5rem 0;padding:.5rem;font-size:1rem}}
-button{{background:#000;color:#fff;border:0;padding:.6rem 1.2rem;font-size:1rem;cursor:pointer}}
-.err{{color:#e11d2a}}.rule{{height:3px;background:#e11d2a;margin:1rem 0}}</style>
+<style>body{{font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;background:#fff;color:#161616;margin:0}}
+.bar{{height:3rem;display:flex;align-items:center;gap:.75rem;padding:0 1rem;border-bottom:1px solid #e0e0e0}}
+.rule{{height:3px;background:#e11d2a}}
+.card{{max-width:26rem;margin:4rem auto;padding:0 1rem}}
+.cds--label{{display:block;font-size:.75rem;margin:1rem 0 .5rem}}
+.cds--text-input{{display:block;width:100%;box-sizing:border-box;padding:.6875rem 1rem;font-size:.875rem;border:0;border-bottom:1px solid #8d8d8d;background:#f4f4f4}}
+.cds--btn{{margin-top:1.5rem;background:#0f62fe;color:#fff;border:0;padding:.9375rem 1rem;font-size:.875rem;cursor:pointer;width:100%}}
+.err{{color:#da1e28}}</style>
 </head><body>
-<img src="https://bongbetic.com/branding/bongbetic-wordmark@2x.png" alt="Bongbetic" width="188" height="42" />
+<div class="bar"><img src="/branding/bongbetic-glyph.svg" alt="Bongbetic" width="24" height="24" />
+<strong>BongDesign</strong></div>
 <div class="rule"></div>
+<div class="card">
+<img src="/branding/bongbetic-wordmark@2x.png" alt="Bongbetic" width="188" height="42" />
 <h1>BongDesign sign in</h1>
 {err}
 <form method="post" action="/login">
 <input name="username" placeholder="Username" autocomplete="username" />
 <input name="password" type="password" placeholder="Password" autocomplete="current-password" />
-<button type="submit">Sign in</button>
-</form></body></html>'''
+<button class="cds--btn cds--btn--primary" type="submit">Sign in</button>
+</form></div></body></html>'''
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -249,13 +288,23 @@ class Handler(SimpleHTTPRequestHandler):
                 form = {}
             u = form.get('username', [''])[0]
             p = form.get('password', [''])[0]
+            ip = self.client_address[0]
+            if not login_allowed(ip):
+                self.send_response(429)
+                self.send_header('Content-Type', 'text/plain; charset=utf-8')
+                self.send_header('Retry-After', str(LOGIN_COOLDOWN))
+                self.send_header('Content-Length', '19')
+                self.end_headers()
+                self.wfile.write(b'Too many attempts.\n')
+                return
             if hmac.compare_digest(u, USER) and hmac.compare_digest(p, PASS):
+                record_login_ok(ip)
                 self.send_response(302)
-                self.send_header('Set-Cookie',
-                                 f'bongdesign_session={new_session()}; HttpOnly; Path=/; SameSite=Lax')
+                self.send_header('Set-Cookie', session_cookie_value(new_session()))
                 self.send_header('Location', '/')
                 self.end_headers()
             else:
+                record_login_fail(ip)
                 self._html(401, LOGIN_PAGE.format(err='<p class="err">Wrong username or password.</p>'))
             return
         if path != '/mcp':

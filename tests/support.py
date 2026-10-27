@@ -28,12 +28,14 @@ def free_port():
 class ServerProcess:
     """A real server on an ephemeral port, locked with the test credentials."""
 
-    def __init__(self):
+    def __init__(self, extra_env=None):
         self.port = free_port()
         self._log = tempfile.TemporaryFile()
         env = {k: v for k, v in os.environ.items() if not k.startswith('BONGDESIGN_')}
         env.update(BONGDESIGN_USER=TEST_USER, BONGDESIGN_PASS=TEST_PASS,
                    BONGDESIGN_TOKEN=TEST_TOKEN, PORT=str(self.port))
+        if extra_env:
+            env.update(extra_env)
         self._proc = subprocess.Popen([sys.executable, os.path.join(ROOT, 'server.py')],
                                       cwd=ROOT, env=env,
                                       stdout=subprocess.DEVNULL, stderr=self._log)
