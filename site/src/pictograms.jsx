@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import * as Carbon from '@carbon/react';
+import iconIndex from '../../data/icons.json';
 import * as pictoData from '@carbon/pictograms';
 
 function renderNode(node, key) {
@@ -10,10 +11,14 @@ function renderNode(node, key) {
   return <Tag key={key} {...(node.attrs || {})}>{kids}</Tag>;
 }
 
-const ALL = Object.entries(pictoData)
-  .filter(([name, d]) => /^[A-Z]/.test(name) && d && d.elem === 'svg')
-  .map(([name, descriptor]) => ({ name, descriptor }))
-  .sort((a, b) => a.name.localeCompare(b.name));
+// Search space is the generated pictogram index (data/icons.json), mined
+// from the pinned @carbon/pictograms package. Vectors still render from
+// the pinned package itself, so documented names and artwork always agree.
+const ALL = iconIndex.pictograms.names
+  .map((name) => ({ name, descriptor: pictoData[name] }))
+  .filter((p) => p.descriptor && p.descriptor.elem === 'svg');
+// ALL.length equals iconIndex.pictograms.total: every indexed name resolves
+// to vector data in the pinned package.
 
 export function PictogramsLibrary() {
   const [query, setQuery] = useState('');
@@ -26,8 +31,7 @@ export function PictogramsLibrary() {
   return (
     <div>
       <p>
-        Every pictogram in the pinned package, rendered from its own vector
-        data. Showing {shown.length} of {total}.
+        {'Every pictogram in the pinned index (data/icons.json), rendered from its own vector data. Showing ' + shown.length + ' of ' + total + '.'}
       </p>
       <Carbon.Search
         id="picto-search"

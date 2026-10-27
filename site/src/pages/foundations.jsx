@@ -12,15 +12,33 @@ function slugOf(id) {
 export default function FoundationPage({ slug }) {
   const sections = FOUNDATION_SECTIONS;
   const current = sections.find((s) => slugOf(s.id) === String(slug || '').toLowerCase());
-  if (!current && slug) {
+  if (!current) {
+    // /foundations is an index, not a single page: every foundation lives
+    // on its own routed page, so no content remains only here.
     return (
       <div>
-        <h1>Foundation not found</h1>
-        <p>
-          No foundation named “{slug}”. Start from{' '}
-          <RouteLink to="/foundations/color">Color</RouteLink> or pick one below.
-        </p>
-        <FoundationIndex except={null} />
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <RouteLink to="/">Home</RouteLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem isCurrentPage>Foundations</BreadcrumbItem>
+        </Breadcrumb>
+        <h1>Foundations</h1>
+        {slug ? (
+          <div>
+            <h2>Foundation not found</h2>
+            <p>No foundation named “{slug}”. Pick one below.</p>
+          </div>
+        ) : (
+          <p>Each foundation below has its own page, driven by the pinned token and icon indexes.</p>
+        )}
+        <ul>
+          {sections.map((s) => (
+            <li key={s.id}>
+              <RouteLink to={`/foundations/${slugOf(s.id)}`}>{s.title}</RouteLink>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
