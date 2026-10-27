@@ -834,6 +834,33 @@ if (t16Fails.length > 0) {
 console.log(
   `OK: ${cards.filter((c) => c.live).length} live demos carry zero prop-type warnings and open-state overlay markup.`
 );
+// Phase 9 (T17, issue #34): masthead wordmark invisible. Carbon HeaderName
+// wraps children in its own <span>, so flex on the anchor (.bong-lockup)
+// alone leaves the wrapper span as a block; the block-level glyph img pushes
+// word/suffix to a second line clipped by the 48px header (glyph only in the
+// user screenshot). Acceptance: (a) index.scss targets the wrapper with a
+// flex row (.bong-lockup > span { display:flex ... }); (b) the SSR header
+// segment keeps glyph+word+suffix inside one wrapper span.
+routeCheck(
+  'masthead lockup wrapper span is a flex row (no clipped wordmark)',
+  /\.bong-lockup\s*>\s*span\s*\{[^}]*display:\s*flex/.test(scssText),
+  'no .bong-lockup > span { display:flex } wrapper rule in index.scss'
+);
+if (typeof app.AppForPath === 'function') {
+  let t17Html = '';
+  try {
+    t17Html = ssr('/');
+  } catch (e) {
+    routeCheck("SSR renders '/' for the T17 lockup check", false, e.message.split('\n')[0]);
+  }
+  if (t17Html) {
+    routeCheck(
+      'SSR header keeps glyph+word+suffix in one lockup wrapper',
+      /cds--header__name[^>]*><span>[\s\S]*?bong-lockup-glyph[\s\S]*?bong-lockup-word[\s\S]*?bong-lockup-suffix[\s\S]*?<\/span>\s*<\/a>/.test(t17Html),
+      'glyph+word+suffix are not in one header wrapper span in the shell SSR'
+    );
+  }
+}
 if (routeFails.length > 0) {
   console.error('Route failures:\n' + routeFails.join('\n'));
   process.exit(1);
