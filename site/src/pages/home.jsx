@@ -1,53 +1,55 @@
 import React from 'react';
-import { ClickableTile, InlineNotification, Link, Tile } from '@carbon/react';
+import { Button, ClickableTile, InlineNotification, Tile } from '@carbon/react';
 import { navClick } from '../routes.jsx';
 import index from '../../../data/components.json';
 
 const BLOCKS = [
   {
     title: 'Foundations',
-    copy: 'Color, type, motion, spacing and more: the tokens every page is built from.',
+    copy: '2x Grid, color, typography, spacing, motion, themes, icons.',
     to: '/foundations/color',
   },
   {
     title: 'Components',
-    copy: 'Every component in the pinned upstream release, rendered live from your own repo.',
+    copy: '147 components from the pinned Carbon release, each with a live demo.',
     to: '/components',
   },
   {
     title: 'Patterns',
-    copy: 'Reusable solutions for common jobs: empty states, forms, loading, notifications, search.',
+    copy: 'Core patterns for common product moments.',
     to: null,
   },
   {
     title: 'Data visualization',
-    copy: 'Charts live in a separate package and are not vendored here. Color order follows the palettes in Color.',
-    to: null,
-  },
-  {
-    title: 'Building experiences',
-    copy: 'Start from a working vertical slice, then grow. Keep the design system the source of interface truth.',
+    copy: 'Guidance for charts and dashboards.',
     to: null,
   },
 ];
 
-// Home: hero, Carbon MCP banner, building-blocks cards.
+// Home: hero, Carbon MCP banner, building-blocks cards. Copy aligned with
+// the locked prototype (carbon/.heimdall/design/prototype/index.html).
 export default function HomePage() {
   return (
     <div>
       <div className="bong-hero">
-        <h1>BongDesign</h1>
-        <p className="bong-hero-sub">Self-hosted Carbon component library</p>
-        <p>
-          Self-hosted Carbon component library, pinned to upstream Carbon{' '}
-          {index.meta.carbonTag}. {index.components.length} components indexed.
-          Source: your own repo, no IBM account needed.
+        <h1>Let&apos;s make together</h1>
+        <p className="bong-hero-sub">
+          Carbon is an enterprise-ready, open-source design system — self-hosted
+          by Bongbetic, pinned and mirrored in our own repository.
         </p>
+        <div className="bong-hero-actions">
+          <Button href="/components" onClick={navClick('/components')}>
+            Get started →
+          </Button>
+          <Button kind="secondary" href="/mcp">
+            Connect the MCP
+          </Button>
+        </div>
       </div>
       <InlineNotification
         kind="info"
         title="Self-hosted, MCP included"
-        subtitle="This library renders from your own repo. MCP at /mcp on this host, token required."
+        subtitle={`Renders from your own repo, pinned to upstream Carbon ${index.meta.carbonTag}. MCP at /mcp on this host, token required.`}
         className="bong-mcp-banner"
       />
       <div className="bong-section">
@@ -66,24 +68,12 @@ export default function HomePage() {
               </Tile>
             )
           )}
-          <Tile>
-            <h3>Support</h3>
-            <p>
-              Repo:{' '}
-              <Link href="https://github.com/Bongbetic/bongdesign">Bongbetic/bongdesign</Link>.
-              Upstream snapshot, own repo. Health at <code>/health</code>.
-            </p>
-          </Tile>
         </div>
       </div>
       <div className="bong-footer">
         <p>
-          BongDesign {index.meta.carbonTag} · upstream Carbon snapshot, own repo ·
-          MCP at <code>/mcp</code> · health at <code>/health</code>
-        </p>
-        <p>
-          Built by <Link href="https://bongbetic.com">Bongbetic</Link>. Free software,
-          loud opinions, no warranty (see your licence).
+          BongDesign — self-hosted Carbon {index.meta.carbonTag} · Carbon ©
+          IBM, Apache-2.0 · Bongbetic branding, vendored.
         </p>
       </div>
     </div>
