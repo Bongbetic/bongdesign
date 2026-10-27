@@ -57,6 +57,58 @@ if (bad.length > 0) {
   console.error('Render failures:\n' + bad.join('\n'));
   process.exit(1);
 }
+
+// Phase 7 (T14, issue #27): demo fidelity — every live card must be a
+// non-trivial canonical demo, not a bare component with generic/empty props
+// (Accordion with no items, closed Modal, DataTable with no rows, ...).
+// A live demo passes when ALL hold over its SSR HTML:
+//   (a) markup length >= HTML_MIN (bare `<Button>Example</Button>` is tiny),
+//   (b) visible text length >= TEXT_MIN (empty/closed renders carry no copy),
+//   (c) visible text is not exactly the generic "Example" placeholder,
+//   (d) visible text carries no "undefined" fallthrough from missing props.
+// Calibrated so the 32 curated demos pass (tightest: Theme markup 94,
+// AspectRatio/TreeView/ComboBox/DatePicker/TimePicker text 4) while bare
+// renders fail. RED at the T14 test commit (44): AILabel, BreadcrumbItem,
+// Button, ButtonSet, CheckboxGroup, Copy, DangerButton, DataTableSkeleton,
+// FlexGrid, FluidDatePicker, FluidForm, FluidNumberInput, Form, FormGroup,
+// FormItem, FormLabel, Grid, Heading, IconButton, InlineCheckbox, Layer, Link,
+// ListItem, Menu, NumberInput, OrderedList, PrimaryButton, RadioTile,
+// SecondaryButton, SelectItem, SelectItemGroup, SkeletonIcon,
+// SkeletonPlaceholder, SkeletonText, Slider, Stack, Switch, Tab, TabContent,
+// Tag, Tile, TileGroup, TimePickerSelect, UnorderedList.
+function visibleText(html) {
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+const HTML_MIN = 90;
+const TEXT_MIN = 4;
+const thin = [];
+for (const c of cards) {
+  if (!c.live) continue;
+  let html;
+  try {
+    html = renderToString(React.createElement(React.Fragment, null, c.demo));
+  } catch (e) {
+    continue; // already reported as a render failure above
+  }
+  const text = visibleText(html);
+  const reasons = [];
+  if (html.length < HTML_MIN) reasons.push(`markup ${html.length}<${HTML_MIN}`);
+  if (text.length < TEXT_MIN) reasons.push(`text ${text.length}<${TEXT_MIN}`);
+  if (text.toLowerCase() === 'example') reasons.push('generic "Example" placeholder');
+  if (/undefined/i.test(text)) reasons.push('missing-prop "undefined" fallthrough');
+  if (reasons.length > 0) thin.push(c.name + ' :: ' + reasons.join('; '));
+}
+if (thin.length > 0) {
+  console.error('Thin demos (bare component with generic/empty props):\n' + thin.join('\n'));
+  process.exit(1);
+}
+console.log(
+  `OK: ${cards.filter((c) => c.live).length} live demos are non-trivial (markup>=${HTML_MIN}, text>=${TEXT_MIN}, no placeholder copy).`
+);
 console.log(
   `OK: ${cards.length} cards, ${cards.filter((c) => c.live).length} live demos, 0 missing, 0 render failures.`
 );
