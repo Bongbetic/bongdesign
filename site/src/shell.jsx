@@ -27,24 +27,16 @@ export default function Shell({ route, children }) {
   return (
     <>
       <Header aria-label="BongDesign" className="bong-masthead">
-        <HeaderName href="/" prefix="" onClick={navClick('/')}>
+        <HeaderName href="/" prefix="" onClick={navClick('/')} className="bong-lockup">
           <img
-            src="/branding/bongbetic-wordmark@2x.png"
-            alt="Bongbetic"
-            width="125"
-            height="28"
-            className="bong-wordmark"
+            src="/branding/bongbetic-glyph.svg"
+            alt=""
+            className="bong-lockup-glyph"
           />
-          BongDesign
+          <span className="bong-lockup-word">bongbetic</span>
+          <span className="bong-lockup-suffix">BongDesign</span>
         </HeaderName>
         <HeaderNavigation aria-label="Site">
-          <HeaderMenuItem
-            href="/"
-            onClick={navClick('/')}
-            aria-current={active('home') ? 'page' : undefined}
-          >
-            Home
-          </HeaderMenuItem>
           <HeaderMenuItem
             href="/foundations/color"
             onClick={navClick('/foundations/color')}
@@ -58,6 +50,20 @@ export default function Shell({ route, children }) {
             aria-current={active('components') ? 'page' : undefined}
           >
             Components
+          </HeaderMenuItem>
+          <HeaderMenuItem
+            href="/patterns"
+            onClick={navClick('/patterns')}
+            aria-current={active('patterns') ? 'page' : undefined}
+          >
+            Patterns
+          </HeaderMenuItem>
+          <HeaderMenuItem
+            href="/data-visualization"
+            onClick={navClick('/data-visualization')}
+            aria-current={active('data-viz') ? 'page' : undefined}
+          >
+            Data visualization
           </HeaderMenuItem>
         </HeaderNavigation>
         <a className="bong-login-link" href="/login">

@@ -487,6 +487,113 @@ if (typeof app.AppForPath === 'function') {
     );
   }
 }
+// Phase 6 (T13): SC-5 remediation — self-hosted fonts, masthead lockup,
+// prototype type/element alignment. Acceptance: (a) index.scss declares
+// local @font-face for Carbon's family names with /fonts/ URLs, ships
+// woff2 files, and neither SCSS nor built dist CSS references '~@ibm';
+// (b) the shell SSR lockup is glyph+text (or a sized img) with explicit
+// lockup height in CSS so nothing clips in the 48px masthead; (c) hero h1
+// matches the locked prototype (42px/300); (d) masthead top-nav labels
+// match the prototype; (e) sidenav active treatment matches the prototype
+// (grey bg + 3px blue left bar); (f) card grid is the prototype 2-col
+// hairline grid with demo/code box styles on component pages.
+const scssText = fs.readFileSync(path.join(SITE, 'src', 'index.scss'), 'utf8');
+routeCheck(
+  'index.scss declares a local @font-face for "IBM Plex Sans" with /fonts/ URLs',
+  scssText.includes('@font-face') &&
+    scssText.includes('IBM Plex Sans') &&
+    scssText.includes('/fonts/'),
+  'no self-hosted @font-face wiring in index.scss'
+);
+routeCheck(
+  'index.scss declares a local @font-face for "IBM Plex Mono" with /fonts/ URLs',
+  scssText.includes('@font-face') &&
+    scssText.includes('IBM Plex Mono') &&
+    scssText.includes('/fonts/'),
+  'no self-hosted mono @font-face wiring in index.scss'
+);
+let fontFiles = [];
+try {
+  fontFiles = fs.readdirSync(path.join(SITE, 'public', 'fonts')).filter((f) => f.endsWith('.woff2'));
+} catch (e) {
+  fontFiles = [];
+}
+routeCheck(
+  'site/public/fonts ships self-hosted woff2 files',
+  fontFiles.length >= 4 &&
+    fontFiles.some((f) => /sans/i.test(f)) &&
+    fontFiles.some((f) => /mono/i.test(f)),
+  'got ' + JSON.stringify(fontFiles)
+);
+try {
+  const distDir = path.join(SITE, 'dist', 'assets');
+  const cssFiles = fs.existsSync(distDir)
+    ? fs.readdirSync(distDir).filter((f) => f.endsWith('.css'))
+    : [];
+  const distCss = cssFiles.map((f) => fs.readFileSync(path.join(distDir, f), 'utf8')).join('\n');
+  routeCheck(
+    'built dist CSS contains no ~@ibm font URLs',
+    !distCss.includes('~@ibm'),
+    cssFiles.length ? 'broken tilde URLs survived the build' : 'no dist CSS found — run npm run build first'
+  );
+} catch (e) {
+  routeCheck('built dist CSS contains no ~@ibm font URLs', false, e.message.split('\n')[0]);
+}
+if (typeof app.AppForPath === 'function') {
+  let homeHtml = '';
+  try {
+    homeHtml = ssr('/');
+  } catch (e) {
+    routeCheck("SSR renders '/' for the T13 lockup check", false, e.message.split('\n')[0]);
+  }
+  if (homeHtml) {
+    routeCheck(
+      'masthead lockup is glyph+text or a sized wordmark img',
+      homeHtml.includes('bongbetic-glyph.svg') ||
+        homeHtml.includes('bong-lockup') ||
+        /<img[^>]*bong-wordmark[^>]*height/.test(homeHtml),
+      'no glyph/text lockup or sized wordmark in shell SSR'
+    );
+    for (const label of ['Foundations', 'Components', 'Patterns', 'Data visualization']) {
+      routeCheck(
+        `masthead top nav labels '${label}' per the prototype`,
+        new RegExp('cds--header__menu-item[\\s\\S]{0,120}?>' + label + '<').test(homeHtml),
+        'label missing from the masthead top nav SSR'
+      );
+    }
+  }
+}
+routeCheck(
+  'masthead lockup CSS pins an explicit height (no clipped wordmark)',
+  /(bong-lockup|bong-wordmark)[\s\S]{0,200}?height:\s*[\d.]+rem/.test(scssText),
+  'no explicit lockup height in index.scss'
+);
+routeCheck(
+  'hero h1 matches the prototype (42px/2.625rem, weight 300)',
+  scssText.includes('.bong-hero h1') &&
+    /\.bong-hero h1[\s\S]{0,200}?font-size:\s*2\.625rem/.test(scssText) &&
+    /\.bong-hero h1[\s\S]{0,200}?font-weight:\s*300/.test(scssText),
+  'hero h1 is not 2.625rem/300 in index.scss'
+);
+routeCheck(
+  'sidenav active item has the prototype treatment (grey bg + blue left bar)',
+  scssText.includes('.bong-sidenav') &&
+    /\.bong-sidenav[\s\S]*?#e0e0e0/.test(scssText) &&
+    /\.bong-sidenav[\s\S]*?#0f62fe/.test(scssText),
+  'no prototype sidenav active treatment in index.scss'
+);
+routeCheck(
+  'card grid is the prototype 2-col hairline grid',
+  scssText.includes('.bong-card-grid') &&
+    /\.bong-card-grid[\s\S]{0,400}?grid-template-columns:\s*1fr 1fr/.test(scssText) &&
+    /\.bong-card-grid[\s\S]{0,400}?#e0e0e0/.test(scssText),
+  'card grid is not the 2-col hairline grid in index.scss'
+);
+routeCheck(
+  'component pages have prototype demo + code box styles',
+  /\.bong-demo\s*\{/.test(scssText) && /\.bong-code\s*\{/.test(scssText),
+  'no .bong-demo/.bong-code styles in index.scss'
+);
 if (routeFails.length > 0) {
   console.error('Route failures:\n' + routeFails.join('\n'));
   process.exit(1);

@@ -182,13 +182,13 @@ export function ComponentPage({ name }) {
       <p>{isButton ? BUTTON_INTRO : introFor(card, g)}</p>
       {isButton ? (
         <DemoBoundary>
-          <div className="bong-demo-row">
+          <div className="bong-demo-row bong-demo">
             <ButtonDemo />
           </div>
         </DemoBoundary>
       ) : card.live ? (
         <DemoBoundary>
-          <div className="bong-demo-row">{card.demo}</div>
+          <div className="bong-demo-row bong-demo">{card.demo}</div>
         </DemoBoundary>
       ) : (
         <p>{card.note || 'Live render needs extra props — see code below.'}</p>
@@ -230,7 +230,7 @@ export function ComponentPage({ name }) {
             )}
           </TabPanel>
           <TabPanel>
-            <pre style={{ overflowX: 'auto', background: '#f4f4f4', padding: '1rem' }}>
+            <pre className="bong-code">
               <code>{code}</code>
             </pre>
           </TabPanel>
