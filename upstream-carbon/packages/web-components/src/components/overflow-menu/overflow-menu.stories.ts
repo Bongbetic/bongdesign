@@ -1,0 +1,131 @@
+/**
+ * Copyright IBM Corp. 2019, 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { html } from 'lit';
+import { enabled } from '@carbon/feature-flags';
+import { OVERFLOW_MENU_SIZE } from './overflow-menu';
+import './overflow-menu-body';
+import './overflow-menu-item';
+import '../menu/index';
+import { prefix } from '../../globals/settings';
+import OverflowMenuVertical16 from '@carbon/icons/es/overflow-menu--vertical/16.js';
+import Filter16 from '@carbon/icons/es/filter/16.js';
+import { iconLoader } from '../../globals/internal/icon-loader';
+
+const sizes = {
+  [`Extra small size (${OVERFLOW_MENU_SIZE.EXTRA_SMALL})`]:
+    OVERFLOW_MENU_SIZE.EXTRA_SMALL,
+  [`Small size (${OVERFLOW_MENU_SIZE.SMALL})`]: OVERFLOW_MENU_SIZE.SMALL,
+  [`Medium size (default) (${OVERFLOW_MENU_SIZE.MEDIUM})`]:
+    OVERFLOW_MENU_SIZE.MEDIUM,
+  [`Lg size (${OVERFLOW_MENU_SIZE.LARGE})`]: OVERFLOW_MENU_SIZE.LARGE,
+};
+
+const args = {
+  flipped: false,
+  iconDescription: 'Options',
+  open: false,
+  index: 1,
+  size: OVERFLOW_MENU_SIZE.MEDIUM,
+};
+
+const argTypes = {
+  flipped: {
+    control: 'boolean',
+    description: '<code>true</code> if the menu alignment should be flipped.',
+  },
+  iconDescription: {
+    control: 'text',
+    description: 'The icon description.',
+  },
+  open: {
+    control: 'boolean',
+    description: '<code>true</code> if the menu should be open.\n',
+  },
+  index: {
+    control: 'number',
+    description: 'The index for the item which should be focused in the menu.',
+  },
+  size: {
+    control: 'select',
+    description:
+      'Specify the size of the OverflowMenu. Currently supports either <code>xs</code>, <code>sm</code>, <code>md</code> (default) or <code>lg</code> as an option.',
+    options: sizes,
+  },
+};
+
+const defaultMenu = html`
+  <cds-overflow-menu-item>Stop app</cds-overflow-menu-item>
+  <cds-overflow-menu-item>Restart app</cds-overflow-menu-item>
+  <cds-overflow-menu-item>Rename app</cds-overflow-menu-item>
+  <cds-overflow-menu-item disabled>Clone and move app</cds-overflow-menu-item>
+  <cds-overflow-menu-item>Edit routes and access</cds-overflow-menu-item>
+  <cds-overflow-menu-item divider danger>Delete app</cds-overflow-menu-item>
+`;
+
+const filterMenu = html`
+  <cds-overflow-menu-item>Filter A</cds-overflow-menu-item>
+  <cds-overflow-menu-item>Filter B</cds-overflow-menu-item>
+`;
+
+const filterMenuV12 = html`
+  <cds-menu>
+    <cds-menu-item label="Filter A"></cds-menu-item>
+    <cds-menu-item label="Filter B"></cds-menu-item>
+  </cds-menu>
+`;
+
+const renderOverflowMenu = (args, icon, menu = defaultMenu) => {
+  const { flipped, iconDescription, open, index, size } = args ?? {};
+  return html`
+    <cds-overflow-menu ?open="${open}" size="${size}" index=${index}>
+      ${iconLoader(icon, {
+        class: `${prefix}--overflow-menu__icon`,
+        slot: 'icon',
+      })}
+      <span slot="tooltip-content"> ${iconDescription} </span>
+      <cds-overflow-menu-body ?flipped="${flipped}">
+        ${menu}
+      </cds-overflow-menu-body>
+    </cds-overflow-menu>
+  `;
+};
+
+const renderV12OverflowMenu = (args, icon, menu) => {
+  const { iconDescription, open, size } = args ?? {};
+  return html`
+    <cds-overflow-menu
+      ?open="${open}"
+      size="${size}"
+      label="${iconDescription}">
+      ${iconLoader(icon, {
+        class: `${prefix}--overflow-menu__icon`,
+        slot: 'icon',
+      })}
+      ${menu}
+    </cds-overflow-menu>
+  `;
+};
+
+export const Default = {
+  render: (args) => renderOverflowMenu(args, OverflowMenuVertical16),
+};
+
+export const RenderCustomIcon = {
+  render: (args) =>
+    enabled('enable-v12-overflowmenu')
+      ? renderV12OverflowMenu(args, Filter16, filterMenuV12)
+      : renderOverflowMenu(args, Filter16, filterMenu),
+};
+
+const meta = {
+  title: 'Components/OverflowMenu',
+  args,
+  argTypes,
+};
+
+export default meta;

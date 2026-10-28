@@ -1,0 +1,264 @@
+//
+// Copyright IBM Corp. 2019, 2026
+//
+// This source code is licensed under the Apache-2.0 license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
+$css--plex: true !default;
+
+@use '@carbon/styles/scss/config' as *;
+@use '@carbon/styles/scss/theme' as *;
+@use '@carbon/styles/scss/utilities' as *;
+@use '@carbon/styles/scss/colors' as *;
+@use '@carbon/styles/scss/spacing' as *;
+@use '@carbon/styles/scss/border-radius' as *;
+@use '@carbon/styles/scss/feature-flags' as flags;
+@use '@carbon/styles/scss/components/form';
+@use '@carbon/styles/scss/components/date-picker/date-picker' as *;
+@use '@carbon/styles/scss/utilities/ai-gradient' as *;
+
+// https://github.com/carbon-design-system/carbon/issues/11408
+@include date-picker;
+
+:host(#{$prefix}-date-picker) {
+  @extend .#{$prefix}--date-picker;
+
+  #floating-menu-container {
+    position: fixed;
+    z-index: z('dropdown');
+    inline-size: 100%;
+  }
+
+  .#{$prefix}--date-picker__calendar.open {
+    @if flags.enabled('enable-v12-release') {
+      margin-block-start: $spacing-02;
+    } @else {
+      margin-block-start: 0;
+    }
+  }
+
+  .flatpickr-next-month,
+  .flatpickr-prev-month {
+    svg {
+      transform: rotate(0) #{'/*rtl:rotate(180deg)*/'};
+    }
+  }
+
+  // _date-picker.scss#L351-L360 in `v10.6.0` tree, coping with the CSS class that latest Flatpickr has
+  .#{$prefix}--date-picker__day.flatpickr-disabled,
+  .flatpickr-day.flatpickr-disabled {
+    color: $layer-selected-inverse;
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    @media (any-hover: hover) {
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+
+  // _date-picker.scss#L455-L468 in `v10.6.0` tree, coping with the CSS class that latest Flatpickr has
+  .flatpickr-next-month.flatpickr-disabled,
+  .flatpickr-prev-month.flatpickr-disabled {
+    svg {
+      cursor: not-allowed;
+      fill: $layer-selected-inverse;
+      opacity: 0.5;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        svg {
+          fill: $layer-selected-inverse;
+        }
+      }
+    }
+  }
+}
+
+:host(#{$prefix}-date-picker-input),
+:host(#{$prefix}-date-picker-input-skeleton) {
+  @extend .#{$prefix}--date-picker-container;
+
+  outline: none;
+
+  .#{$prefix}--form-requirement[hidden] {
+    display: none;
+  }
+}
+:host(#{$prefix}-date-picker-input[warn]:not([invalid])) {
+  .#{$prefix}--form-requirement {
+    color: $text-primary;
+  }
+}
+
+:host(#{$prefix}-date-picker-input[kind='simple']),
+:host(#{$prefix}-date-picker-input-skeleton[kind='simple']) {
+  .#{$prefix}--date-picker__input {
+    inline-size: rem(120px);
+  }
+
+  .#{$prefix}--date-picker__input--invalid,
+  .#{$prefix}--date-picker__input--warn {
+    inline-size: rem(152px);
+  }
+}
+
+:host(#{$prefix}-date-picker-input[kind='simple'][short]),
+:host(#{$prefix}-date-picker-input-skeleton[kind='simple'][short]) {
+  .#{$prefix}--date-picker__input {
+    inline-size: rem(90px);
+  }
+}
+
+:host(#{$prefix}-date-picker-input[kind='single']),
+:host(#{$prefix}-date-picker-input-skeleton[kind='single']) {
+  max-inline-size: rem(288px);
+
+  .#{$prefix}--date-picker__input {
+    inline-size: rem(288px);
+  }
+}
+
+:host(#{$prefix}-date-picker-input[kind='from']),
+:host(#{$prefix}-date-picker-input-skeleton[kind='from']) {
+  margin-inline-end: rem(1px);
+}
+
+:host(#{$prefix}-date-picker-input[kind='from']),
+:host(#{$prefix}-date-picker-input[kind='to']),
+:host(#{$prefix}-date-picker-input-skeleton[kind='from']),
+:host(#{$prefix}-date-picker-input-skeleton[kind='to']) {
+  inline-size: rem(143.5px);
+
+  .#{$prefix}--date-picker__input {
+    inline-size: rem(143.5px);
+  }
+}
+
+@if flags.enabled('enable-v12-release') {
+  :host(#{$prefix}-date-picker-input[kind='from']) {
+    .#{$prefix}--date-picker__input {
+      border-end-end-radius: $border-radius-00;
+      border-inline-end: none;
+      border-start-end-radius: $border-radius-00;
+    }
+  }
+
+  :host(#{$prefix}-date-picker-input[kind='to']) {
+    .#{$prefix}--date-picker__input {
+      border-end-start-radius: $border-radius-00;
+      border-inline-start: none;
+      border-start-start-radius: $border-radius-00;
+    }
+  }
+}
+
+:host(#{$prefix}-date-picker-input) {
+  .#{$prefix}--date-picker__icon {
+    @extend .#{$prefix}--date-picker__icon;
+  }
+
+  .#{$prefix}--date-picker__icon--warn {
+    @extend .#{$prefix}--date-picker__icon--warn;
+  }
+
+  .#{$prefix}--date-picker__icon--invalid {
+    @extend .#{$prefix}--date-picker__icon--invalid;
+  }
+
+  ::slotted(#{$prefix}-ai-label),
+  ::slotted(#{$prefix}-slug) {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: $spacing-08;
+  }
+
+  ::slotted(#{$prefix}-ai-label:not([revert-active])),
+  ::slotted(#{$prefix}-slug:not([revert-active])) {
+    transform: translateY(-50%);
+  }
+}
+
+:host(#{$prefix}-date-picker-input-skeleton) {
+  @if flags.enabled('enable-v12-release') {
+    display: inline-flex;
+    flex-direction: row;
+  } @else {
+    display: inline-block;
+  }
+
+  .#{$prefix}--label {
+    @include skeleton($border-radius: $border-radius-04);
+
+    block-size: rem(14px);
+
+    inline-size: rem(75px);
+  }
+
+  .#{$prefix}--date-picker-input-skeleton-container {
+    display: inline-block;
+  }
+}
+
+:host(#{$prefix}-date-picker-input-skeleton[range]) {
+  .#{$prefix}--date-picker-input-skeleton-container {
+    inline-size: rem(143.5px);
+
+    .#{$prefix}--date-picker__input {
+      inline-size: rem(143.5px);
+    }
+  }
+
+  @if flags.enabled('enable-v12-release') {
+    column-gap: rem(1px);
+
+    .#{$prefix}--date-picker-input-skeleton-container:first-of-type
+      .#{$prefix}--date-picker__input {
+      border-end-end-radius: $border-radius-00;
+      border-start-end-radius: $border-radius-00;
+    }
+
+    .#{$prefix}--date-picker-input-skeleton-container:last-of-type
+      .#{$prefix}--date-picker__input {
+      border-end-start-radius: $border-radius-00;
+      border-start-start-radius: $border-radius-00;
+    }
+  }
+}
+
+:host(#{$prefix}-date-picker-input[ai-label])
+  .#{$prefix}--date-picker__input--decorator {
+  @include ai-gradient;
+
+  @if flags.enabled('enable-v12-release') {
+    // Reset the bottom-edge color override from @include ai-gradient so the
+    // border-box gradient layer controls all four sides uniformly.
+    background:
+      linear-gradient(
+          0deg,
+          $ai-aura-start-sm 0%,
+          15%,
+          $ai-aura-end 50%,
+          transparent 100%
+        )
+        padding-box,
+      linear-gradient($field, $field) padding-box,
+      // (ai-border-start → ai-border-end), mirroring the default v12 border gradient
+      linear-gradient(
+          to bottom,
+          $ai-border-start calc(100% - 4px),
+          $ai-border-strong 100%
+        )
+        border-box;
+    border-block-end-color: transparent;
+  }
+}
+
+.#{$prefix}--form-requirement {
+  box-sizing: border-box;
+  inline-size: 0;
+  min-inline-size: 100%;
+}

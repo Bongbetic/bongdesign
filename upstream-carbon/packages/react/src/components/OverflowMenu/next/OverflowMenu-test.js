@@ -1,0 +1,260 @@
+/**
+ * Copyright IBM Corp. 2016, 2023, 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import React, { act } from 'react';
+import { OverflowMenu } from '.';
+import { OverflowMenu as OverflowMenuWrapper } from '..';
+import { MenuItem } from '../../Menu';
+import { FeatureFlags } from '../../FeatureFlags';
+import { Filter } from '@carbon/icons-react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+const prefix = 'cds';
+
+describe('OverflowMenu (enable-v12-overflowmenu)', () => {
+  it('should render closed by default', () => {
+    render(
+      <OverflowMenu>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    expect(screen.getByRole('button')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+
+    expect(
+      screen.queryByRole('menu', { hidden: true })
+    ).not.toBeInTheDocument();
+  });
+
+  it('should forward a ref', () => {
+    const ref = React.createRef();
+    render(
+      <OverflowMenu ref={ref}>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it('should be in an open state after trigger is clicked', async () => {
+    render(
+      <OverflowMenu>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+    await userEvent.type(screen.getByRole('button'), 'enter');
+    expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'true');
+    const menu = screen.getByRole('menu', { name: 'Options' });
+    expect(menu).toBeInTheDocument();
+    expect(menu).toHaveProperty('tagName', 'UL');
+  });
+
+  it('should add custom classNames', () => {
+    const { container } = render(
+      <OverflowMenu className="extra-class">
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    expect(container.firstChild).toHaveClass('extra-class');
+  });
+
+  it('should set an id if one is given', () => {
+    const { container } = render(
+      <OverflowMenu id="custom-id">
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    expect(container.firstChild).toHaveAttribute('id', 'custom-id');
+  });
+
+  it('should spread extra props on the button element', () => {
+    render(
+      <OverflowMenu
+        label="Options"
+        renderIcon={() => <Filter aria-label="filter icon" />}
+        tabIndex={-1}
+        tooltipDefaultOpen>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveAttribute('aria-hidden', 'false');
+    expect(tooltip).toHaveTextContent('Options');
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveAttribute('tabIndex', '-1');
+
+    const icon = button.querySelector('svg');
+    expect(icon).toHaveAttribute('aria-label', 'filter icon');
+  });
+
+  // TODO: V12 - Remove this test
+  it('should spread extra props on the button element through the wrapper', () => {
+    render(
+      <FeatureFlags enableV12Overflowmenu>
+        <OverflowMenuWrapper
+          label="Options"
+          renderIcon={() => <Filter aria-label="filter icon" />}
+          tabIndex={-1}
+          tooltipDefaultOpen>
+          <MenuItem label="item" className="test-child">
+            one
+          </MenuItem>
+          <MenuItem label="item" className="test-child">
+            two
+          </MenuItem>
+        </OverflowMenuWrapper>
+      </FeatureFlags>
+    );
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveAttribute('aria-hidden', 'false');
+    expect(tooltip).toHaveTextContent('Options');
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveAttribute('tabIndex', '-1');
+
+    const icon = button.querySelector('svg');
+    expect(icon).toHaveAttribute('aria-label', 'filter icon');
+  });
+
+  it('should apply disabled styling classes', () => {
+    render(
+      <OverflowMenu disabled>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('cds--btn--disabled');
+    const icon = button.querySelector('svg');
+    expect(icon).toHaveClass('cds--overflow-menu__icon');
+    expect(icon).toHaveClass('cds--btn__icon');
+  });
+
+  it('should always use button kind=ghost', () => {
+    render(
+      <OverflowMenu>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    expect(screen.getByRole('button')).not.toHaveClass('cds--btn--primary');
+    expect(screen.getByRole('button')).toHaveClass('cds--btn--ghost');
+  });
+
+  it('should not open menu when disabled', async () => {
+    render(
+      <OverflowMenu disabled>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+
+    expect(screen.getByRole('button')).toBeDisabled();
+
+    await userEvent.click(screen.getByRole('button'));
+    expect(screen.getByRole('button')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
+  it('should close menu on outside click', async () => {
+    render(
+      <OverflowMenu>
+        <MenuItem label="item" className="test-child">
+          one
+        </MenuItem>
+        <MenuItem label="item" className="test-child">
+          two
+        </MenuItem>
+      </OverflowMenu>
+    );
+    await userEvent.type(screen.getByRole('button'), 'enter');
+    expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'true');
+    // this test needs to be worked on, as this is just a workaround right now.
+    await userEvent.keyboard('{Escape}');
+
+    expect(screen.getByRole('button')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
+  describe('supports props.menuAlignment', () => {
+    const alignments = ['top-start', 'top-end', 'bottom-start', 'bottom-end'];
+
+    alignments.forEach((alignment) => {
+      it(`menuAlignment="${alignment}"`, async () => {
+        render(
+          <OverflowMenu label="Actions" menuAlignment={alignment}>
+            <MenuItem label="item">one</MenuItem>
+          </OverflowMenu>
+        );
+
+        await userEvent.click(screen.getByRole('button'));
+
+        expect(screen.getAllByRole('menu')[0]).toHaveClass(
+          `${prefix}--overflow-menu__${alignment}`
+        );
+      });
+    });
+  });
+});

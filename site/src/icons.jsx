@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import * as Carbon from '@carbon/react';
+import iconIndex from '../../data/icons.json';
 import * as iconData from '@carbon/icons';
 
 function renderNode(node, key) {
@@ -10,20 +11,15 @@ function renderNode(node, key) {
   return <Tag key={key} {...(node.attrs || {})}>{kids}</Tag>;
 }
 
-const BASES = (() => {
-  const pick = {};
-  for (const name of Object.keys(iconData)) {
-    const m = name.match(/^(.*)(16|20|24|32)$/);
-    if (!m) continue;
-    const base = m[1];
-    const size = Number(m[2]);
-    if (!pick[base] || (pick[base].size !== 32 && size === 32) || (!pick[base] && true)) {
-      pick[base] = { name: base, size, descriptor: iconData[name] };
-    }
-    if (size === 32) pick[base] = { name: base, size, descriptor: iconData[name] };
-  }
-  return Object.values(pick).sort((a, b) => a.name.localeCompare(b.name));
-})();
+// Search space is the generated icon index (data/icons.json), mined from
+// the pinned @carbon/icons package. Vectors still render from the pinned
+// package itself, so documented names and artwork always agree.
+const BASES = iconIndex.icons.bases
+  .map(({ base, sizes }) => {
+    const size = sizes.includes(32) ? 32 : sizes[sizes.length - 1];
+    return { name: base, size, descriptor: iconData[base + size] };
+  })
+  .filter((b) => b.descriptor);
 
 function IconGlyph({ descriptor, size }) {
   const d = descriptor;
@@ -54,8 +50,7 @@ export default function IconsLibrary() {
   return (
     <div>
       <p>
-        Every icon in the pinned package, rendered from its own vector data.
-        Showing {shown.length} of {total}.
+        {'Every icon in the pinned index (data/icons.json), rendered from its own vector data. Showing ' + shown.length + ' of ' + total + '.'}
       </p>
       <Carbon.Search
         id="icon-search"
@@ -64,16 +59,20 @@ export default function IconsLibrary() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(7rem, 1fr))', gap: '1px', background: '#e0e0e0', border: '1px solid #e0e0e0', marginTop: '1rem' }}>
-        {shown.map((b) => (
-          <div key={b.name} style={{ background: '#fff', padding: '1rem', textAlign: 'center' }}>
-            <IconGlyph descriptor={b.descriptor} size={32} />
-            <div style={{ marginTop: '0.5rem' }}>
-              <code style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>{b.name}</code>
-            </div>
-          </div>
-        ))}
-      </div>
+      <Carbon.FlexGrid>
+        <Carbon.Row>
+          {shown.map((b) => (
+            <Carbon.Column key={b.name} sm={2} md={4} lg={4}>
+              <Carbon.Tile>
+                <IconGlyph descriptor={b.descriptor} size={32} />
+                <div>
+                  <code style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>{b.name}</code>
+                </div>
+              </Carbon.Tile>
+            </Carbon.Column>
+          ))}
+        </Carbon.Row>
+      </Carbon.FlexGrid>
     </div>
   );
 }

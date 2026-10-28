@@ -1,0 +1,165 @@
+# Carbon Design System Release Schedule
+
+This is a living document outlining the plan for previous, current, and future
+major versions of the Carbon Design System.
+
+| Release | Status      | Initial release | Begin Active | Begin Maintenance | End of life |
+| ------- | ----------- | --------------- | ------------ | ----------------- | ----------- |
+| `main`  | unstable    | unstable        | unstable     | unstable          | unstable    |
+| v9      | End of life | 2018-06-04      | 2018-06-04   | 2019-03-29        | 2022-03-31  |
+| v10     | End of life | 2019-03-29      | 2019-03-29   | 2022-03-31        | 2024-09-30  |
+| v11     | Active      | 2021-08-06      | 2022-03-31   | TBD               | TBD         |
+| v12     | Preview     | 2023-05-25      | TBD          | TBD               | TBD         |
+
+> Dates are subject to change
+
+![schedule](https://github.com/user-attachments/assets/bc5ccd5a-8781-4ba5-9024-2aaaf0a53121)
+
+## Release phases
+
+### Preview
+
+The preview phase allows consumers to incrementally opt in to changes that will
+be present in the next major, but through the current active release. This phase
+begins when the first feature flag is "committed" to be on-by-default in a
+future major version.
+
+Once committed, flag names contain the version they've been committed to with
+the prefix `enable-v#-*`. At this point the API or functionality behind this
+flag is now fixed and won't change. We intend to ship this flag as "on by
+default" in the major version indicated in the name. e.g.
+`enable-v12-tile-default-icons`
+
+In theory, if all `enable-v12-*` flags are enabled within your project before
+the v12 release, no changes should need to be made to the affected components
+when updating to v12.
+
+### Prerelease
+
+The prerelease phase is intended to be the opportunity for early adopters,
+library authors, and other strategic ecosystem partners to begin to evaluate and
+integrate new changes into their codebases. For v11, this phase was eight months
+long and spanned four prerelease/beta releases. We hope to extend this timeframe
+even further for our next major.
+
+### Active
+
+Consuming projects should always aim to follow the Active release.
+
+A release in the Active phase receives biweekly minor releases containing new
+features and fixes. The work we deliver into `main` every day is considered
+unstable. Every two weeks we package up these changes into a new minor version
+that is published from `main` to the current Active major.
+
+For a look at what types of changes constitute patch, minor, or major version
+bumps, see the
+[versioning documentation](https://github.com/carbon-design-system/carbon/blob/main/docs/guides/versioning.md).
+
+For a look into the process the Carbon team uses to release packages contained
+within the monorepo, see the
+[release documentation](https://github.com/carbon-design-system/carbon/blob/main/docs/release.md).
+
+### Maintenance
+
+For a release in the Maintenance phase, patch releases are published containing
+security patches and critical bug fixes. When a version moves from Active to
+Maintenance, consuming projects should begin migrating to the new Active major
+version. During Maintenance we also consider adding non-critical bug fixes on an
+ad hoc basis, by request only. To request a fix be back-ported to a Maintenance
+release, please
+[open an issue](https://github.com/carbon-design-system/carbon/issues/new?assignees=&labels=type%3A+bug+%F0%9F%90%9B&projects=&template=BUG_REPORT.yaml&title=%5BBug%5D%3A+)
+and include a link to the v11 fix pull request.
+
+Changes required for critical security and bug fixes may lead to semver-major
+changes landing within a release stream, such situations will be rare and will
+land as semver-minor. Although, those changes should have a revert option
+included.
+
+The term 'supported release lines' will be used to refer to all release lines
+that are not End-of-Life.
+
+### Long-term support
+
+Long-term support, or LTS, is an additional designation given to selected major
+releases that require an extended support window. Not every major release is
+expected to become an LTS release.
+
+LTS is intended for consumers whose delivery models do not allow them to
+regularly upgrade to the latest Carbon major. This is particularly important for
+on-premises products and products that support on-premises customers. These
+projects may have a concentrated period of feature development followed by a
+long maintenance period during which upgrading Carbon would be difficult or
+impractical.
+
+An LTS release receives the same types of fixes as a Maintenance release,
+including security patches, critical bug fixes, and requested non-critical
+bugfixes when there is a demonstrated need. The primary difference is the length
+and intent of the support commitment.
+
+Rather than assigning an arbitrary end date when an LTS release is designated,
+the Carbon team intends to maintain its release infrastructure and consider
+requested fixes for as long as supported products and customers have an
+established business need for that release line.
+
+LTS does not include ongoing feature development and should not be treated as an
+alternative to adopting the current Active release when an upgrade is practical.
+Its purpose is to preserve the stability and viability of products that cannot
+follow Carbon's standard release cadence.
+
+## Accessibility
+
+Active release lines are tested using IBMa's `accessibility-checker` in a real
+browser environment to ensure accessibility compliance. The most current ruleset
+is used for these automated tests. These tests cover default component states,
+complex/interior component states (like open, focused, etc.) as well as keyboard
+navigation flows.
+
+Rulesets are a moving target though. What was once fully compliant can be
+non-compliant again as new standards, rules, and techniques are required in new
+rulesets.
+
+Beginning with v11, tests are run against the most current ruleset at the time
+of release. Versions are not re-tested against newer or older rulesets. For
+instance, v11.35.0 was released on Aug 17 2023 and at the time the current
+ruleset was the `August 09 2023 Deployment`. This release was not tested on
+prior rulesets and will not be tested on rulesets newer than the
+`August 09 2023 Deployment`. Rulesets and their deployment dates can be found on
+the
+[IBM Accessibility website](https://www.ibm.com/able/requirements/checker-rule-sets/).
+
+For these reasons, we recommend staying up to date with the latest active
+version line to ensure the greatest accessibility compliance, particularly when
+a new major version is released.
+
+`Maintenance` release lines are not tested against newer rulesets. If you're
+using a maintenance release line, there may be gaps in accessibility that you
+will need to patch yourself or submit a fix by
+[opening a pull request](https://github.com/carbon-design-system/carbon/blob/main/.github/CONTRIBUTING.md).
+
+## Assets managed under this release schedule
+
+This plan covers the design and development assets under maintenance of the
+Carbon Design System core team, including:
+
+- `@carbon/react`
+- `@carbon/web-components`
+- `@carbon/styles`
+- All other packages within the
+  [`carbon` monorepo](https://github.com/carbon-design-system/carbon)
+- `@carbon/ibm-products`
+- `@carbon/ibm-products-web-components`
+
+This plan also includes all design guidance and design kit assets (figma, etc.)
+present in the
+[`carbon-website`](https://github.com/carbon-design-system/carbon-website) and
+[`design-kit`](https://github.com/carbon-design-system/carbon-design-kit)
+repositories.
+
+## Acknowledgements
+
+This document was heavily inspired by the work of the
+[NodeJS Release Working Group](https://github.com/nodejs/release).
+
+The schedule graph was generated using
+[our fork](https://github.com/carbon-design-system/lts-schedule) of
+[`nodejs/lts-schedule`](https://github.com/nodejs/lts-schedule)

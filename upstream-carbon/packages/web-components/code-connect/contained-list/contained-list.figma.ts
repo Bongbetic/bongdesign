@@ -1,0 +1,79 @@
+// url=https://www.figma.com/design/YAnB1jKx0yCUL29j6uSLpg/?node-id=16193-272726&t=cMvnFTYLPEhzhIpj-4
+// source=https://github.com/carbon-design-system/carbon/blob/main/packages/web-components/src/components/contained-list/contained-list.ts
+// component=cds-contained-list
+
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import figma from 'figma';
+import { renderStringAttribute } from '../template-helpers';
+
+const instance = figma.selectedInstance;
+const titleItem = instance.findInstance('_Contained list title item');
+const rowItem = instance.findInstance('_Contained list row item');
+const label =
+  titleItem.type !== 'ERROR'
+    ? titleItem.getString('List title text')
+    : undefined;
+const kind = instance.getEnum('Type', {
+  'On page': 'on-page',
+  Disclosed: 'disclosed',
+});
+const size =
+  rowItem.type !== 'ERROR'
+    ? rowItem.getEnum('Size', {
+        'Extra large': 'xl',
+        Medium: 'md',
+        Small: 'sm',
+      })
+    : undefined;
+const actionName =
+  titleItem.type !== 'ERROR' && titleItem.getBoolean('Show action')
+    ? titleItem.getEnum('Action type', {
+        Default: 'Overflow',
+        'Filterable search': 'Search - Default',
+      })
+    : undefined;
+const action =
+  titleItem.type !== 'ERROR' && actionName
+    ? titleItem
+        .findConnectedInstances(
+          (child) => child.name === actionName && child.hasCodeConnect()
+        )[0]
+        ?.executeTemplate().example
+    : undefined;
+const search = instance.getEnum('Search', { True: true })
+  ? instance
+      .findConnectedInstances(
+        (child) => child.name === 'Search - Default' && child.hasCodeConnect()
+      )
+      .map((child) => child.executeTemplate().example)
+  : [];
+const children = instance
+  .findConnectedInstances(
+    (child) =>
+      child.name === '_Contained list row item' && child.hasCodeConnect()
+  )
+  .map((child) => child.executeTemplate().example);
+
+export default {
+  id: 'cds-contained-list',
+  imports: [
+    "import '@carbon/web-components/es/components/contained-list/index.js'",
+  ],
+  example: figma.code`<cds-contained-list${renderStringAttribute(
+    'label',
+    label
+  )}${renderStringAttribute('kind', kind)}${renderStringAttribute(
+    'size',
+    size
+  )}>
+  ${action ? figma.code`<span slot="action">${action}</span>` : null}
+  ${search}
+  ${children}
+</cds-contained-list>`,
+};

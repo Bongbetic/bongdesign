@@ -26,6 +26,8 @@ jobs:
       - run: python3 -c "import json; d=json.load(open('data/components.json')); assert len(d['components'])==147, len(d['components'])"
       - run: npm run check:coverage
         working-directory: site
+      - run: python3 -m unittest discover tests
+      - run: python3 scripts/e2e-smoke.py
       - run: |
           python3 server.py & SRV=$!
           sleep 1

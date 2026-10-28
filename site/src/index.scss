@@ -1,5 +1,46 @@
+// T13: silence Carbon's bundled @font-face (webpack-style ~@ibm/plex URLs
+// that Vite leaves unresolved, so Plex never loaded) and self-host the
+// Latin subsets from site/public/fonts instead. OFFLINE-first, no CDN.
+@use '@carbon/styles/scss/config' with (
+  $css--font-face: false
+);
 @use '@carbon/styles';
 @use '@carbon/styles/scss/theme' as *;
+
+// T13: self-hosted IBM Plex (weights the Carbon theme actually uses).
+// Family names match Carbon exactly so these faces win. font-display:
+// swap keeps text visible while the ~83KB of subsets loads.
+@font-face {
+  font-display: swap;
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/fonts/IBMPlexSans-Light-Latin1.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/IBMPlexSans-Regular-Latin1.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/IBMPlexSans-SemiBold-Latin1.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/IBMPlexMono-Regular-Latin1.woff2') format('woff2');
+}
 
 .bong-page {
   max-width: 76rem;
@@ -54,4 +95,196 @@
   margin-top: 3rem;
   padding-top: 1rem;
   border-top: 1px solid #393939;
+}
+
+// T05 routed shell: white masthead, 3px red rule, Carbon blue interactive.
+.cds--header.bong-masthead {
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.bong-masthead .cds--header__name,
+.bong-masthead .cds--header__name span {
+  color: #161616;
+}
+
+.bong-masthead .cds--header__nav a.cds--header__menu-item {
+  color: #161616;
+}
+
+.bong-masthead .cds--header__nav a.cds--header__menu-item[aria-current='page'] {
+  color: #0f62fe;
+  box-shadow: inset 0 -2px 0 0 #0f62fe;
+}
+
+// T13: prototype lockup — vendored wordmark + BongDesign (regular, muted).
+// Explicit 1.75rem logo height keeps the ~4.49:1 wordmark fully inside the
+// 48px masthead on one line; nothing clips.
+// T17 (issue #34): Carbon HeaderName wraps children in its own <span>, so
+// flex must target the wrapper — flex on the anchor alone leaves the wrapper
+// as a block and the block-level logo pushes the suffix to a clipped line.
+// T18 (issue #36): the monochrome glyph + typed text was the wrong asset;
+// the lockup is the vendored COLOR wordmark (light-background variant).
+.bong-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.bong-lockup > span {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.bong-lockup-logo {
+  height: 1.75rem;
+  width: auto;
+  display: block;
+  flex: none;
+}
+
+.bong-lockup-suffix {
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.bong-login-link {
+  margin-left: auto;
+  align-self: center;
+  padding: 0 1rem;
+  color: #0f62fe;
+}
+
+.bong-red-rule {
+  position: sticky;
+  top: 3rem;
+  z-index: 100;
+  height: 3px;
+  background: #e11d2a;
+}
+
+.bong-shell-body {
+  display: flex;
+  align-items: stretch;
+}
+
+.cds--side-nav.bong-sidenav {
+  position: sticky;
+  top: calc(3rem + 3px);
+  height: calc(100vh - 3rem - 3px);
+  flex: 0 0 16rem;
+}
+
+// T13: prototype sidenav active treatment — grey bg + 3px blue left bar.
+// box-shadow (not border) draws the bar without shifting the label.
+.bong-sidenav .cds--side-nav__link--current,
+.bong-sidenav .cds--side-nav__menu-item--active,
+.bong-sidenav [aria-current='page'] {
+  background: #e0e0e0;
+  box-shadow: inset 3px 0 0 0 #0f62fe;
+  font-weight: 600;
+}
+
+.cds--content.bong-content {
+  flex: 1;
+  min-width: 0;
+  max-width: 76rem;
+  margin: 0;
+  padding: 2rem 1.5rem 4rem;
+  background: #fff;
+}
+
+// T13: prototype hero — h1 42px/300, sub 16px/400 muted, max 560px.
+.bong-hero h1 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+}
+
+.bong-hero-sub {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #525252;
+  max-width: 35rem;
+}
+
+.bong-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.bong-mcp-banner {
+  margin-top: 1.5rem;
+  max-width: none;
+}
+
+// T13: prototype card grid — 2-col hairline grid (1px #e0e0e0 gutters),
+// white cards, 20px/400 titles, muted 14px body, blue links.
+.bong-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: #e0e0e0;
+  border: 1px solid #e0e0e0;
+  margin-top: 2rem;
+}
+
+@media (max-width: 42rem) {
+  .bong-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bong-card-grid .cds--tile {
+  background: #fff;
+  padding: 1.5rem;
+  min-height: 150px;
+}
+
+.bong-card-grid h3 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.bong-card-grid p {
+  color: #525252;
+  font-size: 0.875rem;
+}
+
+.bong-card-grid a {
+  color: #0f62fe;
+  font-size: 0.875rem;
+}
+
+.bong-content p a,
+.bong-content li a {
+  color: #0f62fe;
+}
+
+// T13: prototype component-page dressing — bordered demo box, grey mono
+// code box. Wired in pages/components.jsx (.bong-demo / .bong-code).
+.bong-demo {
+  border: 1px solid #e0e0e0;
+  padding: 2rem;
+  background: #fff;
+}
+
+.bong-code {
+  background: #f4f4f4;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8125rem;
+  margin-top: 1rem;
+  white-space: pre;
+}
+
+.bong-section h2 {
+  font-weight: 400;
+  font-size: 1.75rem;
 }
