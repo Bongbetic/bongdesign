@@ -5,6 +5,7 @@ import {
   Button,
   ClickableTile,
   DataTable,
+  Dropdown,
   Link,
   ListItem,
   Search,
@@ -23,6 +24,8 @@ import {
   TableHeader,
   TableRow,
   Tabs,
+  Tag,
+  Theme,
   UnorderedList,
 } from '@carbon/react';
 import { DemoBoundary, category, componentCards } from '../explorer.jsx';
@@ -210,6 +213,24 @@ export function ComponentPage({ name }) {
   const g = guideFor(card.name, byName[card.name]);
   const isButton = card.name === 'Button';
   const code = isButton ? BUTTON_CODE : card.code;
+  const [theme, setTheme] = useState('white');
+  const demo = isButton ? (
+    <DemoBoundary>
+      <div className="bong-demo-row bong-demo">
+        <ButtonDemo />
+      </div>
+    </DemoBoundary>
+  ) : card.live ? (
+    <DemoBoundary key={`${card.name}-${theme}`}>
+      <Theme theme={theme}>
+        <div className="bong-demo-row bong-demo" style={{ padding: '1rem' }}>
+          {card.demo}
+        </div>
+      </Theme>
+    </DemoBoundary>
+  ) : (
+    <p>{card.note || 'Live render needs extra props — see code below.'}</p>
+  );
   return (
     <div>
       <Breadcrumb>
@@ -218,21 +239,34 @@ export function ComponentPage({ name }) {
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>{card.name}</BreadcrumbItem>
       </Breadcrumb>
-      <h1>{card.name}</h1>
-      <p>{isButton ? BUTTON_INTRO : introFor(card, g)}</p>
-      {isButton ? (
-        <DemoBoundary>
-          <div className="bong-demo-row bong-demo">
-            <ButtonDemo />
-          </div>
-        </DemoBoundary>
-      ) : card.live ? (
-        <DemoBoundary>
-          <div className="bong-demo-row bong-demo">{card.demo}</div>
-        </DemoBoundary>
-      ) : (
-        <p>{card.note || 'Live render needs extra props — see code below.'}</p>
-      )}
+      <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+        <div style={{ flex: '1', minWidth: 0 }}>
+          <h1>{card.name}</h1>
+          <p>
+            <Tag type="blue">Stable</Tag>{' '}
+            <span>Self-hosted snapshot {index.meta.carbonTag}</span>
+          </p>
+          <p>{isButton ? BUTTON_INTRO : introFor(card, g)}</p>
+          <h2>Live demo</h2>
+          {(isButton || card.live) && (
+            <>
+              <Dropdown
+                id={`theme-${card.name}`}
+                titleText="Theme"
+                label="Theme"
+                items={['white', 'g10', 'g90', 'g100']}
+                selectedItem={theme}
+                onChange={({ selectedItem }) => setTheme(selectedItem || 'white')}
+              />
+              <div style={{ marginTop: '1rem' }}>{demo}</div>
+              <p>
+                This live demo shows the pinned component with the pinned
+                tokens. Full variant coverage lives in the vendored stories
+                under <code>carbon-src/react</code>.
+              </p>
+            </>
+          )}
+          {!(isButton || card.live) && demo}
       <Tabs>
         <TabList>
           <Tab>Guidelines</Tab>
@@ -304,6 +338,25 @@ export function ComponentPage({ name }) {
           Pinned to upstream Carbon {index.meta.carbonTag} ·{' '}
           <Link href="https://github.com/Bongbetic/bongdesign">Bongbetic/bongdesign</Link>
         </p>
+      </div>
+        </div>
+        <aside style={{ flex: '0 0 12rem' }}>
+          <strong>BongDesign Core</strong>
+          <Dropdown
+            id={`framework-${card.name}`}
+            titleText="Framework"
+            label="Framework"
+            items={['React']}
+            selectedItem="React"
+            onChange={() => {}}
+          />
+          <p style={{ marginTop: '1rem' }}>
+            <Link href="https://github.com/Bongbetic/bongdesign">Repo</Link>
+          </p>
+          <p>
+            <RouteLink to="/mcp">MCP</RouteLink>
+          </p>
+        </aside>
       </div>
     </div>
   );
