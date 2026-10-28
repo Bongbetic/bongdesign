@@ -105,5 +105,31 @@ class LoginPageTest(AuthTestCase):
         self.assertNotIn('bongbetic-wordmark-dark', text)
 
 
+class PublicBrandAssetsTest(AuthTestCase):
+    def test_wordmark_serves_without_session(self):
+        status, resp, body = self.srv.request(
+            'GET', '/branding/bongbetic-wordmark@2x.png')
+        self.assertEqual(status, 200)
+        self.assertIn('image/png', resp.getheader('Content-Type') or '')
+        self.assertTrue(body.startswith(b'\x89PNG'))
+
+    def test_glyph_serves_without_session(self):
+        status, resp, _ = self.srv.request(
+            'GET', '/branding/bongbetic-glyph.svg')
+        self.assertEqual(status, 200)
+        self.assertIn('svg', resp.getheader('Content-Type') or '')
+
+    def test_favicon_redirects_to_vendored_glyph(self):
+        status, resp, _ = self.srv.request('GET', '/favicon.ico')
+        self.assertEqual(status, 302)
+        self.assertEqual(resp.getheader('Location'),
+                         '/branding/bongbetic-glyph.svg')
+
+    def test_unknown_branding_file_stays_behind_the_wall(self):
+        status, resp, _ = self.srv.request('GET', '/branding/nope.png')
+        self.assertEqual(status, 302)
+        self.assertEqual(resp.getheader('Location'), '/login')
+
+
 if __name__ == '__main__':
     unittest.main()

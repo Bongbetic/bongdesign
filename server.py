@@ -347,6 +347,26 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._deny()
             self.path = '/index.html'
             return super().do_GET()
+        # Brand assets are public marketing files (also hosted on
+        # bongbetic.com/branding), so the sign-in page can show the
+        # wordmark and the tab icon before authentication. Everything
+        # else stays behind the wall.
+        if path == '/favicon.ico':
+            self.send_response(302)
+            self.send_header('Location', '/branding/bongbetic-glyph.svg')
+            self.end_headers()
+            return
+        if path.startswith('/branding/'):
+            rel = posixpath.normpath(urllib.parse.unquote(path).lstrip('/'))
+            full = os.path.realpath(os.path.join(DIST, rel))
+            if rel and full.startswith(os.path.realpath(DIST) + os.sep) \
+                    and os.path.isfile(full):
+                self.path = '/' + rel
+                return super().do_GET()
+            if not self.authed():
+                return self._deny()
+            self.path = '/index.html'
+            return super().do_GET()
         if not self.authed():
             return self._deny(mcp=(path == '/mcp'))
         if path == '/api/components':
