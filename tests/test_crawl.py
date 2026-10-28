@@ -41,8 +41,15 @@ def registry_routes():
         slugs = [m.group(1) for m in
                  re.finditer(r"id:\s*'foundations-([^']+)'", f.read())]
     with open(GUIDANCE_JSX, encoding='utf-8') as f:
-        patterns = [m.group(1) for m in
-                    re.finditer(r"slug:\s*'([^']+)'", f.read())]
+        guidance_src = f.read()
+    patterns = [m.group(1) for m in
+                re.finditer(r"slug:\s*'([^']+)'", guidance_src)]
+    topics = [m.group(1) for m in
+              re.finditer(r"topic:\s*'([^']+)'", guidance_src)]
+    pages = [m.group(1) for m in
+             re.finditer(r"page:\s*'([^']+)'", guidance_src)]
+    steps = [m.group(1) for m in
+             re.finditer(r"step:\s*'([^']+)'", guidance_src)]
     paths = []
     for p in table_paths:
         if p == '/components/:name':
@@ -52,6 +59,12 @@ def registry_routes():
             paths.extend('/foundations/' + s for s in slugs)
         elif p == '/patterns/:name':
             paths.extend('/patterns/' + s for s in patterns)
+        elif p == '/data-visualization/:topic':
+            paths.extend('/data-visualization/' + t for t in topics)
+        elif p == '/getting-started/:page':
+            paths.extend('/getting-started/' + g for g in pages)
+        elif p == '/building-experiences/:step':
+            paths.extend('/building-experiences/' + b for b in steps)
         else:
             paths.append(p)
     return table_paths, paths
@@ -88,7 +101,10 @@ class CrawlTestCase(unittest.TestCase):
         table_paths, _ = registry_routes()
         for expected in ('/', '/components', '/components/:name',
                          '/foundations/:slug', '/patterns', '/patterns/:name',
-                         '/data-visualization', '/support', '/mcp'):
+                         '/data-visualization', '/data-visualization/:topic',
+                         '/getting-started', '/getting-started/:page',
+                         '/building-experiences', '/building-experiences/:step',
+                         '/support', '/mcp'):
             self.assertIn(expected, table_paths, f'ROUTES table lost {expected}')
 
     def test_every_registry_route_serves_shell_when_signed_in(self):

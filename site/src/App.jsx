@@ -3,7 +3,18 @@ import Shell from './shell.jsx';
 import HomePage from './pages/home.jsx';
 import { ComponentPage, ComponentsOverview } from './pages/components.jsx';
 import FoundationPage from './pages/foundations.jsx';
-import { DataVisualizationPage, McpPage, PatternPage, PatternsIndex, SupportPage } from './pages/guidance.jsx';
+import {
+  DataVisualizationPage,
+  DataVizTopicPage,
+  ExperiencePage,
+  ExperiencesIndex,
+  GettingStartedIndex,
+  GettingStartedPage,
+  McpPage,
+  PatternPage,
+  PatternsIndex,
+  SupportPage,
+} from './pages/guidance.jsx';
 import NotFoundPage from './pages/notfound.jsx';
 import { ROUTES, matchRoute, useRoute } from './routes.jsx';
 
@@ -19,6 +30,11 @@ const TITLES = {
   patterns: 'Patterns — BongDesign',
   pattern: 'Pattern — BongDesign',
   'data-viz': 'Data visualization — BongDesign',
+  'dv-topic': 'Data visualization topic — BongDesign',
+  'getting-started': 'Getting started — BongDesign',
+  'gs-page': 'Getting started guide — BongDesign',
+  experiences: 'Building experiences — BongDesign',
+  experience: 'Experience step — BongDesign',
   support: 'Support — BongDesign',
   mcp: 'Connect the MCP — BongDesign',
   notfound: 'Not found — BongDesign',
@@ -40,6 +56,16 @@ export function PageForRoute({ route }) {
       return <PatternPage name={route.params.name} />;
     case 'data-viz':
       return <DataVisualizationPage />;
+    case 'dv-topic':
+      return <DataVizTopicPage topic={route.params.topic} />;
+    case 'getting-started':
+      return <GettingStartedIndex />;
+    case 'gs-page':
+      return <GettingStartedPage page={route.params.page} />;
+    case 'experiences':
+      return <ExperiencesIndex />;
+    case 'experience':
+      return <ExperiencePage step={route.params.step} />;
     case 'support':
       return <SupportPage />;
     case 'mcp':

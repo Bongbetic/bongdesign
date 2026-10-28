@@ -10,6 +10,11 @@ export const ROUTES = [
   { id: 'patterns', path: '/patterns', label: 'Patterns', section: 'patterns' },
   { id: 'pattern', path: '/patterns/:name', label: 'Pattern', section: 'patterns' },
   { id: 'data-viz', path: '/data-visualization', label: 'Data visualization', section: 'data-viz' },
+  { id: 'dv-topic', path: '/data-visualization/:topic', label: 'Data visualization topic', section: 'data-viz' },
+  { id: 'getting-started', path: '/getting-started', label: 'Getting started', section: 'getting-started' },
+  { id: 'gs-page', path: '/getting-started/:page', label: 'Getting started guide', section: 'getting-started' },
+  { id: 'experiences', path: '/building-experiences', label: 'Building experiences', section: 'experiences' },
+  { id: 'experience', path: '/building-experiences/:step', label: 'Experience step', section: 'experiences' },
   { id: 'support', path: '/support', label: 'Support', section: 'support' },
   { id: 'mcp', path: '/mcp', label: 'MCP', section: 'support' },
 ];
@@ -36,6 +41,14 @@ export function matchRoute(pathname) {
   m = p.match(/^\/patterns\/([^/]+)$/);
   if (m) return { id: 'pattern', params: { name: decodeURIComponent(m[1]).toLowerCase() } };
   if (p === '/data-visualization') return { id: 'data-viz', params: {} };
+  m = p.match(/^\/data-visualization\/([^/]+)$/);
+  if (m) return { id: 'dv-topic', params: { topic: decodeURIComponent(m[1]).toLowerCase() } };
+  if (p === '/getting-started') return { id: 'getting-started', params: {} };
+  m = p.match(/^\/getting-started\/([^/]+)$/);
+  if (m) return { id: 'gs-page', params: { page: decodeURIComponent(m[1]).toLowerCase() } };
+  if (p === '/building-experiences') return { id: 'experiences', params: {} };
+  m = p.match(/^\/building-experiences\/([^/]+)$/);
+  if (m) return { id: 'experience', params: { step: decodeURIComponent(m[1]).toLowerCase() } };
   if (p === '/support') return { id: 'support', params: {} };
   if (p === '/mcp') return { id: 'mcp', params: {} };
   return { id: 'notfound', params: {} };

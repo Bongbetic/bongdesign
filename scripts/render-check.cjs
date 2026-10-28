@@ -541,7 +541,44 @@ if (typeof app.AppForPath === 'function') {
     'your actual token',
     'production token',
   ];
-  const hygieneUrls = ['/patterns', '/patterns/empty-state', '/data-visualization', '/support', '/mcp', '/'];
+  const hygieneUrls = [
+    '/patterns',
+    '/patterns/empty-state',
+    '/patterns/dialogs',
+    '/data-visualization',
+    '/data-visualization/legends',
+    '/getting-started',
+    '/getting-started/about',
+    '/building-experiences',
+    '/building-experiences/learn',
+    '/support',
+    '/mcp',
+    '/',
+  ];
+  // Phase 6 (T19): sections distilled from the reference crawl. Every new
+  // index and a sample detail page per section must SSR inside the shell.
+  const T19_PAGES = [
+    ['/patterns/dialogs', ['Dialogs', 'Patterns', '/components/modal']],
+    ['/data-visualization', ['Data visualization', '/data-visualization/legends']],
+    ['/data-visualization/legends', ['Legends', 'Data visualization']],
+    ['/getting-started', ['Getting started', '/getting-started/about']],
+    ['/getting-started/about', ['About BongDesign', 'Getting started']],
+    ['/building-experiences', ['Building experiences', '/building-experiences/learn']],
+    ['/building-experiences/learn', ['Learn', 'Building experiences']],
+    ['/support', ['Frequently asked questions', 'Certificate of originality']],
+  ];
+  for (const [p, markers] of T19_PAGES) {
+    let html;
+    try {
+      html = ssr(p);
+    } catch (e) {
+      routeCheck(`SSR renders '${p}'`, false, e.message.split('\n')[0]);
+      continue;
+    }
+    for (const m of markers) {
+      routeCheck(`'${p}' renders marker '${m}'`, html.includes(m), 'missing from SSR html');
+    }
+  }
   for (const p of hygieneUrls) {
     let html;
     try {

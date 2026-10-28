@@ -12,7 +12,7 @@ import {
 } from '@carbon/react';
 import { navClick, sectionFor } from './routes.jsx';
 import { FOUNDATION_SECTIONS } from './foundations.jsx';
-import { PATTERNS } from './pages/guidance.jsx';
+import { BX_STEPS, DV_TOPICS, GS_PAGES, PATTERNS } from './pages/guidance.jsx';
 
 function slugOf(id) {
   return id.replace(/^foundations-/, '');
@@ -49,6 +49,13 @@ export default function Shell({ route, children }) {
             aria-current={active('components') ? 'page' : undefined}
           >
             Components
+          </HeaderMenuItem>
+          <HeaderMenuItem
+            href="/getting-started"
+            onClick={navClick('/getting-started')}
+            aria-current={active('getting-started') ? 'page' : undefined}
+          >
+            Getting started
           </HeaderMenuItem>
           <HeaderMenuItem
             href="/patterns"
@@ -88,6 +95,21 @@ export default function Shell({ route, children }) {
               >
                 Home
               </SideNavMenuItem>
+              {GS_PAGES.map((g) => {
+                const to = '/getting-started/' + g.page;
+                const on = active('getting-started') && route.params && route.params.page === g.page;
+                return (
+                  <SideNavMenuItem
+                    key={g.page}
+                    href={to}
+                    onClick={navClick(to)}
+                    isActive={on}
+                    aria-current={on ? 'page' : undefined}
+                  >
+                    {g.title}
+                  </SideNavMenuItem>
+                );
+              })}
             </SideNavMenu>
             <SideNavMenu renderIcon={() => null} title="Foundations" defaultExpanded={active('foundations')}>
               {FOUNDATION_SECTIONS.map((s) => {
@@ -145,11 +167,51 @@ export default function Shell({ route, children }) {
               <SideNavMenuItem
                 href="/data-visualization"
                 onClick={navClick('/data-visualization')}
-                isActive={active('data-viz')}
-                aria-current={active('data-viz') ? 'page' : undefined}
+                isActive={active('data-viz') && !(route.params && route.params.topic)}
+                aria-current={active('data-viz') && !(route.params && route.params.topic) ? 'page' : undefined}
               >
                 Guidance
               </SideNavMenuItem>
+              {DV_TOPICS.map((t) => {
+                const to = '/data-visualization/' + t.topic;
+                const on = active('data-viz') && route.params && route.params.topic === t.topic;
+                return (
+                  <SideNavMenuItem
+                    key={t.topic}
+                    href={to}
+                    onClick={navClick(to)}
+                    isActive={on}
+                    aria-current={on ? 'page' : undefined}
+                  >
+                    {t.title}
+                  </SideNavMenuItem>
+                );
+              })}
+            </SideNavMenu>
+            <SideNavMenu renderIcon={() => null} title="Building experiences" defaultExpanded={active('experiences')}>
+              <SideNavMenuItem
+                href="/building-experiences"
+                onClick={navClick('/building-experiences')}
+                isActive={active('experiences') && !(route.params && route.params.step)}
+                aria-current={active('experiences') && !(route.params && route.params.step) ? 'page' : undefined}
+              >
+                Overview
+              </SideNavMenuItem>
+              {BX_STEPS.filter((b) => b.step !== 'overview').map((b) => {
+                const to = '/building-experiences/' + b.step;
+                const on = active('experiences') && route.params && route.params.step === b.step;
+                return (
+                  <SideNavMenuItem
+                    key={b.step}
+                    href={to}
+                    onClick={navClick(to)}
+                    isActive={on}
+                    aria-current={on ? 'page' : undefined}
+                  >
+                    {b.title}
+                  </SideNavMenuItem>
+                );
+              })}
             </SideNavMenu>
             <SideNavMenu renderIcon={() => null} title="Support" defaultExpanded={active('support')}>
               <SideNavMenuItem
