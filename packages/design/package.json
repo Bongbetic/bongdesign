@@ -1,0 +1,25 @@
+{
+  "name": "@bongbetic/design",
+  "version": "1.0.0",
+  "description": "Bongbetic design system in one import: Carbon components + Bongbetic brand",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": { "types": "./src/index.d.ts", "default": "./src/index.js" },
+    "./styles": "./styles.scss",
+    "./package.json": "./package.json"
+  },
+  "files": ["src", "styles.scss"],
+  "dependencies": {
+    "@bongbetic/react": "1.119.0",
+    "@bongbetic/styles": "1.118.0",
+    "@bongbetic/brand": "1.0.0"
+  },
+  "peerDependencies": { "react": "^18.0.0", "react-dom": "^18.0.0" },
+  "homepage": "https://design.bongbetic.com",
+  "repository": { "type": "git", "url": "https://git.bongbetic.com/bongbetic/bongdesign.git" },
+  "publishConfig": { "registry": "https://git.bongbetic.com/api/packages/bongbetic/npm/", "access": "public" }
+}

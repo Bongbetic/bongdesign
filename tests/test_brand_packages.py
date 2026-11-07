@@ -43,7 +43,7 @@ class BrandTest(unittest.TestCase):
     def test_exports_components(self):
         src = (BRAND / "src" / "index.js").read_text()
         for name in ("BongbeticLogo", "BongbeticHeader", "brandAssets"):
-            self.assertIn(f"export {{", src) if False else self.assertIn(name, src)
+            self.assertIn(name, src)
         self.assertIn("@bongbetic/react", src)
         self.assertNotIn("@carbon", src)
         self.assertTrue((BRAND / "src" / "index.d.ts").is_file())
@@ -72,6 +72,9 @@ class DesignTest(unittest.TestCase):
         scss = (DESIGN / "styles.scss").read_text()
         self.assertIn("@use '@bongbetic/styles'", scss)
         self.assertIn("@bongbetic/brand/styles", scss)
+        # Sass derives the namespace from the last path segment: two `styles` clash.
+        self.assertRegex(scss, r"@use '@bongbetic/styles'[^;]* as \w+;")
+        self.assertRegex(scss, r"@use '@bongbetic/brand/styles' as \w+;")
 
 
 if __name__ == "__main__":
