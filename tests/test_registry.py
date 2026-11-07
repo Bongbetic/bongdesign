@@ -93,6 +93,25 @@ class PackageSetTest(unittest.TestCase):
         self.assertNotIn("carbon-components", pkgs)       # private, unscoped
 
 
+class ClosureLockTest(unittest.TestCase):
+    def setUp(self):
+        self.lock = json.loads((ROOT / "registry" / "closure" / "package-lock.json").read_text())
+        self.paths = set(self.lock["packages"])
+
+    def test_every_public_carbon_package_at_snapshot_version(self):
+        for name, ver in reg.public_packages(ROOT / "upstream-carbon" / "packages"):
+            self.assertEqual(self.lock["packages"]["node_modules/" + name]["version"], ver, name)
+
+    def test_platform_binaries_for_fatboy_arm_and_mac(self):
+        for p in ("@esbuild/linux-x64", "@esbuild/linux-arm64", "@esbuild/darwin-arm64", "@esbuild/darwin-x64",
+                  "@rollup/rollup-linux-x64-gnu", "@rollup/rollup-linux-arm64-gnu", "@rollup/rollup-darwin-arm64"):
+            self.assertIn("node_modules/" + p, self.paths)
+
+    def test_build_tooling_present(self):
+        for p in ("vite", "@vitejs/plugin-react", "sass", "react", "react-dom"):
+            self.assertIn("node_modules/" + p, self.paths)
+
+
 class LockTest(unittest.TestCase):
     LOCK = {"packages": {
         "": {"name": "root"},
