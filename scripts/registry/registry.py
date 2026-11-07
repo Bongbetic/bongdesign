@@ -71,14 +71,19 @@ def _request(method, url, token=None, body=None):
         req.add_header("Authorization", f"Bearer {token}")
     if body is not None:
         req.add_header("Content-Type", "application/json")
-    try:
-        with urllib.request.urlopen(req, timeout=120) as r:
-            return r.status, r.read()
-    except urllib.error.HTTPError as e:
+    last = None
+    for _ in range(4):
         try:
-            return e.code, e.read()
-        finally:
-            e.close()
+            with urllib.request.urlopen(req, timeout=600) as r:
+                return r.status, r.read()
+        except urllib.error.HTTPError as e:
+            try:
+                return e.code, e.read()
+            finally:
+                e.close()
+        except OSError as e:  # timeout / reset: caller's existence check makes a retry safe
+            last = e
+    raise RuntimeError(f"{method} {url}: {last}")
 
 
 def _tarball_meta(blob):
