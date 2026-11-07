@@ -83,6 +83,25 @@ class FakeRegistry:
         self.srv.shutdown()
 
 
+def tgz_dir(top, name, version):
+    d = json.dumps({"name": name, "version": version}).encode()
+    raw = io.BytesIO()
+    with tarfile.open(fileobj=raw, mode="w") as tf:
+        ti = tarfile.TarInfo(top + "/package.json")
+        ti.size = len(d)
+        tf.addfile(ti, io.BytesIO(d))
+    return gzip.compress(raw.getvalue(), mtime=0)
+
+
+class OddTopDirTest(unittest.TestCase):
+    def test_publish_and_rebrand_accept_non_package_top_dir(self):
+        r = FakeRegistry()
+        self.addCleanup(r.close)
+        self.assertEqual(reg.publish_tarball(r.url, "t", tgz_dir("foo-1.0.0", "foo", "1.0.0")), "published")
+        out = reg.rebrand.rebrand_tarball(tgz_dir("carbon-x", "@carbon/x", "1.0.0"))
+        self.assertEqual(reg._tarball_meta(out)["name"], "@bongbetic/x")
+
+
 class PackageSetTest(unittest.TestCase):
     def test_real_snapshot_public_packages_only(self):
         pkgs = dict(reg.public_packages(ROOT / "upstream-carbon" / "packages"))
