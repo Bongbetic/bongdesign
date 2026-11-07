@@ -96,6 +96,41 @@ def _tarball_meta(blob):
     raise RuntimeError("tarball has no package.json")
 
 
+def _packument_meta(meta):
+    """Coerce loose package.json fields into the shapes Gitea's npm parser accepts.
+    Only the registry document is changed; the tarball's own package.json is untouched."""
+    m = dict(meta)
+    kw = m.get("keywords")
+    if isinstance(kw, str):
+        m["keywords"] = [k for k in re.split(r"[\s,]+", kw) if k]
+    elif kw is not None and not isinstance(kw, list):
+        del m["keywords"]
+    a = m.get("author")
+    if isinstance(a, str):
+        m["author"] = {"name": a}
+    elif a is not None and not isinstance(a, dict):
+        del m["author"]
+    r = m.get("repository")
+    if isinstance(r, str):
+        m["repository"] = {"type": "git", "url": r}
+    elif r is not None and not isinstance(r, dict):
+        del m["repository"]
+    lic = m.get("license")
+    if isinstance(lic, dict):
+        m["license"] = lic.get("type", "")
+    elif lic is not None and not isinstance(lic, str):
+        del m["license"]
+    b = m.get("bin")
+    if isinstance(b, str):
+        m["bin"] = {m["name"].rsplit("/", 1)[-1]: b}
+    if not isinstance(m.get("contributors", []), list) or any(not isinstance(c, dict) for c in m.get("contributors", [])):
+        m.pop("contributors", None)
+    for k in ("maintainers",):
+        if k in m and (not isinstance(m[k], list) or any(not isinstance(c, dict) for c in m[k])):
+            del m[k]
+    return m
+
+
 def publish_tarball(base, token, blob, tag="latest"):
     """Publish one tarball. Returns 'published' or 'exists'; raises on any other failure."""
     meta = _tarball_meta(blob)
@@ -104,7 +139,7 @@ def publish_tarball(base, token, blob, tag="latest"):
     if status == 200 and version in json.loads(body).get("versions", {}):
         return "exists"
     fname = f"{name}-{version}.tgz"
-    version_doc = dict(meta, _id=f"{name}@{version}",
+    version_doc = dict(_packument_meta(meta), _id=f"{name}@{version}",
                        dist={"integrity": sri(blob), "shasum": hashlib.sha1(blob).hexdigest()})
     doc = {"_id": name, "name": name, "dist-tags": {tag: version},
            "versions": {version: version_doc},
