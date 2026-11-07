@@ -169,6 +169,19 @@ class PublishTest(unittest.TestCase):
         self.assertEqual(base64.b64decode(att["data"]), blob)
         self.assertEqual(body["versions"]["2.5.1"]["dist"]["integrity"], sri(blob))
 
+    def test_packument_normalises_loose_fields_gitea_rejects(self):
+        blob = tgz("lodashish", "4.0.0", {"keywords": "a b, c", "author": "Jo <j@x.io>",
+                                          "repository": "lodash/lodash", "license": {"type": "MIT"},
+                                          "bin": "cli.js", "contributors": ["x"]})
+        reg.publish_tarball(self.r.url, "tok", blob)
+        v = self.r.store["lodashish"]["4.0.0"]["versions"]["4.0.0"]
+        self.assertEqual(v["keywords"], ["a", "b", "c"])
+        self.assertEqual(v["author"], {"name": "Jo <j@x.io>"})
+        self.assertEqual(v["repository"], {"type": "git", "url": "lodash/lodash"})
+        self.assertEqual(v["license"], "MIT")
+        self.assertEqual(v["bin"], {"lodashish": "cli.js"})
+        self.assertNotIn("contributors", v)
+
     def test_scoped_name_encoded(self):
         reg.publish_tarball(self.r.url, "tok", tgz("@bongbetic/react", "1.119.0"))
         self.assertIn("@bongbetic/react", self.r.store)
