@@ -82,7 +82,7 @@ def rebrand_tarball(blob, only_scoped=False):
     for m in src.getmembers():
         if not m.isfile():
             continue
-        entries[m.name.removeprefix("package/")] = (src.extractfile(m).read(), m.mode)
+        entries[m.name.split("/", 1)[-1]] = (src.extractfile(m).read(), m.mode)
     name = json.loads(entries["package.json"][0])["name"]
     if only_scoped and not name.startswith(("@carbon/", "@ibm/")):
         return blob

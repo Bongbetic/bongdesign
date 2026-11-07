@@ -90,7 +90,10 @@ def _tarball_meta(blob):
     import io
     import tarfile
     with tarfile.open(fileobj=io.BytesIO(blob), mode="r:gz") as tf:
-        return json.loads(tf.extractfile("package/package.json").read())
+        for m in tf.getmembers():
+            if m.isfile() and m.name.split("/", 1)[-1] == "package.json":
+                return json.loads(tf.extractfile(m).read())
+    raise RuntimeError("tarball has no package.json")
 
 
 def publish_tarball(base, token, blob, tag="latest"):
