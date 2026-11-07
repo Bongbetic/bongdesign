@@ -47,4 +47,5 @@ Modules talk through their public interfaces only. Shared hotspots are changed b
 
 - Architecture decisions: `docs/adr/`
 - Build state (local, not committed): `.heimdall/` — STATE.md, HANDOFF.md, tickets, packets, reports, progress report
-- Deploy: Coolify from `Containerfile`, domain design.bongbetic.com (merging to `main` is the ship step, done only by the orchestrator with the user's go-ahead)
+- Deploy: fatboy (`fatboy app new bongdesign --type git`) from the Gitea repo `git.bongbetic.com/bongbetic/bongdesign` `main`, built from `Containerfile`, domain design.bongbetic.com (ADR 0008; merging to `main` is the ship step, done only by the orchestrator with the user's go-ahead)
+- Registry: `@bongbetic/*` npm packages on Gitea, `https://git.bongbetic.com/api/packages/bongbetic/npm/` (ADR 0006); publish tokens only in env or Actions secrets, never in the repository
