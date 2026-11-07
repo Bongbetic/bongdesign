@@ -1,0 +1,13 @@
+{
+  "name": "@bongbetic/create-design",
+  "version": "1.0.0",
+  "description": "npx @bongbetic/create-design my-app: a Vite + React starter on the Bongbetic design system",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": { "create-design": "bin/create-design.js" },
+  "files": ["bin", "template"],
+  "engines": { "node": ">=18" },
+  "homepage": "https://design.bongbetic.com",
+  "repository": { "type": "git", "url": "https://git.bongbetic.com/bongbetic/bongdesign.git" },
+  "publishConfig": { "registry": "https://git.bongbetic.com/api/packages/bongbetic/npm/", "access": "public" }
+}
