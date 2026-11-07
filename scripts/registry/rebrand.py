@@ -70,6 +70,8 @@ def _postcheck(name, data):
         raise RebrandError(f"{name}: leftover @carbon/@ibm specifier")
     if "ibmtelemetry" in s:
         raise RebrandError(f"{name}: leftover ibmtelemetry")
+    if name.endswith(".md"):
+        return  # docs may link to ibm.com; only code and styles are fetched at runtime
     if "s81c.com" in s or IBM_URL.search(s):
         raise RebrandError(f"{name}: leftover IBM host in URL")
 
