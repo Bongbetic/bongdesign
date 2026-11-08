@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import * as Carbon from '@carbon/react';
-import { Link } from '@carbon/react';
-import { Add, TrashCan } from '@carbon/icons-react';
+import * as Carbon from '@bongbetic/react';
+import { Link } from '@bongbetic/react';
+import { Add, TrashCan } from '@bongbetic/icons-react';
 import index from '../../data/components.json';
 import guidelines from '../../data/guidelines.json';
 
@@ -487,7 +487,7 @@ const CURATED = {
   },
   CodeSnippet: {
     demo: (
-      <Carbon.CodeSnippet type="multi" feedback="Copied to clipboard">{`npm install @carbon/react
+      <Carbon.CodeSnippet type="multi" feedback="Copied to clipboard">{`npm install @bongbetic/react
 npm run build`}</Carbon.CodeSnippet>
     ),
   },
@@ -1002,13 +1002,13 @@ function withHelpers(name, props) {
 }
 
 function snippet(name, curated) {
-  if (curated) return `import { ${name} } from '@carbon/react';\n// see live render above`;
+  if (curated) return `import { ${name} } from '@bongbetic/react';\n// see live render above`;
   const props = genericProps(name);
   const attrs = Object.entries(props)
     .map(([k, v]) => (k === 'children' ? '' : ` ${k}="${v}"`))
     .join('');
   const inner = props.children || '';
-  return `import { ${name} } from '@carbon/react';\n<${name}${attrs}>${inner}</${name}>`;
+  return `import { ${name} } from '@bongbetic/react';\n<${name}${attrs}>${inner}</${name}>`;
 }
 
 function guideFor(name, entry) {

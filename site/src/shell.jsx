@@ -9,7 +9,7 @@ import {
   SideNavItems,
   SideNavMenu,
   SideNavMenuItem,
-} from '@carbon/react';
+} from '@bongbetic/react';
 import { navClick, sectionFor } from './routes.jsx';
 import { FOUNDATION_SECTIONS } from './foundations.jsx';
 import { BX_STEPS, DV_TOPICS, GS_PAGES, PATTERNS } from './pages/guidance.jsx';

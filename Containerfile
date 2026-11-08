@@ -1,7 +1,8 @@
-# Stage 1: build the gallery from pinned @carbon packages.
+# Stage 1: build the gallery from the pinned @bongbetic packages. site/.npmrc points
+# installs at the Gitea registry (ADR 0006); the lockfile holds only Gitea URLs.
 FROM docker.io/library/node:24-slim AS site-build
 WORKDIR /app
-COPY site/package.json site/package-lock.json ./site/
+COPY site/.npmrc site/package.json site/package-lock.json ./site/
 RUN cd site && npm ci --no-audit --no-fund
 COPY site/ ./site/
 COPY data/ ./data/

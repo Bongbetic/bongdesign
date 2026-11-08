@@ -36076,8 +36076,8 @@
   "meta": {
     "carbonTag": "v1.119.0",
     "packages": {
-      "icons": "^11.91.0",
-      "pictograms": "^12.87.0"
+      "icons": "11.91.0",
+      "pictograms": "12.87.0"
     }
   },
   "pictograms": {

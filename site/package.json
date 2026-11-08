@@ -12,12 +12,12 @@
     "validate": "node ../scripts/validate-data.cjs"
   },
   "dependencies": {
-    "@carbon/icons": "^11.91.0",
-    "@carbon/icons-react": "11.91.0",
-    "@carbon/pictograms": "^12.87.0",
-    "@carbon/pictograms-react": "^11.113.0",
-    "@carbon/react": "1.119.0",
-    "@carbon/styles": "1.118.0",
+    "@bongbetic/icons": "11.91.0",
+    "@bongbetic/icons-react": "11.91.0",
+    "@bongbetic/pictograms": "12.87.0",
+    "@bongbetic/pictograms-react": "11.113.0",
+    "@bongbetic/react": "1.119.0",
+    "@bongbetic/styles": "1.118.0",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },

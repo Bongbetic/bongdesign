@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "carbonTag": "v1.119.0",
+    "source": "upstream-carbon/packages, non-private, republished as @bongbetic"
+  },
+  "packages": [
+    {
+      "name": "@bongbetic/cli",
+      "version": "11.52.0"
+    },
+    {
+      "name": "@bongbetic/cli-reporter",
+      "version": "10.9.0"
+    },
+    {
+      "name": "@bongbetic/colors",
+      "version": "11.61.0"
+    },
+    {
+      "name": "@bongbetic/elements",
+      "version": "11.100.0"
+    },
+    {
+      "name": "@bongbetic/feature-flags",
+      "version": "1.11.0"
+    },
+    {
+      "name": "@bongbetic/grid",
+      "version": "11.65.0"
+    },
+    {
+      "name": "@bongbetic/icon-helpers",
+      "version": "10.84.0"
+    },
+    {
+      "name": "@bongbetic/icons",
+      "version": "11.91.0"
+    },
+    {
+      "name": "@bongbetic/icons-react",
+      "version": "11.91.0"
+    },
+    {
+      "name": "@bongbetic/icons-vue",
+      "version": "10.140.0"
+    },
+    {
+      "name": "@bongbetic/layout",
+      "version": "11.62.0"
+    },
+    {
+      "name": "@bongbetic/motion",
+      "version": "11.55.0"
+    },
+    {
+      "name": "@bongbetic/pictograms",
+      "version": "12.87.0"
+    },
+    {
+      "name": "@bongbetic/pictograms-react",
+      "version": "11.113.0"
+    },
+    {
+      "name": "@bongbetic/react",
+      "version": "1.119.0"
+    },
+    {
+      "name": "@bongbetic/styles",
+      "version": "1.118.0"
+    },
+    {
+      "name": "@bongbetic/themes",
+      "version": "11.84.0"
+    },
+    {
+      "name": "@bongbetic/type",
+      "version": "11.70.0"
+    },
+    {
+      "name": "@bongbetic/upgrade",
+      "version": "11.46.0"
+    },
+    {
+      "name": "@bongbetic/utilities",
+      "version": "0.28.0"
+    },
+    {
+      "name": "@bongbetic/utilities-react",
+      "version": "0.31.0"
+    },
+    {
+      "name": "@bongbetic/web-components",
+      "version": "2.66.0"
+    }
+  ]
+}

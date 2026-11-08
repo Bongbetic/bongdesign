@@ -93,7 +93,7 @@
       ]
     },
     "AISkeleton": {
-      "example": "import { AISkeleton } from '@carbon/react';\n<AISkeleton />",
+      "example": "import { AISkeleton } from '@bongbetic/react';\n<AISkeleton />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
@@ -244,7 +244,7 @@
       ]
     },
     "ActionSet": {
-      "example": "import { ActionSet } from '@carbon/react';\n<ActionSet />",
+      "example": "import { ActionSet } from '@bongbetic/react';\n<ActionSet />",
       "exampleMined": false,
       "props": [
         {
@@ -299,7 +299,7 @@
       ]
     },
     "AddSelect": {
-      "example": "import { AddSelect } from '@carbon/react';\n<AddSelect />",
+      "example": "import { AddSelect } from '@bongbetic/react';\n<AddSelect />",
       "exampleMined": false,
       "props": [
         {
@@ -372,13 +372,13 @@
       ]
     },
     "BadgeIndicator": {
-      "example": "import { BadgeIndicator } from '@carbon/react';\n<BadgeIndicator />",
+      "example": "import { BadgeIndicator } from '@bongbetic/react';\n<BadgeIndicator />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "BigNumber": {
-      "example": "import { BigNumber } from '@carbon/react';\n<BigNumber />",
+      "example": "import { BigNumber } from '@bongbetic/react';\n<BigNumber />",
       "exampleMined": false,
       "props": [
         {
@@ -623,7 +623,7 @@
       ]
     },
     "Card": {
-      "example": "import { Card } from '@carbon/react';\n\nfunction Example() {\n  return (\n    <Card>\n      <Card.Header>\n        <Card.Title>Card title</Card.Title>\n      </Card.Header>\n      <Card.Body>\n        <p>Card body content.</p>\n      </Card.Body>\n      <Card.Footer>\n        <Button kind=\"tertiary\" size=\"md\">\n          Action\n        </Button>\n      </Card.Footer>\n    </Card>\n  );\n}",
+      "example": "import { Card } from '@bongbetic/react';\n\nfunction Example() {\n  return (\n    <Card>\n      <Card.Header>\n        <Card.Title>Card title</Card.Title>\n      </Card.Header>\n      <Card.Body>\n        <p>Card body content.</p>\n      </Card.Body>\n      <Card.Footer>\n        <Button kind=\"tertiary\" size=\"md\">\n          Action\n        </Button>\n      </Card.Footer>\n    </Card>\n  );\n}",
       "exampleMined": true,
       "props": [
         {
@@ -712,7 +712,7 @@
       ]
     },
     "ChatButton": {
-      "example": "import { ChatButton } from '@carbon/react';\n<ChatButton />",
+      "example": "import { ChatButton } from '@bongbetic/react';\n<ChatButton />",
       "exampleMined": false,
       "props": [
         {
@@ -897,7 +897,7 @@
       ]
     },
     "CheckboxGroup": {
-      "example": "import { CheckboxGroup } from '@carbon/react';\n<CheckboxGroup />",
+      "example": "import { CheckboxGroup } from '@bongbetic/react';\n<CheckboxGroup />",
       "exampleMined": false,
       "props": [
         {
@@ -1006,7 +1006,7 @@
     },
     "ClassPrefix": {
       "codeOnly": true,
-      "example": "import { ClassPrefix } from '@carbon/react';\n<ClassPrefix />",
+      "example": "import { ClassPrefix } from '@bongbetic/react';\n<ClassPrefix />",
       "exampleMined": false,
       "note": "Utility — code only.",
       "props": [
@@ -1124,7 +1124,7 @@
       ]
     },
     "CodeSnippet": {
-      "example": "import { CodeSnippet } from '@carbon/react';\n<CodeSnippet />",
+      "example": "import { CodeSnippet } from '@bongbetic/react';\n<CodeSnippet />",
       "exampleMined": false,
       "props": [
         {
@@ -1760,7 +1760,7 @@
       ]
     },
     "ContainedList": {
-      "example": "import { ContainedList } from '@carbon/react';\n<ContainedList />",
+      "example": "import { ContainedList } from '@bongbetic/react';\n<ContainedList />",
       "exampleMined": false,
       "props": [
         {
@@ -1931,7 +1931,7 @@
       ]
     },
     "Copy": {
-      "example": "import { Copy } from '@carbon/react';\n<Copy />",
+      "example": "import { Copy } from '@bongbetic/react';\n<Copy />",
       "exampleMined": false,
       "props": [
         {
@@ -1986,7 +1986,7 @@
       ]
     },
     "CopyButton": {
-      "example": "import { CopyButton } from '@carbon/react';\n<CopyButton />",
+      "example": "import { CopyButton } from '@bongbetic/react';\n<CopyButton />",
       "exampleMined": false,
       "props": [
         {
@@ -2041,7 +2041,7 @@
       ]
     },
     "DangerButton": {
-      "example": "import { DangerButton } from '@carbon/react';\n<DangerButton />",
+      "example": "import { DangerButton } from '@bongbetic/react';\n<DangerButton />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
@@ -2186,7 +2186,7 @@
       ]
     },
     "DataTableSkeleton": {
-      "example": "import { DataTableSkeleton } from '@carbon/react';\n<DataTableSkeleton />",
+      "example": "import { DataTableSkeleton } from '@bongbetic/react';\n<DataTableSkeleton />",
       "exampleMined": false,
       "props": [
         {
@@ -2409,7 +2409,7 @@
       ]
     },
     "DatePickerInput": {
-      "example": "import { DatePickerInput } from '@carbon/react';\n<DatePickerInput />",
+      "example": "import { DatePickerInput } from '@bongbetic/react';\n<DatePickerInput />",
       "exampleMined": false,
       "props": [
         {
@@ -2558,13 +2558,13 @@
       ]
     },
     "Dialog": {
-      "example": "import { Dialog } from '@carbon/react';\n<Dialog />",
+      "example": "import { Dialog } from '@bongbetic/react';\n<Dialog />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "Disclosure": {
-      "example": "import { Disclosure } from '@carbon/react';\n<Disclosure />",
+      "example": "import { Disclosure } from '@bongbetic/react';\n<Disclosure />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
@@ -2762,7 +2762,7 @@
       ]
     },
     "EditInPlace": {
-      "example": "import { EditInPlace } from '@carbon/react';\n<EditInPlace />",
+      "example": "import { EditInPlace } from '@bongbetic/react';\n<EditInPlace />",
       "exampleMined": false,
       "props": [
         {
@@ -2916,7 +2916,7 @@
     },
     "ErrorBoundary": {
       "codeOnly": true,
-      "example": "import { ErrorBoundary } from '@carbon/react';\n<ErrorBoundary />",
+      "example": "import { ErrorBoundary } from '@bongbetic/react';\n<ErrorBoundary />",
       "exampleMined": false,
       "note": "Utility — code only.",
       "props": [
@@ -2937,14 +2937,14 @@
       ]
     },
     "ExpandableSearch": {
-      "example": "import { ExpandableSearch } from '@carbon/react';\n<ExpandableSearch />",
+      "example": "import { ExpandableSearch } from '@bongbetic/react';\n<ExpandableSearch />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "FeatureFlags": {
       "codeOnly": true,
-      "example": "import { FeatureFlags } from '@carbon/react';\n<FeatureFlags />",
+      "example": "import { FeatureFlags } from '@bongbetic/react';\n<FeatureFlags />",
       "exampleMined": false,
       "note": "Utility — code only.",
       "props": [
@@ -3049,7 +3049,7 @@
       ]
     },
     "FileUploader": {
-      "example": "import { FileUploader } from '@carbon/react';\n<FileUploader />",
+      "example": "import { FileUploader } from '@bongbetic/react';\n<FileUploader />",
       "exampleMined": false,
       "props": [
         {
@@ -3196,13 +3196,13 @@
       ]
     },
     "FlexGrid": {
-      "example": "import { FlexGrid } from '@carbon/react';\n<FlexGrid />",
+      "example": "import { FlexGrid } from '@bongbetic/react';\n<FlexGrid />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "FluidComboBox": {
-      "example": "import { FluidComboBox } from '@carbon/react';\n<FluidComboBox />",
+      "example": "import { FluidComboBox } from '@bongbetic/react';\n<FluidComboBox />",
       "exampleMined": false,
       "props": [
         {
@@ -3324,7 +3324,7 @@
       ]
     },
     "FluidDatePicker": {
-      "example": "import { FluidDatePicker } from '@carbon/react';\n<FluidDatePicker />",
+      "example": "import { FluidDatePicker } from '@bongbetic/react';\n<FluidDatePicker />",
       "exampleMined": false,
       "props": [
         {
@@ -3379,13 +3379,13 @@
       ]
     },
     "FluidDatePickerInput": {
-      "example": "import { FluidDatePickerInput } from '@carbon/react';\n<FluidDatePickerInput />",
+      "example": "import { FluidDatePickerInput } from '@bongbetic/react';\n<FluidDatePickerInput />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "FluidDropdown": {
-      "example": "import { FluidDropdown } from '@carbon/react';\n<FluidDropdown />",
+      "example": "import { FluidDropdown } from '@bongbetic/react';\n<FluidDropdown />",
       "exampleMined": false,
       "props": [
         {
@@ -3493,13 +3493,13 @@
       ]
     },
     "FluidForm": {
-      "example": "import { FluidForm } from '@carbon/react';\n<FluidForm />",
+      "example": "import { FluidForm } from '@bongbetic/react';\n<FluidForm />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "FluidMultiSelect": {
-      "example": "import { FluidMultiSelect } from '@carbon/react';\n<FluidMultiSelect />",
+      "example": "import { FluidMultiSelect } from '@bongbetic/react';\n<FluidMultiSelect />",
       "exampleMined": false,
       "props": [
         {
@@ -3675,7 +3675,7 @@
       ]
     },
     "FluidNumberInput": {
-      "example": "import { FluidNumberInput } from '@carbon/react';\n<FluidNumberInput />",
+      "example": "import { FluidNumberInput } from '@bongbetic/react';\n<FluidNumberInput />",
       "exampleMined": false,
       "props": [
         {
@@ -3874,7 +3874,7 @@
       ]
     },
     "FluidSearch": {
-      "example": "import { FluidSearch } from '@carbon/react';\n<FluidSearch />",
+      "example": "import { FluidSearch } from '@bongbetic/react';\n<FluidSearch />",
       "exampleMined": false,
       "props": [
         {
@@ -4061,7 +4061,7 @@
       ]
     },
     "FluidTextArea": {
-      "example": "import { FluidTextArea } from '@carbon/react';\n<FluidTextArea />",
+      "example": "import { FluidTextArea } from '@bongbetic/react';\n<FluidTextArea />",
       "exampleMined": false,
       "props": [
         {
@@ -4214,7 +4214,7 @@
       ]
     },
     "FluidTextInput": {
-      "example": "import { FluidTextInput } from '@carbon/react';\n<FluidTextInput />",
+      "example": "import { FluidTextInput } from '@bongbetic/react';\n<FluidTextInput />",
       "exampleMined": false,
       "props": [
         {
@@ -4339,7 +4339,7 @@
       ]
     },
     "FluidTimePicker": {
-      "example": "import { FluidTimePicker } from '@carbon/react';\n<FluidTimePicker />",
+      "example": "import { FluidTimePicker } from '@bongbetic/react';\n<FluidTimePicker />",
       "exampleMined": false,
       "props": [
         {
@@ -4408,7 +4408,7 @@
       ]
     },
     "FluidTimePickerSelect": {
-      "example": "import { FluidTimePickerSelect } from '@carbon/react';\n<FluidTimePickerSelect />",
+      "example": "import { FluidTimePickerSelect } from '@bongbetic/react';\n<FluidTimePickerSelect />",
       "exampleMined": false,
       "props": [
         {
@@ -4470,13 +4470,13 @@
       ]
     },
     "Form": {
-      "example": "import { Form } from '@carbon/react';\n<Form />",
+      "example": "import { Form } from '@bongbetic/react';\n<Form />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "FormGroup": {
-      "example": "import { FormGroup } from '@carbon/react';\n<FormGroup />",
+      "example": "import { FormGroup } from '@bongbetic/react';\n<FormGroup />",
       "exampleMined": false,
       "props": [
         {
@@ -4538,7 +4538,7 @@
       ]
     },
     "FormItem": {
-      "example": "import { FormItem } from '@carbon/react';\n<FormItem />",
+      "example": "import { FormItem } from '@bongbetic/react';\n<FormItem />",
       "exampleMined": false,
       "props": [
         {
@@ -4558,7 +4558,7 @@
       ]
     },
     "FormLabel": {
-      "example": "import { FormLabel } from '@carbon/react';\n<FormLabel />",
+      "example": "import { FormLabel } from '@bongbetic/react';\n<FormLabel />",
       "exampleMined": false,
       "props": [
         {
@@ -4585,7 +4585,7 @@
       ]
     },
     "FullPageError": {
-      "example": "import { FullPageError } from '@carbon/react';\n<FullPageError />",
+      "example": "import { FullPageError } from '@bongbetic/react';\n<FullPageError />",
       "exampleMined": false,
       "props": [
         {
@@ -4643,7 +4643,7 @@
       "props": []
     },
     "Guidebanner": {
-      "example": "import { Guidebanner } from '@carbon/react';\n<Guidebanner />",
+      "example": "import { Guidebanner } from '@bongbetic/react';\n<Guidebanner />",
       "exampleMined": false,
       "props": [
         {
@@ -4745,19 +4745,19 @@
       "props": []
     },
     "HideAtBreakpoint": {
-      "example": "import { HideAtBreakpoint } from '@carbon/react';\n<HideAtBreakpoint />",
+      "example": "import { HideAtBreakpoint } from '@bongbetic/react';\n<HideAtBreakpoint />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "Icon": {
-      "example": "import { Icon } from '@carbon/react';\n<Icon />",
+      "example": "import { Icon } from '@bongbetic/react';\n<Icon />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "IconButton": {
-      "example": "import { IconButton } from '@carbon/react';\nimport { Add } from '@carbon/react/icons';\n\nfunction ExampleComponent() {\n  return (\n    <IconButton label=\"Add\">\n      <Add />\n    </IconButton>\n  );\n}",
+      "example": "import { IconButton } from '@bongbetic/react';\nimport { Add } from '@bongbetic/react/icons';\n\nfunction ExampleComponent() {\n  return (\n    <IconButton label=\"Add\">\n      <Add />\n    </IconButton>\n  );\n}",
       "exampleMined": true,
       "props": [
         {
@@ -4915,7 +4915,7 @@
       ]
     },
     "IconIndicator": {
-      "example": "import { preview__IconIndicator as IconIndicator } from '@carbon/react';\n\nfunction ExampleComponent() {\n  return (\n    <IconIndicator kind=\"failed\" label=\"Failed\">\n  );\n}",
+      "example": "import { preview__IconIndicator as IconIndicator } from '@bongbetic/react';\n\nfunction ExampleComponent() {\n  return (\n    <IconIndicator kind=\"failed\" label=\"Failed\">\n  );\n}",
       "exampleMined": true,
       "props": [
         {
@@ -4983,7 +4983,7 @@
     },
     "IdPrefix": {
       "codeOnly": true,
-      "example": "import { IdPrefix } from '@carbon/react';\n<IdPrefix />",
+      "example": "import { IdPrefix } from '@bongbetic/react';\n<IdPrefix />",
       "exampleMined": false,
       "note": "Utility — code only.",
       "props": [
@@ -5004,7 +5004,7 @@
       ]
     },
     "InlineCheckbox": {
-      "example": "import { InlineCheckbox } from '@carbon/react';\n<InlineCheckbox />",
+      "example": "import { InlineCheckbox } from '@bongbetic/react';\n<InlineCheckbox />",
       "exampleMined": false,
       "props": [
         {
@@ -5082,7 +5082,7 @@
       ]
     },
     "InlineLoading": {
-      "example": "import { InlineLoading } from '@carbon/react';\n<InlineLoading />",
+      "example": "import { InlineLoading } from '@bongbetic/react';\n<InlineLoading />",
       "exampleMined": false,
       "props": [
         {
@@ -5238,7 +5238,7 @@
       ]
     },
     "LayoutDirection": {
-      "example": "import { LayoutDirection } from '@carbon/react';\n<LayoutDirection />",
+      "example": "import { LayoutDirection } from '@bongbetic/react';\n<LayoutDirection />",
       "exampleMined": false,
       "props": [
         {
@@ -5265,13 +5265,13 @@
       ]
     },
     "Link": {
-      "example": "import { Link } from '@carbon/react';\n<Link />",
+      "example": "import { Link } from '@bongbetic/react';\n<Link />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "ListBox": {
-      "example": "import { ListBox } from '@carbon/react';\n<ListBox />",
+      "example": "import { ListBox } from '@bongbetic/react';\n<ListBox />",
       "exampleMined": false,
       "props": [
         {
@@ -5354,13 +5354,13 @@
       ]
     },
     "ListItem": {
-      "example": "import { ListItem } from '@carbon/react';\n<ListItem />",
+      "example": "import { ListItem } from '@bongbetic/react';\n<ListItem />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "Loading": {
-      "example": "import { Loading } from '@carbon/react';\n<Loading />",
+      "example": "import { Loading } from '@bongbetic/react';\n<Loading />",
       "exampleMined": false,
       "props": [
         {
@@ -5874,7 +5874,7 @@
       ]
     },
     "ModalWrapper": {
-      "example": "import { ModalWrapper } from '@carbon/react';\n<ModalWrapper />",
+      "example": "import { ModalWrapper } from '@bongbetic/react';\n<ModalWrapper />",
       "exampleMined": false,
       "props": [
         {
@@ -6281,13 +6281,13 @@
       ]
     },
     "Notification": {
-      "example": "import { Notification } from '@carbon/react';\n<Notification />",
+      "example": "import { Notification } from '@bongbetic/react';\n<Notification />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "NotificationsPanel": {
-      "example": "import { NotificationsPanel } from '@carbon/react';\n<NotificationsPanel />",
+      "example": "import { NotificationsPanel } from '@bongbetic/react';\n<NotificationsPanel />",
       "exampleMined": false,
       "props": [
         {
@@ -6559,7 +6559,7 @@
       ]
     },
     "NumberInput": {
-      "example": "import { NumberInput } from '@carbon/react';\n<NumberInput />",
+      "example": "import { NumberInput } from '@bongbetic/react';\n<NumberInput />",
       "exampleMined": false,
       "props": [
         {
@@ -6841,7 +6841,7 @@
       ]
     },
     "OptionsTile": {
-      "example": "import { OptionsTile } from '@carbon/react';\n<OptionsTile />",
+      "example": "import { OptionsTile } from '@bongbetic/react';\n<OptionsTile />",
       "exampleMined": false,
       "props": [
         {
@@ -6963,7 +6963,7 @@
       ]
     },
     "OrderedList": {
-      "example": "import { OrderedList } from '@carbon/react';\n<OrderedList />",
+      "example": "import { OrderedList } from '@bongbetic/react';\n<OrderedList />",
       "exampleMined": false,
       "props": [
         {
@@ -6990,7 +6990,7 @@
       ]
     },
     "OverflowHandler": {
-      "example": "import { OverflowHandler } from '@carbon/react';\n<OverflowHandler />",
+      "example": "import { OverflowHandler } from '@bongbetic/react';\n<OverflowHandler />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
@@ -7133,7 +7133,7 @@
       ]
     },
     "OverflowMenuItem": {
-      "example": "import { OverflowMenuItem } from '@carbon/react';\n<OverflowMenuItem />",
+      "example": "import { OverflowMenuItem } from '@bongbetic/react';\n<OverflowMenuItem />",
       "exampleMined": false,
       "props": [
         {
@@ -7244,7 +7244,7 @@
       ]
     },
     "OverflowMenuV2": {
-      "example": "import { OverflowMenuV2 } from '@carbon/react';\n<OverflowMenuV2 />",
+      "example": "import { OverflowMenuV2 } from '@bongbetic/react';\n<OverflowMenuV2 />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
@@ -7305,13 +7305,13 @@
       ]
     },
     "PageHeaderDeprecated": {
-      "example": "import { PageHeaderDeprecated } from '@carbon/react';\n<PageHeaderDeprecated />",
+      "example": "import { PageHeaderDeprecated } from '@bongbetic/react';\n<PageHeaderDeprecated />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "Pagination": {
-      "example": "import { Pagination } from '@carbon/react';\n<Pagination />",
+      "example": "import { Pagination } from '@bongbetic/react';\n<Pagination />",
       "exampleMined": false,
       "props": [
         {
@@ -7538,7 +7538,7 @@
       ]
     },
     "PaginationNav": {
-      "example": "import { PaginationNav } from '@carbon/react';\n<PaginationNav />",
+      "example": "import { PaginationNav } from '@bongbetic/react';\n<PaginationNav />",
       "exampleMined": false,
       "props": [
         {
@@ -7619,7 +7619,7 @@
       ]
     },
     "PasswordInput": {
-      "example": "import { PasswordInput } from '@carbon/react';\n<PasswordInput />",
+      "example": "import { PasswordInput } from '@bongbetic/react';\n<PasswordInput />",
       "exampleMined": false,
       "props": [
         {
@@ -7836,19 +7836,19 @@
     },
     "Plex": {
       "codeOnly": true,
-      "example": "import { Plex } from '@carbon/react';\n<Plex />",
+      "example": "import { Plex } from '@bongbetic/react';\n<Plex />",
       "exampleMined": false,
       "note": "Utility — code only.",
       "props": []
     },
     "Popover": {
-      "example": "import { Popover, PopoverContent } from '@carbon/react';\nimport React from 'react';\n\nfunction CustomComponent() {\n  const [open, setOpen] = React.useState(false);\n\n  return (\n    <Popover open={open}>\n      <button\n        type=\"button\"\n        onClick={() => {\n          setOpen(!open);\n        }}>\n        Toggle\n      </button>\n      <PopoverContent>\n        The content that is revealed by interacting with the Toggle button\n      </PopoverContent>\n    </Popover>\n  );\n}",
+      "example": "import { Popover, PopoverContent } from '@bongbetic/react';\nimport React from 'react';\n\nfunction CustomComponent() {\n  const [open, setOpen] = React.useState(false);\n\n  return (\n    <Popover open={open}>\n      <button\n        type=\"button\"\n        onClick={() => {\n          setOpen(!open);\n        }}>\n        Toggle\n      </button>\n      <PopoverContent>\n        The content that is revealed by interacting with the Toggle button\n      </PopoverContent>\n    </Popover>\n  );\n}",
       "exampleMined": true,
       "props": []
     },
     "Portal": {
       "codeOnly": true,
-      "example": "import { Portal } from '@carbon/react';\n<Portal />",
+      "example": "import { Portal } from '@bongbetic/react';\n<Portal />",
       "exampleMined": false,
       "note": "Utility — code only.",
       "props": [
@@ -7869,13 +7869,13 @@
       ]
     },
     "PrimaryButton": {
-      "example": "import { PrimaryButton } from '@carbon/react';\n<PrimaryButton />",
+      "example": "import { PrimaryButton } from '@bongbetic/react';\n<PrimaryButton />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "ProgressBar": {
-      "example": "import { ProgressBar } from '@carbon/react';\n<ProgressBar />",
+      "example": "import { ProgressBar } from '@bongbetic/react';\n<ProgressBar />",
       "exampleMined": false,
       "props": [
         {
@@ -7958,7 +7958,7 @@
       ]
     },
     "ProgressIndicator": {
-      "example": "import { ProgressIndicator } from '@carbon/react';\n<ProgressIndicator />",
+      "example": "import { ProgressIndicator } from '@bongbetic/react';\n<ProgressIndicator />",
       "exampleMined": false,
       "props": [
         {
@@ -8006,7 +8006,7 @@
       ]
     },
     "RadioButton": {
-      "example": "import { RadioButton } from '@carbon/react';\n<RadioButton />",
+      "example": "import { RadioButton } from '@bongbetic/react';\n<RadioButton />",
       "exampleMined": false,
       "props": [
         {
@@ -8156,7 +8156,7 @@
       ]
     },
     "RadioButtonGroup": {
-      "example": "import { RadioButtonGroup } from '@carbon/react';\n<RadioButtonGroup />",
+      "example": "import { RadioButtonGroup } from '@bongbetic/react';\n<RadioButtonGroup />",
       "exampleMined": false,
       "props": [
         {
@@ -8303,7 +8303,7 @@
       ]
     },
     "RadioTile": {
-      "example": "import { RadioTile } from '@carbon/react';\n<RadioTile />",
+      "example": "import { RadioTile } from '@bongbetic/react';\n<RadioTile />",
       "exampleMined": false,
       "props": [
         {
@@ -8407,7 +8407,7 @@
       ]
     },
     "Resizer": {
-      "example": "import { Resizer } from '@carbon/react';\n<Resizer />",
+      "example": "import { Resizer } from '@bongbetic/react';\n<Resizer />",
       "exampleMined": false,
       "props": [
         {
@@ -8521,7 +8521,7 @@
       ]
     },
     "Search": {
-      "example": "import { Search } from '@carbon/react';\n<Search />",
+      "example": "import { Search } from '@bongbetic/react';\n<Search />",
       "exampleMined": false,
       "props": [
         {
@@ -8638,7 +8638,7 @@
       ]
     },
     "SecondaryButton": {
-      "example": "import { SecondaryButton } from '@carbon/react';\n<SecondaryButton />",
+      "example": "import { SecondaryButton } from '@bongbetic/react';\n<SecondaryButton />",
       "exampleMined": false,
       "props": [
         {
@@ -8808,7 +8808,7 @@
       ]
     },
     "SelectItem": {
-      "example": "import { SelectItem } from '@carbon/react';\n<SelectItem />",
+      "example": "import { SelectItem } from '@bongbetic/react';\n<SelectItem />",
       "exampleMined": false,
       "props": [
         {
@@ -8849,7 +8849,7 @@
       ]
     },
     "SelectItemGroup": {
-      "example": "import { SelectItemGroup } from '@carbon/react';\n<SelectItemGroup />",
+      "example": "import { SelectItemGroup } from '@bongbetic/react';\n<SelectItemGroup />",
       "exampleMined": false,
       "props": [
         {
@@ -8883,7 +8883,7 @@
       ]
     },
     "ShapeIndicator": {
-      "example": "import { preview__ShapeIndicator as ShapeIndicator } from '@carbon/react';\n\nfunction ExampleComponent() {\n  return (\n    <ShapeIndicator kind=\"failed\" label=\"Failed\">\n  );\n}",
+      "example": "import { preview__ShapeIndicator as ShapeIndicator } from '@bongbetic/react';\n\nfunction ExampleComponent() {\n  return (\n    <ShapeIndicator kind=\"failed\" label=\"Failed\">\n  );\n}",
       "exampleMined": true,
       "props": [
         {
@@ -8958,7 +8958,7 @@
       ]
     },
     "SkeletonIcon": {
-      "example": "import { SkeletonIcon } from '@carbon/react';\n<SkeletonIcon />",
+      "example": "import { SkeletonIcon } from '@bongbetic/react';\n<SkeletonIcon />",
       "exampleMined": false,
       "props": [
         {
@@ -8971,7 +8971,7 @@
       ]
     },
     "SkeletonPlaceholder": {
-      "example": "import { SkeletonPlaceholder } from '@carbon/react';\n<SkeletonPlaceholder />",
+      "example": "import { SkeletonPlaceholder } from '@bongbetic/react';\n<SkeletonPlaceholder />",
       "exampleMined": false,
       "props": [
         {
@@ -8984,7 +8984,7 @@
       ]
     },
     "SkeletonText": {
-      "example": "import { SkeletonText } from '@carbon/react';\n<SkeletonText />",
+      "example": "import { SkeletonText } from '@bongbetic/react';\n<SkeletonText />",
       "exampleMined": false,
       "props": [
         {
@@ -9025,7 +9025,7 @@
       ]
     },
     "Slider": {
-      "example": "import { Slider } from '@carbon/react';\n<Slider />",
+      "example": "import { Slider } from '@bongbetic/react';\n<Slider />",
       "exampleMined": false,
       "props": [
         {
@@ -9276,7 +9276,7 @@
       ]
     },
     "Stack": {
-      "example": "import { Stack } from '@carbon/react';\n<Stack />",
+      "example": "import { Stack } from '@bongbetic/react';\n<Stack />",
       "exampleMined": false,
       "props": [
         {
@@ -9321,7 +9321,7 @@
       ]
     },
     "StructuredList": {
-      "example": "import { StructuredList } from '@carbon/react';\n<StructuredList />",
+      "example": "import { StructuredList } from '@bongbetic/react';\n<StructuredList />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
@@ -9398,7 +9398,7 @@
       ]
     },
     "Tab": {
-      "example": "import { Tab } from '@carbon/react';\n<Tab />",
+      "example": "import { Tab } from '@bongbetic/react';\n<Tab />",
       "exampleMined": false,
       "props": [
         {
@@ -9446,7 +9446,7 @@
       ]
     },
     "TabContent": {
-      "example": "import { TabContent } from '@carbon/react';\n<TabContent />",
+      "example": "import { TabContent } from '@bongbetic/react';\n<TabContent />",
       "exampleMined": false,
       "props": [
         {
@@ -9512,13 +9512,13 @@
       ]
     },
     "Tag": {
-      "example": "import { Tag } from '@carbon/react';\n<Tag />",
+      "example": "import { Tag } from '@bongbetic/react';\n<Tag />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "TagOverflow": {
-      "example": "import { TagOverflow } from '@carbon/react';\n<TagOverflow />",
+      "example": "import { TagOverflow } from '@bongbetic/react';\n<TagOverflow />",
       "exampleMined": false,
       "props": [
         {
@@ -9695,7 +9695,7 @@
       ]
     },
     "Tearsheet": {
-      "example": "import { Tearsheet, StackProvider } from '@carbon/react';\n\n<Tearsheet open={open} onClose={handleClose}>\n  <Tearsheet.Header>\n    <Tearsheet.HeaderContent\n      label=\"Optional label\"\n      title=\"Title\"\n      description=\"Description\"\n      headerActions={\n        <Tearsheet.HeaderActions\n          menuButtonProps={{ label: 'Actions', kind: 'tertiary' }}>\n          <Tearsheet.HeaderActionItem overflowItemLabel=\"Action 1\">\n            <Button kind=\"tertiary\" size=\"sm\">\n              Action 1\n            </Button>\n          </Tearsheet.HeaderActionItem>\n        </Tearsheet.HeaderActions>\n      }\n    />\n    {/* Optional: ProgressIndicator, notifications, etc. */}\n    <Tearsheet.NavigationBar scroller={<Tearsheet.ScrollButton />}>\n      {/* TabList, tags, or other navigation elements */}\n    </Tearsheet.NavigationBar>\n  </Tearsheet.Header>\n\n  <Tearsheet.Influencer>\n    {/* Left panel — vertical progress indicator, steps, etc. */}\n  </Tearsheet.Influencer>\n\n  <Tearsheet.Body>\n    <Tearsheet.MainContent>{/* Primary content */}</Tearsheet.MainContent>\n    <Tearsheet.SummaryContent>\n      {/* Right panel — summary details or related information */}\n    </Tearsheet.SummaryContent>\n  </Tearsheet.Body>\n\n  <Tearsheet.Footer\n    actions={[\n      { kind: 'ghost', label: 'Cancel', onClick: () => setOpen(false) },\n      { kind: 'secondary', label: 'Back' },\n      { kind: 'primary', label: 'Submit', onClick: handleSubmit },\n    ]}\n  />\n</Tearsheet>;",
+      "example": "import { Tearsheet, StackProvider } from '@bongbetic/react';\n\n<Tearsheet open={open} onClose={handleClose}>\n  <Tearsheet.Header>\n    <Tearsheet.HeaderContent\n      label=\"Optional label\"\n      title=\"Title\"\n      description=\"Description\"\n      headerActions={\n        <Tearsheet.HeaderActions\n          menuButtonProps={{ label: 'Actions', kind: 'tertiary' }}>\n          <Tearsheet.HeaderActionItem overflowItemLabel=\"Action 1\">\n            <Button kind=\"tertiary\" size=\"sm\">\n              Action 1\n            </Button>\n          </Tearsheet.HeaderActionItem>\n        </Tearsheet.HeaderActions>\n      }\n    />\n    {/* Optional: ProgressIndicator, notifications, etc. */}\n    <Tearsheet.NavigationBar scroller={<Tearsheet.ScrollButton />}>\n      {/* TabList, tags, or other navigation elements */}\n    </Tearsheet.NavigationBar>\n  </Tearsheet.Header>\n\n  <Tearsheet.Influencer>\n    {/* Left panel — vertical progress indicator, steps, etc. */}\n  </Tearsheet.Influencer>\n\n  <Tearsheet.Body>\n    <Tearsheet.MainContent>{/* Primary content */}</Tearsheet.MainContent>\n    <Tearsheet.SummaryContent>\n      {/* Right panel — summary details or related information */}\n    </Tearsheet.SummaryContent>\n  </Tearsheet.Body>\n\n  <Tearsheet.Footer\n    actions={[\n      { kind: 'ghost', label: 'Cancel', onClick: () => setOpen(false) },\n      { kind: 'secondary', label: 'Back' },\n      { kind: 'primary', label: 'Submit', onClick: handleSubmit },\n    ]}\n  />\n</Tearsheet>;",
       "exampleMined": true,
       "props": [
         {
@@ -9819,7 +9819,7 @@
       ]
     },
     "Text": {
-      "example": "import { Text } from '@carbon/react';\n<Text />",
+      "example": "import { Text } from '@bongbetic/react';\n<Text />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
@@ -10250,7 +10250,7 @@
       ]
     },
     "TileGroup": {
-      "example": "import { TileGroup } from '@carbon/react';\n<TileGroup />",
+      "example": "import { TileGroup } from '@bongbetic/react';\n<TileGroup />",
       "exampleMined": false,
       "props": [
         {
@@ -10319,7 +10319,7 @@
       ]
     },
     "TimePicker": {
-      "example": "import { TimePicker } from '@carbon/react';\n<TimePicker />",
+      "example": "import { TimePicker } from '@bongbetic/react';\n<TimePicker />",
       "exampleMined": false,
       "props": [
         {
@@ -10491,7 +10491,7 @@
       ]
     },
     "TimePickerSelect": {
-      "example": "import { TimePickerSelect } from '@carbon/react';\n<TimePickerSelect />",
+      "example": "import { TimePickerSelect } from '@bongbetic/react';\n<TimePickerSelect />",
       "exampleMined": false,
       "props": [
         {
@@ -10532,7 +10532,7 @@
       ]
     },
     "Toggle": {
-      "example": "import { Toggle } from '@carbon/react';\n<Toggle />",
+      "example": "import { Toggle } from '@bongbetic/react';\n<Toggle />",
       "exampleMined": false,
       "props": [
         {
@@ -10612,13 +10612,13 @@
       ]
     },
     "ToggleSmall": {
-      "example": "import { ToggleSmall } from '@carbon/react';\n<ToggleSmall />",
+      "example": "import { ToggleSmall } from '@bongbetic/react';\n<ToggleSmall />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "Toggletip": {
-      "example": "import { Toggletip, ToggletipButton, ToggletipContent } from '@carbon/react';\nimport { Information } from '@carbon/react/icons';\n\n<Toggletip>\n  <ToggletipButton label=\"Additional information\">\n    <Information />\n  </ToggletipButton>\n  <ToggletipContent>\n    <p>Custom content here</p>\n  </ToggletipContent>\n</Toggletip>;",
+      "example": "import { Toggletip, ToggletipButton, ToggletipContent } from '@bongbetic/react';\nimport { Information } from '@bongbetic/react/icons';\n\n<Toggletip>\n  <ToggletipButton label=\"Additional information\">\n    <Information />\n  </ToggletipButton>\n  <ToggletipContent>\n    <p>Custom content here</p>\n  </ToggletipContent>\n</Toggletip>;",
       "exampleMined": true,
       "props": []
     },
@@ -10719,7 +10719,7 @@
       ]
     },
     "TruncatedText": {
-      "example": "import { TruncatedText } from '@carbon/react';\n<TruncatedText />",
+      "example": "import { TruncatedText } from '@bongbetic/react';\n<TruncatedText />",
       "exampleMined": false,
       "props": [
         {
@@ -10785,13 +10785,13 @@
       ]
     },
     "UIShell": {
-      "example": "import { UIShell } from '@carbon/react';\n<UIShell />",
+      "example": "import { UIShell } from '@bongbetic/react';\n<UIShell />",
       "exampleMined": false,
       "note": "Generic example — no mined example for this pin.",
       "props": []
     },
     "UnorderedList": {
-      "example": "import { UnorderedList } from '@carbon/react';\n<UnorderedList />",
+      "example": "import { UnorderedList } from '@bongbetic/react';\n<UnorderedList />",
       "exampleMined": false,
       "props": [
         {
@@ -10811,7 +10811,7 @@
       ]
     },
     "UserAvatar": {
-      "example": "import { UserAvatar } from '@carbon/react';\n<UserAvatar />",
+      "example": "import { UserAvatar } from '@bongbetic/react';\n<UserAvatar />",
       "exampleMined": false,
       "props": [
         {

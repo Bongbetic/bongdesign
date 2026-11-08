@@ -1,6 +1,20 @@
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, ClickableTile, ListItem, UnorderedList } from '@carbon/react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  ClickableTile,
+  CodeSnippet,
+  ListItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  UnorderedList,
+} from '@bongbetic/react';
 import { RouteLink, navClick } from '../routes.jsx';
+import packageIndex from '../../../data/packages.json';
 
 // Guidance module (T08): patterns, data-visualization and support/MCP pages.
 // All copy below is original Bongbetic guidance distilled from the tracked
@@ -301,6 +315,14 @@ export const GS_PAGES = [
     done: ['Know the pinned Carbon version before planning upgrades.', 'Treat this host as the only source of truth for components.'],
   },
   {
+    page: 'install',
+    title: 'Install',
+    intro:
+      'Install the @bongbetic packages from the Gitea registry at git.bongbetic.com. Normal mode sends only @bongbetic installs there; sovereign mode sends every install there, so npmjs.org is not reached.',
+    blocks: [],
+    done: ['Put one registry line in the project .npmrc before the first install.', 'Match the versions in the public packages table on this page.'],
+  },
+  {
     page: 'designing',
     title: 'Designing',
     intro:
@@ -312,7 +334,7 @@ export const GS_PAGES = [
     page: 'developing',
     title: 'Developing',
     intro:
-      'Build with the pinned @carbon/react release: every component page shows live props, and the MCP endpoint answers component and token questions for agents. Develop against this host, not upstream.',
+      'Build with the pinned @bongbetic/react release: every component page shows live props, and the MCP endpoint answers component and token questions for agents. Develop against this host, not upstream.',
     blocks: ['Button', 'TextInput'],
     done: ['Develop against the pinned release on this host.', 'Check the component page for props before inventing variants.'],
   },
@@ -635,7 +657,7 @@ export function DataVisualizationPage() {
 
 // Shared renderer for guide entries (data-viz topics, getting-started pages,
 // experience steps): breadcrumb, intro, optional when/blocks, done checklist.
-function GuideArticle({ crumb, indexTo, entry, keyName }) {
+function GuideArticle({ crumb, indexTo, entry, keyName, extra }) {
   return (
     <div>
       <Breadcrumb>
@@ -665,6 +687,7 @@ function GuideArticle({ crumb, indexTo, entry, keyName }) {
           <BlockLinks names={entry.blocks} />
         </div>
       )}
+      {extra}
       <div className="bong-section">
         <h2>Do this</h2>
         <UnorderedList>
@@ -735,7 +758,67 @@ export function GettingStartedPage({ page }) {
   if (!entry) {
     return <GuideNotFound label="Guide" indexTo="/getting-started" indexLabel="getting started" value={page} />;
   }
-  return <GuideArticle crumb="Getting started" indexTo="/getting-started" entry={entry} />;
+  return (
+    <GuideArticle
+      crumb="Getting started"
+      indexTo="/getting-started"
+      entry={entry}
+      extra={entry.page === 'install' ? <InstallDetails /> : null}
+    />
+  );
+}
+
+// Install page body: registry modes, scaffolding commands, the public package table.
+// The table reads data/packages.json, generated from the pinned snapshot.
+const REGISTRY_URL = 'https://git.bongbetic.com/api/packages/bongbetic/npm/';
+
+function InstallDetails() {
+  return (
+    <>
+      <div className="bong-section">
+        <h2>Registry modes</h2>
+        <p>
+          Both modes read the same registry. Put one line in the project .npmrc, then install as usual.
+        </p>
+        <h3>Normal mode</h3>
+        <p>Only @bongbetic packages come from Gitea. Everything else still resolves from npmjs.org.</p>
+        <CodeSnippet type="single" feedback="Copied to clipboard">{`@bongbetic:registry=${REGISTRY_URL}`}</CodeSnippet>
+        <h3>Sovereign mode</h3>
+        <p>Every package, third-party ones included, comes from Gitea. npmjs.org is not reached.</p>
+        <CodeSnippet type="single" feedback="Copied to clipboard">{`registry=${REGISTRY_URL}`}</CodeSnippet>
+      </div>
+      <div className="bong-section">
+        <h2>Create an app</h2>
+        <CodeSnippet type="single" feedback="Copied to clipboard">{'npx @bongbetic/create-design my-app'}</CodeSnippet>
+        <p>Sovereign variant, which writes the sovereign .npmrc into the new app:</p>
+        <CodeSnippet type="single" feedback="Copied to clipboard">{'npx @bongbetic/create-design my-app --sovereign'}</CodeSnippet>
+        <h2>Add to an existing app</h2>
+        <CodeSnippet type="single" feedback="Copied to clipboard">{'npm install @bongbetic/design'}</CodeSnippet>
+      </div>
+      <div className="bong-section">
+        <h2>Public packages</h2>
+        <p>
+          {`${packageIndex.packages.length} public packages at the pinned Carbon release ${packageIndex.meta.carbonTag}, as the registry serves them.`}
+        </p>
+        <Table size="md" aria-label="Public packages">
+          <TableHead>
+            <TableRow>
+              <TableHeader>Package</TableHeader>
+              <TableHeader>Version</TableHeader>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {packageIndex.packages.map((p) => (
+              <TableRow key={p.name}>
+                <TableCell>{p.name}</TableCell>
+                <TableCell>{p.version}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </>
+  );
 }
 
 // Building-experiences index and step page, driven by BX_STEPS.

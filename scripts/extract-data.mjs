@@ -1,6 +1,7 @@
 // extract-data.mjs — build-time pipeline: mine carbon-src MDX + TS prop types and
-// the pinned @carbon packages into committed data/*.json. Deterministic:
-// sorted keys, no timestamps. Run: `node scripts/extract-data.mjs` (repo root).
+// the pinned packages (installed from the Gitea registry as @bongbetic/*, ADR 0006)
+// into committed data/*.json. Deterministic: sorted keys, no timestamps.
+// Run: `node scripts/extract-data.mjs` (repo root).
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -8,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
-const NM = path.join(ROOT, 'site', 'node_modules', '@carbon');
+const NM = path.join(ROOT, 'site', 'node_modules', '@bongbetic');
 const pkg = (name) => require(path.join(NM, name));
 
 const sortKeys = (v) => {
@@ -23,8 +24,19 @@ const sortKeys = (v) => {
   }
   return v;
 };
+// The upstream snapshot names its packages under one scope; the registry republishes
+// them under @bongbetic (ADR 0006). The scope is read from the snapshot, not typed here.
+const UPSTREAM_DIR = path.join(ROOT, 'upstream-carbon', 'packages');
+const upstreamPkgs = fs.readdirSync(UPSTREAM_DIR).sort().flatMap((d) => {
+  const file = path.join(UPSTREAM_DIR, d, 'package.json');
+  return fs.existsSync(file) ? [JSON.parse(fs.readFileSync(file, 'utf8'))] : [];
+});
+const UPSTREAM_SCOPE = upstreamPkgs.find((p) => p.name.startsWith('@')).name.split('/')[0];
+const rebrand = (text) => text.split(UPSTREAM_SCOPE + '/').join('@bongbetic/');
+
+// Every committed data file goes through here: keys sorted, upstream scope rebranded.
 const write = (file, obj) =>
-  fs.writeFileSync(path.join(ROOT, 'data', file), JSON.stringify(sortKeys(obj), null, 2) + '\n');
+  fs.writeFileSync(path.join(ROOT, 'data', file), rebrand(JSON.stringify(sortKeys(obj), null, 2)) + '\n');
 
 const index = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'components.json'), 'utf8'));
 const NAMES = new Set(index.components.map((c) => c.name));
@@ -190,7 +202,7 @@ for (const dir of DIRS) {
 }
 
 // ---- merge MDX + TS; write props.json ----
-const generic = (n) => `import { ${n} } from '@carbon/react';\n<${n} />`;
+const generic = (n) => `import { ${n} } from '@bongbetic/react';\n<${n} />`;
 const propsOut = {};
 for (const name of [...NAMES].sort()) {
   const ts = tsByComponent[name] || [];
@@ -247,7 +259,7 @@ for (const t of ['white', 'g10', 'g90', 'g100']) {
   themesOut[t] = themes[t];
 }
 write('tokens.json', {
-  meta: { carbonTag: TAG, source: 'pinned @carbon packages' },
+  meta: { carbonTag: TAG, source: 'pinned packages, republished as @bongbetic' },
   colors, themes: themesOut, type: typeOut, motion, layout,
 });
 
@@ -268,10 +280,23 @@ const pictoNames = Object.entries(pictos)
   .map(([n]) => n)
   .sort();
 write('icons.json', {
-  meta: { carbonTag: TAG, packages: { icons: pin('@carbon/icons'), pictograms: pin('@carbon/pictograms') } },
+  meta: { carbonTag: TAG, packages: { icons: pin('@bongbetic/icons'), pictograms: pin('@bongbetic/pictograms') } },
   icons: { total: Object.keys(icons).length, bases: iconBases, names: Object.keys(icons).sort() },
   pictograms: { total: pictoNames.length, names: pictoNames },
 });
+
+// ---- install page: the public packages of the snapshot, as the registry serves them ----
+const packages = upstreamPkgs
+  .filter((p) => !p.private)
+  .map((p) => ({ name: rebrand(p.name), version: p.version }))
+  .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+write('packages.json', {
+  meta: { carbonTag: TAG, source: 'upstream-carbon/packages, non-private, republished as @bongbetic' },
+  packages,
+});
+
+// ---- components index: entries pass through unchanged; meta.packages follows the rebrand ----
+write('components.json', index);
 
 const withProps = Object.values(propsOut).filter((e) => e.props.length > 0).length;
 console.log(`extract-data: props for ${Object.keys(propsOut).length} components (${withProps} with mined props), tokens + icons written`);
