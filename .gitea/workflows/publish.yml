@@ -1,0 +1,16 @@
+name: publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  registry-sync:
+    runs-on: bongbetic-ci
+    container:
+      image: docker.io/library/node:24-bookworm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync closure lockfile to the Gitea npm registry
+        env:
+          GITEA_PUBLISH_TOKEN: ${{ secrets.REGISTRY_PUBLISH_TOKEN }}
+        run: python3 scripts/registry/registry.py registry/closure/package-lock.json
