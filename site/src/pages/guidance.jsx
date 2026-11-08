@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, ClickableTile, ListItem, UnorderedList } from '@carbon/react';
+import { Breadcrumb, BreadcrumbItem, ClickableTile, ListItem, UnorderedList } from '@bongbetic/react';
 import { RouteLink, navClick } from '../routes.jsx';
 
 // Guidance module (T08): patterns, data-visualization and support/MCP pages.
@@ -312,7 +312,7 @@ export const GS_PAGES = [
     page: 'developing',
     title: 'Developing',
     intro:
-      'Build with the pinned @carbon/react release: every component page shows live props, and the MCP endpoint answers component and token questions for agents. Develop against this host, not upstream.',
+      'Build with the pinned @bongbetic/react release: every component page shows live props, and the MCP endpoint answers component and token questions for agents. Develop against this host, not upstream.',
     blocks: ['Button', 'TextInput'],
     done: ['Develop against the pinned release on this host.', 'Check the component page for props before inventing variants.'],
   },

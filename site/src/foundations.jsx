@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import * as Carbon from '@carbon/react';
+import * as Carbon from '@bongbetic/react';
 import IconsLibrary from './icons.jsx';
 import { PictogramsLibrary } from './pictograms.jsx';
 import tokens from '../../data/tokens.json';
@@ -7,7 +7,7 @@ import tokens from '../../data/tokens.json';
 const Link = Carbon.Link;
 
 // Duration and easing values come from the generated token index
-// (data/tokens.json), mined from the pinned @carbon/motion package.
+// (data/tokens.json), mined from the pinned @bongbetic/motion package.
 const DURATIONS = [
   { key: 'durationFast01', label: 'duration-fast-01', use: 'Micro-interactions: small toggles, snaps' },
   { key: 'durationFast02', label: 'duration-fast-02', use: 'Micro-interactions: small expansion' },
@@ -166,7 +166,7 @@ function ThemesSection() {
 }
 
 // Spacing steps from the generated token index (data/tokens.json),
-// mined from the pinned @carbon/layout package.
+// mined from the pinned @bongbetic/layout package.
 const SPACING = Array.from({ length: 13 }, (_, i) => {
   const n = String(i + 1).padStart(2, '0');
   return [`spacing-${n}`, tokens.layout[`spacing${n}`]];

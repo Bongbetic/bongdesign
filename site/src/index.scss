@@ -1,11 +1,11 @@
-// T13: silence Carbon's bundled @font-face (webpack-style ~@ibm/plex URLs
+// T13: silence Carbon's bundled @font-face (webpack-style ~@bongbetic/plex URLs
 // that Vite leaves unresolved, so Plex never loaded) and self-host the
 // Latin subsets from site/public/fonts instead. OFFLINE-first, no CDN.
-@use '@carbon/styles/scss/config' with (
+@use '@bongbetic/styles/scss/config' with (
   $css--font-face: false
 );
-@use '@carbon/styles';
-@use '@carbon/styles/scss/theme' as *;
+@use '@bongbetic/styles';
+@use '@bongbetic/styles/scss/theme' as *;
 
 // T13: self-hosted IBM Plex (weights the Carbon theme actually uses).
 // Family names match Carbon exactly so these faces win. font-display:

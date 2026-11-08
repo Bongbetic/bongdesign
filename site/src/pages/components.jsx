@@ -27,7 +27,7 @@ import {
   Tag,
   Theme,
   UnorderedList,
-} from '@carbon/react';
+} from '@bongbetic/react';
 import { DemoBoundary, category, componentCards } from '../explorer.jsx';
 import { RouteLink, navClick } from '../routes.jsx';
 import guidelines from '../../../data/guidelines.json';
@@ -134,7 +134,7 @@ export function ComponentsOverview() {
 // and the real props table from the pinned source.
 const BUTTON_INTRO =
   'Buttons communicate actions users can take. Each page should have only one primary button.';
-const BUTTON_CODE = `import { Button } from '@carbon/react';
+const BUTTON_CODE = `import { Button } from '@bongbetic/react';
 
 <Button kind="primary">Save</Button>`;
 const BUTTON_PROPS_NOTE =

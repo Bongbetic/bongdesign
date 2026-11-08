@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ClickableTile, InlineNotification, Tile } from '@carbon/react';
+import { Button, ClickableTile, InlineNotification, Tile } from '@bongbetic/react';
 import { navClick } from '../routes.jsx';
 import index from '../../../data/components.json';
 

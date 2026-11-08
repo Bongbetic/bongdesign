@@ -113,21 +113,21 @@ def branding_assets():
 SITE_BASE = os.environ.get('BONGDESIGN_PUBLIC_BASE', 'https://design.bongbetic.com')
 
 EXAMPLES = {
-    'Button': "import { Button } from '@carbon/react';\n<Button kind=\"primary\">Save</Button>",
-    'TextInput': "import { TextInput } from '@carbon/react';\n<TextInput id=\"name\" labelText=\"Name\" placeholder=\"Ada\" />",
-    'Dropdown': "import { Dropdown } from '@carbon/react';\n<Dropdown id=\"d\" titleText=\"Pick\" label=\"Choose\" items={['A', 'B']} />",
-    'Modal': "import { Modal } from '@carbon/react';\n<Modal open modalHeading=\"Title\" primaryButtonText=\"OK\" />",
-    'DataTable': "import { DataTable, Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from '@carbon/react';",
-    'Accordion': "import { Accordion, AccordionItem } from '@carbon/react';\n<Accordion><AccordionItem title=\"One\">Body</AccordionItem></Accordion>",
-    'Notification': "import { InlineNotification } from '@carbon/react';\n<InlineNotification kind=\"info\" title=\"Hi\" subtitle=\"Self-hosted.\" />",
-    'Tabs': "import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@carbon/react';",
+    'Button': "import { Button } from '@bongbetic/react';\n<Button kind=\"primary\">Save</Button>",
+    'TextInput': "import { TextInput } from '@bongbetic/react';\n<TextInput id=\"name\" labelText=\"Name\" placeholder=\"Ada\" />",
+    'Dropdown': "import { Dropdown } from '@bongbetic/react';\n<Dropdown id=\"d\" titleText=\"Pick\" label=\"Choose\" items={['A', 'B']} />",
+    'Modal': "import { Modal } from '@bongbetic/react';\n<Modal open modalHeading=\"Title\" primaryButtonText=\"OK\" />",
+    'DataTable': "import { DataTable, Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from '@bongbetic/react';",
+    'Accordion': "import { Accordion, AccordionItem } from '@bongbetic/react';\n<Accordion><AccordionItem title=\"One\">Body</AccordionItem></Accordion>",
+    'Notification': "import { InlineNotification } from '@bongbetic/react';\n<InlineNotification kind=\"info\" title=\"Hi\" subtitle=\"Self-hosted.\" />",
+    'Tabs': "import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@bongbetic/react';",
 }
 
 
 def example_for(name):
     if name in EXAMPLES:
         return EXAMPLES[name]
-    return f"import {{ {name} }} from '@carbon/react';\n<{name} />"
+    return f"import {{ {name} }} from '@bongbetic/react';\n<{name} />"
 
 
 def doc_url(doc):
@@ -178,7 +178,7 @@ def call_tool(name, args):
         entry = PROPS.get(c['name'], {})
         mined = entry.get('example', '')
         if mined and 'import' not in mined:
-            example = f"import {{ {c['name']} }} from '@carbon/react';\n{mined}"
+            example = f"import {{ {c['name']} }} from '@bongbetic/react';\n{mined}"
         else:
             example = mined or example_for(c['name'])
         guide = GUIDELINES.get(c['name'].lower(), {})

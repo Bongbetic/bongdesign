@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import * as Carbon from '@carbon/react';
+import * as Carbon from '@bongbetic/react';
 import iconIndex from '../../data/icons.json';
-import * as iconData from '@carbon/icons';
+import * as iconData from '@bongbetic/icons';
 
 function renderNode(node, key) {
   if (!node) return null;
@@ -12,7 +12,7 @@ function renderNode(node, key) {
 }
 
 // Search space is the generated icon index (data/icons.json), mined from
-// the pinned @carbon/icons package. Vectors still render from the pinned
+// the pinned @bongbetic/icons package. Vectors still render from the pinned
 // package itself, so documented names and artwork always agree.
 const BASES = iconIndex.icons.bases
   .map(({ base, sizes }) => {
