@@ -384,6 +384,23 @@ class Handler(SimpleHTTPRequestHandler):
             return super().do_GET()
         return self._json(404, {'error': 'not found'})
 
+    def do_HEAD(self):
+        # HEAD obeys the same wall as GET: only the public paths answer
+        # without a session (SimpleHTTPRequestHandler would serve any file).
+        path = urllib.parse.urlparse(self.path).path
+        if path in ('/health', '/login'):
+            return self._head(200)
+        if path == '/favicon.ico' or path.startswith('/branding/'):
+            return super().do_HEAD()
+        if not self.authed():
+            return self._deny(mcp=(path == '/mcp'))
+        return super().do_HEAD()
+
+    def _head(self, status):
+        self.send_response(status)
+        self.send_header('Content-Length', '0')
+        self.end_headers()
+
     def do_POST(self):
         path = urllib.parse.urlparse(self.path).path
         if path == '/login':

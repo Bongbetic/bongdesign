@@ -133,3 +133,15 @@ class PublicBrandAssetsTest(AuthTestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class HeadRequestAuthTest(AuthTestCase):
+    def test_unauthenticated_head_is_denied_like_get(self):
+        for path in ('/', '/api/components', '/index.html'):
+            status, _, _ = self.srv.request('HEAD', path)
+            self.assertEqual(status, 302, path)
+
+    def test_head_health_and_login_stay_public(self):
+        for path in ('/health', '/login'):
+            status, _, _ = self.srv.request('HEAD', path)
+            self.assertEqual(status, 200, path)

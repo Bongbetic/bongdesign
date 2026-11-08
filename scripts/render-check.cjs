@@ -640,8 +640,8 @@ try {
     : [];
   const distCss = cssFiles.map((f) => fs.readFileSync(path.join(distDir, f), 'utf8')).join('\n');
   routeCheck(
-    'built dist CSS contains no ~@ibm font URLs',
-    !distCss.includes('~@ibm'),
+    'built dist CSS contains no ~@ibm or ~@bongbetic font URLs',
+    !distCss.includes('~@ibm') && !distCss.includes('~@bongbetic'),
     cssFiles.length ? 'broken tilde URLs survived the build' : 'no dist CSS found — run npm run build first'
   );
 } catch (e) {
