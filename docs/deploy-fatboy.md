@@ -77,7 +77,7 @@ The CLI checks that the name resolves to fatboy, writes the Caddy site file, val
 
 ## Verify
 
-The CLI's own success message is not proof. Run each check. Use GET, not HEAD: `server.py` has no HEAD handler, so `curl -I` on `/health` returns 404, not 200.
+The CLI's own success message is not proof. Run each check. Use GET, not HEAD. `server.py` has no HEAD handler of its own, so `curl -I` on `/health` returns 404, not 200, and HEAD on `/` skips the sign-in check (see Open items).
 
 Container up. Expect every container `Up`.
 
@@ -221,3 +221,4 @@ unset GITEA_TOKEN
 
 - The `Containerfile` pins base images by tag (`node:24-slim`, `python:3.12-slim`), not by digest as ADR 0008 and the fatboy rules ask. Fix it before relying on reproducible builds. The `Containerfile` is a shared config file, so the change needs its own review.
 - The site still installs `@carbon/*` from npmjs.org. The Bongbetic registry is not in the build yet.
+- HEAD requests skip the sign-in check. `server.py` inherits HEAD from `SimpleHTTPRequestHandler`, so an unauthenticated `curl -I https://design.bongbetic.com/` returns 200 with headers, where GET returns 302. Measured locally with a placeholder `site/dist`; the deployed server was not checked. Fix in a server ticket: add a `do_HEAD` that runs the same auth routing as `do_GET`.
