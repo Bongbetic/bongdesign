@@ -1,0 +1,25 @@
+{
+  "name": "@bongbetic/brand",
+  "version": "1.0.0",
+  "description": "Bongbetic logo, header and brand tokens for the Bongbetic design system",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": { "types": "./src/index.d.ts", "default": "./src/index.js" },
+    "./styles": "./styles.scss",
+    "./styles.css": "./styles.css",
+    "./assets/*": "./assets/*",
+    "./package.json": "./package.json"
+  },
+  "files": ["src", "assets", "styles.scss", "styles.css"],
+  "peerDependencies": {
+    "@bongbetic/react": ">=1.119.0 <2",
+    "react": "^18.0.0"
+  },
+  "homepage": "https://design.bongbetic.com",
+  "repository": { "type": "git", "url": "https://git.bongbetic.com/bongbetic/bongdesign.git" },
+  "publishConfig": { "registry": "https://git.bongbetic.com/api/packages/bongbetic/npm/", "access": "public" }
+}

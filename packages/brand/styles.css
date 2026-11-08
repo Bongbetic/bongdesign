@@ -1,0 +1,11 @@
+/* Bongbetic brand tokens. Red is an accent only (rules, marks), never a control fill;
+   Carbon blue stays the interactive colour. */
+:root {
+  --bb-accent: #e11d2a;
+  --bb-rule-height: 3px;
+}
+.bb-header.cds--header { background: #fff; border-bottom: 1px solid #e0e0e0; }
+.bb-header .cds--header__name, .bb-header .cds--header__name span { color: #161616; text-decoration: none; }
+.bb-header__name { display: flex; align-items: center; gap: 0.75rem; }
+.bb-header__product { font-weight: 600; }
+.bb-red-rule { height: var(--bb-rule-height); background: var(--bb-accent); }
