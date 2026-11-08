@@ -129,7 +129,7 @@ class GiteaPublishWorkflowTest(unittest.TestCase):
         self.assertRegex(_read(GITEA_PUBLISH), rf"(?m)^\s*runs-on:\s*{RUNNER}\s*$")
 
     def test_gitea_publish_runs_in_python_container(self):
-        self.assertIn("image: docker.io/library/python:3.12-bookworm", _read(GITEA_PUBLISH))
+        self.assertIn("image: docker.io/library/node:24-bookworm", _read(GITEA_PUBLISH))
 
     def test_gitea_publish_runs_registry_sync(self):
         self.assertIn(REGISTRY_SYNC, _run_steps(_read(GITEA_PUBLISH)))
@@ -138,9 +138,9 @@ class GiteaPublishWorkflowTest(unittest.TestCase):
         text = _read(GITEA_PUBLISH)
         self.assertRegex(
             text,
-            r"(?m)^\s*GITEA_PUBLISH_TOKEN:\s*\$\{\{\s*secrets\.GITEA_PUBLISH_TOKEN\s*\}\}\s*$",
+            r"(?m)^\s*GITEA_PUBLISH_TOKEN:\s*\$\{\{\s*secrets\.REGISTRY_PUBLISH_TOKEN\s*\}\}\s*$",
         )
-        self.assertEqual({"GITEA_PUBLISH_TOKEN"}, set(re.findall(r"secrets\.([A-Za-z_]\w*)", text)))
+        self.assertEqual({"REGISTRY_PUBLISH_TOKEN"}, set(re.findall(r"secrets\.([A-Za-z_]\w*)", text)))
 
 
 class GiteaNoLiteralTokenTest(unittest.TestCase):
