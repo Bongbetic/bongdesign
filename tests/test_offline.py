@@ -7,7 +7,7 @@ that can be asserted without a network namespace:
 - vendor/ holds a tarball for every VERSION pin (offline insurance)
 - upstream-carbon/ is tracked plain files, no nested .git
 - brand assets are vendored locally, no remote fetches at build time
-- the lockfile resolves only from registry.npmjs.org (one registry to seal)
+- the lockfile resolves only from git.bongbetic.com (one registry to seal)
 - the operator runbook exists and covers build/run/pin-bump/rotation/rollback
 - the README documents the offline install command
 """
@@ -84,15 +84,16 @@ class OfflineInsuranceTest(unittest.TestCase):
                    if not (ROOT / "site" / "public" / r.lstrip("/")).is_file()]
         self.assertEqual(missing, [], f"unresolved brand refs: {missing}")
 
-    def test_lockfile_resolves_only_from_npmjs_registry(self):
+    def test_lockfile_resolves_only_from_gitea_registry(self):
         lock = ROOT / "site" / "package-lock.json"
         urls = set(re.findall(r'"resolved":\s*"([^"]+)"',
                               lock.read_text(encoding="utf-8")))
         self.assertGreater(len(urls), 0, "no resolved URLs in lockfile")
         foreign = sorted(u for u in urls
-                         if not u.startswith("https://registry.npmjs.org/"))
+                         if not u.startswith(
+                             "https://git.bongbetic.com/api/packages/bongbetic/npm/"))
         self.assertEqual(foreign, [],
-                         f"lockfile reaches past npmjs: {foreign[:5]}")
+                         f"lockfile reaches past the Gitea registry: {foreign[:5]}")
 
 
 class RunbookTest(unittest.TestCase):

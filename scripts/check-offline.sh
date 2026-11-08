@@ -29,4 +29,8 @@ else
 fi
 # 4. upstream snapshot is tracked (spot-check a known deep file)
 if git -C "$ROOT" ls-files --error-unmatch "upstream-carbon/package.json" >/dev/null 2>&1; then say "upstream snapshot tracked in git" 0; else say "upstream snapshot tracked in git" 1; fi
+# 5. the site lockfile resolves only from the Gitea registry (ADR 0006)
+gitea="https://git.bongbetic.com/api/packages/bongbetic/npm/"
+foreign=$(grep -o '"resolved": *"[^"]*"' "$ROOT/site/package-lock.json" | grep -v "\"$gitea" | head -3)
+if [ -z "$foreign" ]; then say "site lockfile resolves only from git.bongbetic.com" 0; else say "site lockfile resolves only from git.bongbetic.com (foreign: $foreign)" 1; fi
 exit $fail
